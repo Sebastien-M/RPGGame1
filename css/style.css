@@ -1,0 +1,71 @@
+/*MAIN PAGE*/
+body{
+    margin: 0;
+    background-color: black;
+}
+h1{
+    /*font-family: 'Raleway', sans-serif;*/
+    font-family: 'Oswald', sans-serif;
+    font-weight: bolder;
+    font-size: 5em;
+    color:white;
+}
+form{
+    display: flex;
+}
+header{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-top: 20vh;
+    transition: 1s;
+}
+#name, #buttonSubmit{
+    border: none;
+    padding: 0;
+    border-radius: 0;
+    height: 40px;
+}
+#name{
+    font-family: 'Oswald', sans-serif;
+    font-size: 20px;
+    width: 50vw;
+    text-align: center;
+}
+#buttonSubmit{
+    position: absolute;
+    display: flex;
+    align-self: flex-end;
+    transition: 0.2s;
+    padding:0px 30px 0px 30px;
+    background-color: white;
+    color: #333333;
+    outline: 0 !important;
+}
+#buttonSubmit:hover{
+    color: white;
+    background-color: #333333;
+    cursor: pointer;
+}
+
+#buttonSubmit::-moz-focus-inner {
+    border: 0
+}
+.fadeout{
+    animation-name: fadeout;
+    animation-duration: 1s;
+}
+.fadeIn{
+    animation-name: fadeIn;
+    animation-duration: 1s;
+}
+@keyframes fadeIn{
+    from{opacity:0;}
+    to{opacity: 100;}
+}
+@keyframes fadeout{
+    form{opacity: 100;}
+    to{opacity: 0;}
+}
+/*MAIN PAGE END*/
