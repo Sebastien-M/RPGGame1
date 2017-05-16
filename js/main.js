@@ -17,7 +17,7 @@ document.body.querySelector("form").addEventListener("submit", function(e) {
     setTimeout(function() {
         console.log("faded");
         console.log("Loading...")
-            //000000000000000000000000000000000000
+            //0000000000000000000000000000000000001
         Crafty.init();
 
         Crafty.sprite(128, "http://craftyjs.com/demos/isometric/images/sprite.png", {
