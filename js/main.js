@@ -1,106 +1,49 @@
 let perso = {
-        name: "",
-        items: [],
-        money: 0,
-        hp: 100,
-        mp: 5,
-    }
-    //FORM
-document.body.querySelector("form").addEventListener("submit", function(e) {
+    name: "",
+    items: [],
+    money: 0,
+    hp: 100,
+    mp: 5,
+}
+let mapSquare = {
+    rotateX:"60deg",
+    rotateY: "0deg",
+    rotateZ:"-45deg",
+    color:"blue",
+    width: "200px",
+    height: "200px"
+
+};
+//FORM
+document.body.querySelector("form").addEventListener("submit", function (e) {
     e.preventDefault();
     perso.name = document.body.querySelector("#name").value
     document.body.querySelector("#head").style.opacity = 0;
-    setTimeout(function() {
+    setTimeout(function () {
         document.body.querySelector("header").remove();
     }, 1000);
     //Load main
-    setTimeout(function() {
+    setTimeout(function () {
         console.log("faded");
         console.log("Loading...")
-            //000000000000000000000000000000000000
-        Crafty.init();
-
-        Crafty.sprite(128, "http://craftyjs.com/demos/isometric/images/sprite.png", {
-            grass: [0, 0, 1, 1],
-            stone: [1, 0, 1, 1]
-        });
-
-        iso = Crafty.isometric.size(128);
-        var z = 0;
-        for (var i = 20; i >= 0; i--) {
-            for (var y = 0; y < 20; y++) {
-                var which = Crafty.math.randomInt(0, 1);
-                var tile = Crafty.e("2D, Canvas, " + (!which ? "grass" : "stone") + ", Mouse")
-                    .attr('z', i + 1 * y + 1)
-                    .areaMap([64, 0], [128, 32], [128, 96], [64, 128], [0, 96], [0, 32])
-                    .bind("Click", function(e) {
-                        //destroy on right click
-                        //right click seems not work in Mac OS
-                        //delete it
-                        console.log(e.button);
-                        /*if(e.button === 2)*/
-                        this.destroy();
-                    })
-                    .bind("MouseOver", function() {
-                        if (this.has("grass")) {
-                            this.sprite(0, 1, 1, 1);
-                        } else {
-                            this.sprite(1, 1, 1, 1);
-                        }
-                    }).bind("MouseOut", function() {
-                        if (this.has("grass")) {
-                            this.sprite(0, 0, 1, 1);
-                        } else {
-                            this.sprite(1, 0, 1, 1);
-                        }
-                    });
-
-                iso.place(i, y, 0, tile);
-            }
+        //CODE
+        for(let i = 0;i< 10;i++){
+            mapInit("div",mapSquare.rotateX,mapSquare.rotateY,mapSquare.rotateZ,"200px","200px","#49b293");
         }
-
-        Crafty.addEvent(this, Crafty.stage.elem, "mousedown", function(e) {
-            if (e.button > 1) return;
-            var base = { x: e.clientX, y: e.clientY };
-
-            function scroll(e) {
-                var dx = base.x - e.clientX,
-                    dy = base.y - e.clientY;
-                base = { x: e.clientX, y: e.clientY };
-                Crafty.viewport.x -= dx;
-                Crafty.viewport.y -= dy;
-            };
-
-            Crafty.addEvent(this, Crafty.stage.elem, "mousemove", scroll);
-            Crafty.addEvent(this, Crafty.stage.elem, "mouseup", function() {
-                Crafty.removeEvent(this, Crafty.stage.elem, "mousemove", scroll);
-            });
-        });
-        //000000000000000000000000000000000000
+        
+        //END
+        console.log("Loaded");
     }, 1000);
 
 });
+
+
 //FORM END
-//CANVAS
-function init() {
-    /*
-    let canvas = document.body.querySelector("canvas");
-    let c = canvas.getContext("2d");
-    c.fillStyle = "white";
-    c.fillRect(0, 0, canvas.width, canvas.height);
-    c.fillStyle = "black";
-    c.font = "30px Oswald"
-    c.fillText("Hello" + perso.name, 100, 100)
-    */
-    Crafty.init();
-    // A blue block, controlled by arrow keys
-    var player = Crafty.e("2D, Canvas, Color, Fourway")
-        .attr({ x: 100, y: 100, w: 50, h: 50 })
-        .color("blue")
-        .fourway(2);
-    console.log("loaded")
+function mapInit(element,Xrotate,Yrotate,Zrotate,h,w,col){
+    let mapgen = document.createElement(element);
+    mapgen.style.height = h;
+    mapgen.style.width = w;
+    mapgen.backgroundColor = col;
+    mapgen.style.transform = "rotateX("+Xrotate+") rotateY("+ Yrotate+") rotateZ("+ Zrotate+")";
+    document.body.querySelector(".map").appendChild(mapgen);
 }
-//CANVAS END
-//http://craftyjs.com/#install
-//http://craftyjs.com/demos/isometric/
-//http://craftyjs.com/api/Crafty-isometric.html
