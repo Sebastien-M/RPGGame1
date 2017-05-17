@@ -13,7 +13,7 @@ let mapSquare = {
     width: "200px",
     height: "200px",
     colors: ["#49b293", "#7df263", "#62f1b4", "#61cff0", "#608eef", "#9960ef"],
-    colorpicker: function () {
+    colorpicker: function() {
         return colors[Math.floor((Math.random() * colors.length) + 0)];
     }
 };
@@ -32,13 +32,14 @@ document.body.querySelector("form").addEventListener("submit", function(e) {
 
 
         //CODE
-
-        // for (let l = 0; l < 50; l = l + 4) {
-        //     mapInit("div", mapSquare.rotateX, mapSquare.rotateY, mapSquare.rotateZ, "100px"
-        //     ,"100px", mapSquare.colors[Math.floor((Math.random() * mapSquare.colors.length) + 0)], l , 0);
-        // }
         //END
         setMap();
+        let tileClick = document.body.querySelectorAll(".mapBlock");
+        for (let i = 0; i < tileClick.length; i++) {
+            tileClick[i].addEventListener("click", function(e) {
+                console.log("div" + [i] + "clicked");
+            })
+        };
         console.log("Loaded");
     }, 1000);
 

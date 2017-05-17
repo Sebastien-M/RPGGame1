@@ -74,11 +74,11 @@ main {
 
 /*MAP*/
 
-<<<<<<< HEAD
-div:hover{
+div:hover {
     background-color: #49a050
 }
-.map{
+
+.map {
     display: flex;
     flex-wrap: wrap;
     transform: rotateX(60deg) rotateY(0deg) rotateZ(-45deg);
@@ -87,16 +87,17 @@ div:hover{
     overflow: hidden;
     /*padding:0px 30px 0px 30px;*/
 }
-.game{
+
+.game {
     height: 544px;
     width: 600px;
     display: flex;
     flex-wrap: wrap;
 }
-=======
+
 div {
     margin: 0;
-    padding-left: 10px;
+    padding-left: 0px;
     display: flex;
     background-color: #49b293;
     transition: 0.5s;
@@ -115,6 +116,5 @@ div:hover {
     transform: rotateX(60deg) rotateY(0deg) rotateZ(-45deg);
 }*/
 
->>>>>>> 45f6cb7174bbb860d1507775b221936398265cc6
 
 /*MAP END*/
