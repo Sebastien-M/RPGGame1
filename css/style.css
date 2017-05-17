@@ -72,17 +72,24 @@ main {
 }
 
 /*MAP*/
-div{
-    margin: 0;
-    padding-left: 10px;
-    display: inline-block;
-    /*background-color: #49b293;*/
+
+div:hover{
+    background-color: #49a050
 }
-/*div {
-    background-color: #49b293;
-    width: 200px;
-    height: 200px;
-    margin: 0;
+.map{
+    display: flex;
+    flex-wrap: wrap;
     transform: rotateX(60deg) rotateY(0deg) rotateZ(-45deg);
-}*/
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    /*padding:0px 30px 0px 30px;*/
+}
+.game{
+    height: 544px;
+    width: 600px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
 /*MAP END*/
