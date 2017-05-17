@@ -71,8 +71,10 @@ main {
     align-content: center;
 }
 
+
 /*MAP*/
 
+<<<<<<< HEAD
 div:hover{
     background-color: #49a050
 }
@@ -91,5 +93,28 @@ div:hover{
     display: flex;
     flex-wrap: wrap;
 }
+=======
+div {
+    margin: 0;
+    padding-left: 10px;
+    display: flex;
+    background-color: #49b293;
+    transition: 0.5s;
+}
+
+div:hover {
+    border: 1px solid white;
+}
+
+
+/*div {
+    background-color: #49b293;
+    width: 200px;
+    height: 200px;
+    margin: 0;
+    transform: rotateX(60deg) rotateY(0deg) rotateZ(-45deg);
+}*/
+
+>>>>>>> 45f6cb7174bbb860d1507775b221936398265cc6
 
 /*MAP END*/
