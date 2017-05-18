@@ -5,6 +5,17 @@ let perso = {
     hp: 100,
     mp: 5,
 }
+let walkRight = ["img/player/Walk/walk_10000.png",
+    "img/player/Walk/walk_10001.png",
+    "img/player/Walk/walk_10002.png",
+    "img/player/Walk/walk_10003.png",
+    "img/player/Walk/walk_10004.png",
+    "img/player/Walk/walk_10005.png",
+    "img/player/Walk/walk_10006.png",
+    "img/player/Walk/walk_10007.png",
+    "img/player/Walk/walk_10008.png",
+    "img/player/Walk/walk_10009.png"
+];
 let mapSquare = {
     rotateX: "60deg",
     rotateY: "0deg",
@@ -17,29 +28,31 @@ let mapSquare = {
         "img/02.jpg",
         "img/03.jpg",
         "img/04.jpg",
-        "img/05.jpg"],
-    colorpicker: function () {
+        "img/05.jpg"
+    ],
+    colorpicker: function() {
         return colors[Math.floor((Math.random() * colors.length) + 0)];
     }
 };
 //FORM
-document.body.querySelector("form").addEventListener("submit", function (e) {
+document.body.querySelector("form").addEventListener("submit", function(e) {
     e.preventDefault();
     perso.name = document.body.querySelector("#name").value
     document.body.querySelector("#head").style.opacity = 0;
-    setTimeout(function () {
+    setTimeout(function() {
         document.body.querySelector("header").remove();
     }, 1000);
     //Load main on submit
-    setTimeout(function () {
+    setTimeout(function() {
         document.body.querySelector(".persohidden").className = "personnage";
+        document.body.querySelector("#perso").src = walkRight[0];
         setMap();
         document.body.querySelector(".personnage").style.left = "250px";
         document.body.querySelector(".personnage").style.top = "200px";
         let tileClick = document.body.querySelectorAll(".mapBlock");
         for (let i = 0; i < tileClick.length; i++) {
-            tileClick[i].addEventListener("click", function (e) {
-
+            tileClick[i].addEventListener("click", function(e) {
+                walk();
                 console.log("div : " + (i + 1) + " clicked");
                 console.log("line : " + distance(i)[0] + " column : " + distance(i)[1]);
                 let tile = document.body.querySelector("#div" + i);
@@ -61,6 +74,7 @@ document.body.querySelector("form").addEventListener("submit", function (e) {
                 }
                 if (persoY != targetY) { //Si pas sur meme Y
                     personnageInit.style.top = (tile.getBoundingClientRect().top - 60) + "px";
+                    console.log("changed");
                 }
                 // TEST
             })
@@ -89,6 +103,7 @@ function setMap() {
         setTexture(i + 1);
     }
 }
+
 function setTexture(tile) {
     let randomTile = mapSquare.texture[Math.floor((Math.random() * mapSquare.texture.length) + 0)];
     let imgBlock = document.createElement("img");
@@ -101,4 +116,12 @@ function distance(tilenum) {
     let line = Math.floor(tilenum / 10);
     let column = (tilenum - 10 * line);
     return [line, column];
+}
+
+function walk() {
+    for (let b = 0; b < walkRight.length; b++) {
+        setInterval(function() {
+            document.body.querySelector("#perso").src = walkRight[b];
+        }, 300)
+    }
 }

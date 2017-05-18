@@ -74,8 +74,6 @@ main {
 
 /*MAP*/
 
-
-
 .map {
     display: flex;
     flex-wrap: wrap;
@@ -99,18 +97,17 @@ div {
     transition: 0.5s;
     border: 2px solid white;
 }
-div:hover{
+
+div:hover {
     border: 2px solid red;
     cursor: pointer;
-
 }
 
-
-.imgTexture{
+.imgTexture {
     width: 50px;
     height: 50px;
     transform: rotateX(60deg) rotateY(0deg) rotateZ(-45deg);
-    transform: rotate(1.5deg);
+    transform: rotate(0.5deg);
     position: absolute;
     -webkit-touch-callout: none;
     -webkit-user-select: none;
@@ -131,27 +128,34 @@ div:hover{
 
 
 /*MAP END*/
+
+
 /*Persos*/
-.persohidden{
+
+.persohidden {
     display: none;
 }
-.personnage{
+
+.personnage {
     position: absolute;
     height: 80px;
     width: 90px;
     /*left:250px;
     top:200px;*/
-    transition:1s;
-
+    transition: 5s;
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     -khtml-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+    pointer-events: none;
 }
-#perso{
+
+#perso {
     height: 100%;
     width: 100%;
 }
+
+
 /*Persos end*/
