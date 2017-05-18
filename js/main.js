@@ -117,11 +117,16 @@ function distance(tilenum) {
     let column = (tilenum - 10 * line);
     return [line, column];
 }
+let maxloop = walkRight.length - 1;
+let counter = 0;
 
 function walk() {
-    for (let b = 0; b < walkRight.length; b++) {
-        setInterval(function() {
-            document.body.querySelector("#perso").src = walkRight[b];
-        }, 300)
-    }
+    if (counter++ > maxloop) {
+        document.body.querySelector("#perso").src = walkRight[0];
+        counter = 0; //to delete
+    };
+    setTimeout(function() {
+        document.body.querySelector("#perso").src = walkRight[counter];
+        walk();
+    }, 100)
 }
