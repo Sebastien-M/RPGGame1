@@ -13,31 +13,56 @@ let mapSquare = {
     width: "200px",
     height: "200px",
     colors: ["#49b293", "#7df263", "#62f1b4", "#61cff0", "#608eef", "#9960ef"],
-    colorpicker: function() {
+    texture: ["img/01.jpg",
+        "img/02.jpg",
+        "img/03.jpg",
+        "img/04.jpg",
+        "img/05.jpg"],
+    colorpicker: function () {
         return colors[Math.floor((Math.random() * colors.length) + 0)];
     }
 };
 //FORM
-document.body.querySelector("form").addEventListener("submit", function(e) {
+document.body.querySelector("form").addEventListener("submit", function (e) {
     e.preventDefault();
     perso.name = document.body.querySelector("#name").value
     document.body.querySelector("#head").style.opacity = 0;
-    setTimeout(function() {
+    setTimeout(function () {
         document.body.querySelector("header").remove();
     }, 1000);
-    //Load main
-    setTimeout(function() {
-        console.log("faded");
-        console.log("Loading...")
-
-
-        //CODE
-        //END
+    //Load main on submit
+    setTimeout(function () {
+        document.body.querySelector(".persohidden").className = "personnage";
         setMap();
+        document.body.querySelector(".personnage").style.left = "250px";
+        document.body.querySelector(".personnage").style.top = "200px";
         let tileClick = document.body.querySelectorAll(".mapBlock");
         for (let i = 0; i < tileClick.length; i++) {
-            tileClick[i].addEventListener("click", function(e) {
-                console.log("div" + [i] + "clicked");
+            tileClick[i].addEventListener("click", function (e) {
+
+                console.log("div : " + (i + 1) + " clicked");
+                console.log("line : " + distance(i)[0] + " column : " + distance(i)[1]);
+                let tile = document.body.querySelector("#div" + i);
+                console.log(tile.getBoundingClientRect());
+                console.log("-------------------------------------------------------------------");
+                // TEST
+                let personnageInit = document.body.querySelector(".personnage");
+                let targetInit = document.body.querySelector("#div" + i);
+                let persoX = document.body.querySelector(".personnage").getBoundingClientRect().x;
+                let persoY = document.body.querySelector(".personnage").getBoundingClientRect().y;
+                let targetX = tile.getBoundingClientRect().x;
+                let targetY = tile.getBoundingClientRect().y;
+
+                let positionXdebut = 50;
+                let positionYdebut = 50;
+                personnageInit.style.x = positionXdebut + "px";
+                if (persoX != targetX) { //Si pas sur meme X
+                    personnageInit.style.left = (tile.getBoundingClientRect().left + 10) + "px";
+                }
+                if (persoY != targetY) { //Si pas sur meme Y
+                    personnageInit.style.top = (tile.getBoundingClientRect().top - 60) + "px";
+                }
+                // TEST
             })
         };
         console.log("Loaded");
@@ -47,26 +72,33 @@ document.body.querySelector("form").addEventListener("submit", function(e) {
 //FORM END
 
 
-
-function mapInit(element, Xrotate, Yrotate, Zrotate, h, w, col) {
-    let mapgen = document.createElement(element);
-    mapgen.style.height = h;
-    mapgen.style.width = w;
-    mapgen.backgroundColor = col;
-    mapgen.style.transform = "rotateX(" + Xrotate + ") rotateY(" + Yrotate + ") rotateZ(" + Zrotate + ")";
-    document.body.querySelector(".map").appendChild(mapgen);
-}
 //Math.floor((Math.random() * 10) + 1);
 function setMap() {
-    for (let i = 0; i < 99; i++) {
+    for (let i = 0; i < 100; i++) {
         let div = document.createElement("div");
         div.style.height = "50px";
         div.style.width = "50px";
-        div.style.backgroundColor = mapSquare.colors[Math.floor((Math.random() * mapSquare.colors.length) + 0)];
-        div.style.border = "2px solid white";
-        div.className = "mapBlock";
-        div.id = "block" + i;
-        document.body.querySelector(".map").appendChild(div);
+        // div.style.backgroundColor = mapSquare.colors[Math.floor((Math.random() * mapSquare.colors.length) + 0)];
 
+        // let randomTile = mapSquare.texture[Math.floor((Math.random() * mapSquare.texture.length) + 0)];
+        // div.style.backgroundImage = "url('" + randomTile + "')";
+        // div.style.border = "2px solid white";
+        div.className = "mapBlock";
+        div.id = "div" + (i + 1);
+        document.body.querySelector(".map").appendChild(div);
+        setTexture(i + 1);
     }
+}
+function setTexture(tile) {
+    let randomTile = mapSquare.texture[Math.floor((Math.random() * mapSquare.texture.length) + 0)];
+    let imgBlock = document.createElement("img");
+    imgBlock.src = randomTile;
+    imgBlock.className = "imgTexture";
+    document.body.querySelector("#div" + tile).appendChild(imgBlock);
+}
+
+function distance(tilenum) {
+    let line = Math.floor(tilenum / 10);
+    let column = (tilenum - 10 * line);
+    return [line, column];
 }
