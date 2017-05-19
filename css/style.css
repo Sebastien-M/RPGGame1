@@ -142,7 +142,7 @@ div:hover {
     width: 90px;
     /*left:250px;
     top:200px;*/
-    transition: 5s;
+    transition: 3s;
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     -khtml-user-select: none;
@@ -150,12 +150,121 @@ div:hover {
     -ms-user-select: none;
     user-select: none;
     pointer-events: none;
+    background-image: url("../img/player/Walk/walk_10000.png");
+    background-size: 100% 100%;
 }
 
 #perso {
     height: 100%;
     width: 100%;
 }
-
-
+/*animations*/
+.walkright{
+    height: 80px;
+    width: 90px;
+    animation-name: walkRight;
+    animation-duration: 1s;
+    background-size: 100% 100%;
+    animation-iteration-count: infinite;
+}
+@keyframes walkRight{
+    0%      {background-image: url("../img/player/Walk/walk_10000.png");}
+    20%     {background-image: url("../img/player/Walk/walk_10001.png");}
+    30%     {background-image: url("../img/player/Walk/walk_10002.png");}
+    40%     {background-image: url("../img/player/Walk/walk_10003.png");}
+    50%     {background-image: url("../img/player/Walk/walk_10004.png");}
+    60%     {background-image: url("../img/player/Walk/walk_10005.png");}
+    70%     {background-image: url("../img/player/Walk/walk_10006.png");}
+    80%     {background-image: url("../img/player/Walk/walk_10007.png");}
+    90%     {background-image: url("../img/player/Walk/walk_10008.png");}
+    100%    {background-image: url("../img/player/Walk/walk_10009.png");}
+    }
+.walkleft{
+    height: 80px;
+    width: 90px;
+    animation-name: walkLeft;
+    animation-duration: 1s;
+    background-size: 100% 100%;
+    animation-iteration-count: infinite;
+}
+@keyframes walkLeft{
+    0%      {background-image: url("../img/player/Walk/walk_50000.png");}
+    20%     {background-image: url("../img/player/Walk/walk_50001.png");}
+    30%     {background-image: url("../img/player/Walk/walk_50002.png");}
+    40%     {background-image: url("../img/player/Walk/walk_50003.png");}
+    50%     {background-image: url("../img/player/Walk/walk_50004.png");}
+    60%     {background-image: url("../img/player/Walk/walk_50005.png");}
+    70%     {background-image: url("../img/player/Walk/walk_50006.png");}
+    80%     {background-image: url("../img/player/Walk/walk_50007.png");}
+    90%     {background-image: url("../img/player/Walk/walk_50008.png");}
+    500%    {background-image: url("../img/player/Walk/walk_50009.png");}
+    }
+.walkup{
+    height: 80px;
+    width: 90px;
+    animation-name: walkUp;
+    animation-duration: 1s;
+    background-size: 100% 100%;
+    animation-iteration-count: infinite;
+}
+@keyframes walkUp{
+    0%      {background-image: url("../img/player/Walk/walk_30000.png");}
+    20%     {background-image: url("../img/player/Walk/walk_30001.png");}
+    30%     {background-image: url("../img/player/Walk/walk_30002.png");}
+    40%     {background-image: url("../img/player/Walk/walk_30003.png");}
+    50%     {background-image: url("../img/player/Walk/walk_30004.png");}
+    60%     {background-image: url("../img/player/Walk/walk_30005.png");}
+    70%     {background-image: url("../img/player/Walk/walk_30006.png");}
+    80%     {background-image: url("../img/player/Walk/walk_30007.png");}
+    90%     {background-image: url("../img/player/Walk/walk_30008.png");}
+    300%    {background-image: url("../img/player/Walk/walk_30009.png");}
+    }
+.walkdown{
+    height: 80px;
+    width: 90px;
+    animation-name: walkDown;
+    animation-duration: 1s;
+    background-size: 100% 100%;
+    animation-iteration-count: infinite;
+}
+@keyframes walkDown{
+    0%      {background-image: url("../img/player/Walk/walk_70000.png");}
+    20%     {background-image: url("../img/player/Walk/walk_70001.png");}
+    30%     {background-image: url("../img/player/Walk/walk_70002.png");}
+    40%     {background-image: url("../img/player/Walk/walk_70003.png");}
+    50%     {background-image: url("../img/player/Walk/walk_70004.png");}
+    60%     {background-image: url("../img/player/Walk/walk_70005.png");}
+    70%     {background-image: url("../img/player/Walk/walk_70006.png");}
+    80%     {background-image: url("../img/player/Walk/walk_70007.png");}
+    90%     {background-image: url("../img/player/Walk/walk_70008.png");}
+    700%    {background-image: url("../img/player/Walk/walk_70009.png");}
+    }
+    
+/*animations end*/
+/*End Position*/
+.endleft{
+    height: 80px;
+    width: 90px;
+    background-size: 100% 100%;
+    background-image: url("../img/player/Walk/walk_50000.png");
+   }
+.endright{
+    height: 80px;
+    width: 90px;
+    background-size: 100% 100%;
+    background-image: url("../img/player/Walk/walk_10000.png");
+   }
+.endup{
+    height: 80px;
+    width: 90px;
+    background-size: 100% 100%;
+    background-image: url("../img/player/Walk/walk_30000.png");
+   }
+.enddown{
+    height: 80px;
+    width: 90px;
+    background-size: 100% 100%;
+    background-image: url("../img/player/Walk/walk_70000.png");
+   }
+/*End position end*/
 /*Persos end*/
