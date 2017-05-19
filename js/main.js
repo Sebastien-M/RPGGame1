@@ -1,9 +1,31 @@
+preloadImages(["img/player/Walk/walk_10000.png",
+    "img/player/Walk/walk_10001.png",
+    "img/player/Walk/walk_10002.png",
+    "img/player/Walk/walk_10003.png",
+    "img/player/Walk/walk_10004.png",
+    "img/player/Walk/walk_10005.png",
+    "img/player/Walk/walk_10006.png",
+    "img/player/Walk/walk_10007.png",
+    "img/player/Walk/walk_10008.png",
+    "img/player/Walk/walk_10009.png",
+    "img/player/Walk/walk_50000.png",
+    "img/player/Walk/walk_50001.png",
+    "img/player/Walk/walk_50002.png",
+    "img/player/Walk/walk_50003.png",
+    "img/player/Walk/walk_50004.png",
+    "img/player/Walk/walk_50005.png",
+    "img/player/Walk/walk_50006.png",
+    "img/player/Walk/walk_50007.png",
+    "img/player/Walk/walk_50008.png",
+    "img/player/Walk/walk_50009.png",
+]);
+
 let perso = {
     name: "",
     items: [],
     money: 0,
     hp: 100,
-    mp: 5,
+    mp: 2,
     position: [0][0],
     x: 0,
     y: 0
@@ -22,41 +44,48 @@ let animations = {
     walkright: function walkRight() {
         console.log("right");
         document.body.querySelector(".personnage").className = "personnage walkright";
-        setTimeout(function () {
+        setTimeout(function() {
             document.body.querySelector(".personnage").className = "personnage endright";
         }, 2400)
     },
     walkleft: function walkleft() {
         console.log("left");
         document.body.querySelector(".personnage").className = "personnage walkleft";
-        setTimeout(function () {
+        setTimeout(function() {
             document.body.querySelector(".personnage").className = "personnage endleft";
         }, 2400)
     },
     walkup: function walkup() {
         document.body.querySelector(".personnage").className = "personnage walkup";
-        setTimeout(function () {
+        setTimeout(function() {
             document.body.querySelector(".personnage").className = "personnage endup";
         }, 2400)
     },
     walkdown: function walkdown() {
         document.body.querySelector(".personnage").className = "personnage walkdown";
-        setTimeout(function () {
+        setTimeout(function() {
             document.body.querySelector(".personnage").className = "personnage enddown";
         }, 2400)
     }
 };
 let map = [];
+
 //FORM
-document.body.querySelector("form").addEventListener("submit", function (e) {
+document.body.querySelector("form").addEventListener("submit", function(e) {
     e.preventDefault();
+    if (document.body.querySelector("#name").value === "") {
+        document.body.querySelector("#name").id = "nameempty";
+        setTimeout(function() { document.body.querySelector("#nameempty").id = "name"; }, 500)
+        return;
+    }
     perso.name = document.body.querySelector("#name").value
     document.body.querySelector("#head").style.opacity = 0;
-    setTimeout(function () {
+    setTimeout(function() {
         document.body.querySelector("header").remove();
     }, 1000);
     //Load main on submit
-    setTimeout(function () {
+    setTimeout(function() {
+        document.body.querySelector(".nom").textContent = perso.name;
         document.body.querySelector(".persohidden").className = "personnage";
         createMap();
         document.body.querySelector(".personnage").style.left = map[0][0].getBoundingClientRect().left - 35 + "px";
@@ -67,8 +96,9 @@ document.body.querySelector("form").addEventListener("submit", function (e) {
         //     tileClick[i].addEventListener("click", function (e) {
         for (let x = 0; x < 10; x++) {
             for (let y = 0; y < 10; y++) {
-                map[x][y].addEventListener("click", function (e) {
+                map[x][y].addEventListener("click", function(e) {
                     console.log("x:" + x + " y:" + y);
+                    //MOVEMENT
                     if (perso.y > y) {
                         animations.walkleft();
                     }
@@ -77,15 +107,24 @@ document.body.querySelector("form").addEventListener("submit", function (e) {
                     }
                     move(map[x][y]);
                     //BLOCK AROUND
-                    console.log(map[x + 1][y + 1]);  
-                    console.log(map[x - 1][y - 1]);
-                    console.log(map[x][y + 1]);
-                    console.log(map[x + 1][y]);
-                    console.log(map[x + 1][y - 1]);
-                    console.log(map[x - 1][y + 1]);
-                    console.log(map[x - 1][y]);
-                    console.log(map[x][y - 1]);
-                    
+                    map[x + 1][y + 1].style.opacity = "0.5";
+                    map[x - 1][y - 1].style.opacity = "0.5";
+                    map[x][y + 1].style.opacity = "0.5";
+                    map[x + 1][y].style.opacity = "0.5";
+                    map[x + 1][y - 1].style.opacity = "0.5";
+                    map[x - 1][y + 1].style.opacity = "0.5";
+                    map[x - 1][y].style.opacity = "0.5";
+                    map[x][y - 1].style.opacity = "0.5";
+                    setTimeout(function() {
+                        map[x + 1][y + 1].style.opacity = "1";
+                        map[x - 1][y - 1].style.opacity = "1";
+                        map[x][y + 1].style.opacity = "1";
+                        map[x + 1][y].style.opacity = "1";
+                        map[x + 1][y - 1].style.opacity = "1";
+                        map[x - 1][y + 1].style.opacity = "1";
+                        map[x - 1][y].style.opacity = "1";
+                        map[x][y - 1].style.opacity = "1";
+                    }, 5000)
                     perso.x = x;
                     perso.y = y;
                 })
@@ -170,6 +209,7 @@ function createMap() {
     }
     setTexture();
 }
+
 function moveAnim(tilex, tiley, persox, persoy) {
     if (tilex > persox) {
 
@@ -185,9 +225,31 @@ function moveAnim(tilex, tiley, persox, persoy) {
     }
 
 }
+
 function move(caseArray) {
     document.body.querySelector(".personnage").style.left = caseArray.getBoundingClientRect().left - 35 + "px";
     document.body.querySelector(".personnage").style.top = caseArray.getBoundingClientRect().top - 45 + "px";
     perso.position = caseArray;
     // console.log(perso.position);
+}
+
+function preloadImages(array) {
+    if (!preloadImages.list) {
+        preloadImages.list = [];
+    }
+    let list = preloadImages.list;
+    for (let i = 0; i < array.length; i++) {
+        let img = new Image();
+        img.onload = function() {
+            let index = list.indexOf(this);
+            if (index !== -1) {
+                // remove image from the array once it's loaded
+                // for memory consumption reasons
+                list.splice(index, 1);
+            }
+        }
+        list.push(img);
+        img.src = array[i];
+    }
+    console.log("images loaded")
 }
