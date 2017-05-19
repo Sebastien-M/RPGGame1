@@ -5,8 +5,8 @@ let perso = {
     hp: 100,
     mp: 5,
     position: [0][0],
-    x:0,
-    y:0
+    x: 0,
+    y: 0
 }
 let mapSquare = {
     colors: ["#49b293", "#7df263", "#62f1b4", "#61cff0", "#608eef", "#9960ef"],
@@ -67,15 +67,25 @@ document.body.querySelector("form").addEventListener("submit", function (e) {
         //     tileClick[i].addEventListener("click", function (e) {
         for (let x = 0; x < 10; x++) {
             for (let y = 0; y < 10; y++) {
-                map[x][y].addEventListener("click",function(e){
-                    console.log("x:" + x + " y:"+y);
-                    if(perso.y > y){
+                map[x][y].addEventListener("click", function (e) {
+                    console.log("x:" + x + " y:" + y);
+                    if (perso.y > y) {
                         animations.walkleft();
                     }
-                    if(perso.y < y){
+                    if (perso.y < y) {
                         animations.walkright();
                     }
                     move(map[x][y]);
+                    //BLOCK AROUND
+                    console.log(map[x + 1][y + 1]);  
+                    console.log(map[x - 1][y - 1]);
+                    console.log(map[x][y + 1]);
+                    console.log(map[x + 1][y]);
+                    console.log(map[x + 1][y - 1]);
+                    console.log(map[x - 1][y + 1]);
+                    console.log(map[x - 1][y]);
+                    console.log(map[x][y - 1]);
+                    
                     perso.x = x;
                     perso.y = y;
                 })
@@ -83,7 +93,7 @@ document.body.querySelector("form").addEventListener("submit", function (e) {
             }
         }
         console.log("-------------------------------------------------------------------");
-        
+
 
         // TEST
         //DEPALACEMENT
@@ -179,5 +189,5 @@ function move(caseArray) {
     document.body.querySelector(".personnage").style.left = caseArray.getBoundingClientRect().left - 35 + "px";
     document.body.querySelector(".personnage").style.top = caseArray.getBoundingClientRect().top - 45 + "px";
     perso.position = caseArray;
-    console.log(perso.position);
+    // console.log(perso.position);
 }
