@@ -23,13 +23,29 @@ preloadImages(["img/player/Walk/walk_10000.png",
 let perso = {
     name: "",
     items: [],
+    initialPosition: function() {
+        document.body.querySelector(".personnage").style.left = map[0][0].getBoundingClientRect().left - 35 + "px";
+        document.body.querySelector(".personnage").style.top = map[0][0].getBoundingClientRect().top - 45 + "px";
+    },
     money: 0,
     hp: 100,
     mp: 2,
+    ap: 1,
+    position: [0][0],
+    x: 0,
+    y: 0,
+};
+let ennemy = {
+    name: "Zombie",
+    items: [],
+    money: 0,
+    hp: 100,
+    mp: 2,
+    ap: 1,
     position: [0][0],
     x: 0,
     y: 0
-}
+};
 let mapSquare = {
     colors: ["#49b293", "#7df263", "#62f1b4", "#61cff0", "#608eef", "#9960ef"],
     texture: ["img/01.jpg", "img/02.jpg", "img/03.jpg", "img/04.jpg", "img/05.jpg"],
@@ -83,20 +99,17 @@ document.body.querySelector("form").addEventListener("submit", function(e) {
     setTimeout(function() {
         document.body.querySelector("header").remove();
     }, 1000);
-    //Load main on submit
+    //LOAD GAME ON FORM SUMBIT
     setTimeout(function() {
         document.body.querySelector(".nom").textContent = perso.name;
+        document.body.querySelector(".nomEnnemy").textContent = ennemy.name;
         document.body.querySelector(".persohidden").className = "personnage";
         createMap();
-        document.body.querySelector(".personnage").style.left = map[0][0].getBoundingClientRect().left - 35 + "px";
-        console.log('left changed');
-        document.body.querySelector(".personnage").style.top = map[0][0].getBoundingClientRect().top - 45 + "px";
-        let tileClick = document.body.querySelectorAll(".mapBlock");
-        // for (let i = 0; i < tileClick.length; i++) {
-        //     tileClick[i].addEventListener("click", function (e) {
+        perso.initialPosition();
         for (let x = 0; x < 10; x++) {
             for (let y = 0; y < 10; y++) {
                 map[x][y].addEventListener("click", function(e) {
+                    if (x - perso.x > 2 || x - perso.x < -2 || y - perso.y > 2 || y - perso.y < -2) { console.log("x > 2"); return; }
                     console.log("x:" + x + " y:" + y);
                     //MOVEMENT
                     if (perso.y > y) {
@@ -115,6 +128,8 @@ document.body.querySelector("form").addEventListener("submit", function(e) {
                     map[x - 1][y + 1].style.opacity = "0.5";
                     map[x - 1][y].style.opacity = "0.5";
                     map[x][y - 1].style.opacity = "0.5";
+
+
                     setTimeout(function() {
                         map[x + 1][y + 1].style.opacity = "1";
                         map[x - 1][y - 1].style.opacity = "1";
