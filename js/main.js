@@ -1,3 +1,5 @@
+var tour = 0;
+
 preloadImages(["img/player/Walk/walk_10000.png",
     "img/player/Walk/walk_10001.png",
     "img/player/Walk/walk_10002.png",
@@ -19,181 +21,181 @@ preloadImages(["img/player/Walk/walk_10000.png",
     "img/player/Walk/walk_50008.png",
     "img/player/Walk/walk_50009.png",
 ]);
+var map = [];
+var listcharacter = [];
+var endgame = false;
+var joueur = new perso;
+listcharacter[0] = joueur;
+var target = new targetcell;
+var exit = false;
+var ydep = [];
+var xdep = [];
+var clicTour;
+console.log("tebit");
+exit = init();
+console.log("bitebitebite");
+//LOAD GAME ON FORM SUMBIT
+if (exit == false) {
+    wait(1000);
+    document.body.querySelector(".nom").textContent = joueur.name;
+    // A METTRE DANS FONCTION SPAWN ENNEMY
+    //document.body.querySelector(".nomEnnemy").textContent = ennemy.name;
+    //var ennemy = new perso;
+    document.body.querySelector(".persohidden").className = "personnage";
+    createMap();
+    initialPosition(4, 4);
+    for (let x = 0; x < 10; x++) {
+        for (let y = 0; y < 10; y++) {
+            map[x][y].addEventListener("click", function(e) {
+                console.log("before occupe false");
+                /* for (let charac of listcharacter) {
+                     if ((charac.x == x) && (charac.y == y)) {
+                         occupe = true;
+                     }
+                 }*/
+                target.x = x;
+                target.y = y;
+                update();
+            })
 
-let perso = {
-    name: "",
-    items: [],
-    initialPosition: function() {
-        document.body.querySelector(".personnage").style.left = map[0][0].getBoundingClientRect().left - 35 + "px";
-        document.body.querySelector(".personnage").style.top = map[0][0].getBoundingClientRect().top - 45 + "px";
-    },
-    money: 0,
-    hp: 100,
-    mp: 2,
-    ap: 1,
-    position: [0][0],
-    x: 0,
-    y: 0,
-};
-let ennemy = {
-    name: "Zombie",
-    items: [],
-    money: 0,
-    hp: 100,
-    mp: 2,
-    ap: 1,
-    position: [0][0],
-    x: 0,
-    y: 0
-};
-let mapSquare = {
-    colors: ["#49b293", "#7df263", "#62f1b4", "#61cff0", "#608eef", "#9960ef"],
-    texture: ["img/01.jpg", "img/02.jpg", "img/03.jpg", "img/04.jpg", "img/05.jpg"],
-};
-let endposition = {
-    up: "img/player/Walk/walk_30000.png",
-    down: "img/player/Walk/walk_70000.png",
-    left: "img/player/Walk/walk_50000.png",
-    right: "img/player/Walk/walk_10000.png"
+        }
+    }
 }
-let animations = {
-    walkright: function walkRight() {
-        console.log("right");
-        document.body.querySelector(".personnage").className = "personnage walkright";
-        setTimeout(function() {
-            document.body.querySelector(".personnage").className = "personnage endright";
-        }, 2400)
-    },
-    walkleft: function walkleft() {
-        console.log("left");
-        document.body.querySelector(".personnage").className = "personnage walkleft";
-        setTimeout(function() {
-            document.body.querySelector(".personnage").className = "personnage endleft";
-        }, 2400)
-    },
-    walkup: function walkup() {
-        document.body.querySelector(".personnage").className = "personnage walkup";
-        setTimeout(function() {
-            document.body.querySelector(".personnage").className = "personnage endup";
-        }, 2400)
-    },
-    walkdown: function walkdown() {
-        document.body.querySelector(".personnage").className = "personnage walkdown";
-        setTimeout(function() {
-            document.body.querySelector(".personnage").className = "personnage enddown";
-        }, 2400)
-    }
-};
-let map = [];
 
-//FORM
-document.body.querySelector("form").addEventListener("submit", function(e) {
-    e.preventDefault();
-    if (document.body.querySelector("#name").value === "") {
-        document.body.querySelector("#name").id = "nameempty";
-        setTimeout(function() { document.body.querySelector("#nameempty").id = "name"; }, 500)
-        return;
-    }
-    perso.name = document.body.querySelector("#name").value
-    document.body.querySelector("#head").style.opacity = 0;
-    setTimeout(function() {
-        document.body.querySelector("header").remove();
-    }, 1000);
-    //LOAD GAME ON FORM SUMBIT
-    setTimeout(function() {
-        document.body.querySelector(".nom").textContent = perso.name;
-        document.body.querySelector(".nomEnnemy").textContent = ennemy.name;
-        document.body.querySelector(".persohidden").className = "personnage";
-        createMap();
-        perso.initialPosition();
-        for (let x = 0; x < 10; x++) {
-            for (let y = 0; y < 10; y++) {
-                map[x][y].addEventListener("click", function(e) {
-                    if (x - perso.x > 2 || x - perso.x < -2 || y - perso.y > 2 || y - perso.y < -2) { console.log("x > 2"); return; }
-                    console.log("x:" + x + " y:" + y);
-                    //MOVEMENT
-                    if (perso.y > y) {
-                        animations.walkleft();
-                    }
-                    if (perso.y < y) {
-                        animations.walkright();
-                    }
-                    move(map[x][y]);
-                    //BLOCK AROUND
-                    map[x + 1][y + 1].style.opacity = "0.5";
-                    map[x - 1][y - 1].style.opacity = "0.5";
-                    map[x][y + 1].style.opacity = "0.5";
-                    map[x + 1][y].style.opacity = "0.5";
-                    map[x + 1][y - 1].style.opacity = "0.5";
-                    map[x - 1][y + 1].style.opacity = "0.5";
-                    map[x - 1][y].style.opacity = "0.5";
-                    map[x][y - 1].style.opacity = "0.5";
-
-
-                    setTimeout(function() {
-                        map[x + 1][y + 1].style.opacity = "1";
-                        map[x - 1][y - 1].style.opacity = "1";
-                        map[x][y + 1].style.opacity = "1";
-                        map[x + 1][y].style.opacity = "1";
-                        map[x + 1][y - 1].style.opacity = "1";
-                        map[x - 1][y + 1].style.opacity = "1";
-                        map[x - 1][y].style.opacity = "1";
-                        map[x][y - 1].style.opacity = "1";
-                    }, 5000)
-                    perso.x = x;
-                    perso.y = y;
-                })
-
+//
+function update() {
+    if (exit == false) {
+        if (target.x == joueur.x && target.y == joueur.y) {} else {
+            console.log(target.x, joueur.x, target.y, joueur.y)
+            path(joueur.x, joueur.y, target.x, target.y);
+        }
+        if (xdep.length != 0) {
+            while (xdep.length != 0) {
+                deplacementvers(ydep[tour - clicTour], xdep[tour - clicTour]);
+                if (tour - clicTour == xdep.length - 1) {
+                    xdep = [];
+                    ydep = [];
+                }
+                tour += 1;
             }
         }
-        console.log("-------------------------------------------------------------------");
 
 
-        // TEST
-        //DEPALACEMENT
+    } else {}
+}
 
+function deplacementvers(xxx, yyy) {
+    document.body.querySelector(".personnage").remove();
+    let create = document.createElement("section");
+    create.className = "personnage";
+    document.body.querySelector(".game").appendChild(create);
+    document.body.querySelector(".personnage").style.left = map[xxx][yyy].getBoundingClientRect().left - 35 + "px";
+    document.body.querySelector(".personnage").style.top = map[xxx][yyy].getBoundingClientRect().top - 45 + "px";
+    joueur.position = map[xxx][yyy];
+    joueur.x = xxx;
+    joueur.y = yyy;
+}
 
+function perso() {
+    this.name = "";
+    this.items = [];
+    this.money = 0;
+    this.hp = 100;
+    this.mp = 2;
+    this.ap = 1;
+    this.position = [0][0];
+    this.x = 0;
+    this.y = 0;
+}
 
-        // let personnageInit = document.body.querySelector(".personnage");
-        // let targetInit = document.body.querySelector("#div");
-        // let persoX = document.body.querySelector(".personnage").getBoundingClientRect().x;
-        // let persoY = document.body.querySelector(".personnage").getBoundingClientRect().y;
-        // let targetX = tile.getBoundingClientRect().x;
-        // let targetY = tile.getBoundingClientRect().y;
-        // let positionXdebut = 50;
-        // let positionYdebut = 50;
-        // personnageInit.style.x = positionXdebut + "px";
-        // if (persoX != targetX) { //Si pas sur meme X
-        //     if (persoX < targetX) {
-        //         animations.walkright()
-        //     }
-        //     else if (persoX > targetX) {
-        //         animations.walkleft()
-        //     }
-        //     personnageInit.style.left = (tile.getBoundingClientRect().left + 10) + "px";
-        // }
-        // if (persoY != targetY) { //Si pas sur meme Y
-        //     personnageInit.style.top = (tile.getBoundingClientRect().top - 60) + "px";
-        //     console.log("changed");
-        // }
+function targetcell() {
+    this.position = [0][0];
+    this.x = 0;
+    this.y = 0;
+    this.isfree = true;
+}
 
+function path(playerx, playery, tarx, tarz) {
+    xdep = [];
+    ydep = [];
+    console.log(xdep);
+    let lTarget = tarx;
+    let cTarget = tarz;
+    let lPlayer = playerx;
+    let cPlayer = playery;
+    var distance;
+    let deltaL = lTarget - lPlayer;
+    let deltaC = cTarget - cPlayer;
+    console.log(deltaL);
 
+    let absDL = Math.abs(deltaL);
+    let absDC = Math.abs(deltaC);
+    var disdiag = Math.min(absDL, absDC);
+    var disline;
+    if (absDL > absDC) {
+        disline = absDL - absDC;
+    } else {
+        disline = absDC - absDL;
+    }
+    distance = disdiag + disline;
+    for (let j = 0; j <= disdiag + disline; j++) {
+        if (j <= disdiag) {
+            xdep[j] = cPlayer + j * Math.sign(deltaC);
+            ydep[j] = lPlayer + j * Math.sign(deltaL);
+        } else {
+            xdep[j] = cPlayer + disdiag + (j - disdiag) * Math.sign(deltaC - disdiag);
+            ydep[j] = lPlayer + disdiag + (j - disdiag) * Math.sign(deltaL - disdiag);
+        }
+    }
+    clicTour = tour;
+    console.log(xdep);
+}
 
+function walkright() {
+    console.log("right");
+    document.body.querySelector(".personnage").className = "personnage walkright";
+    wait(2400);
+    document.body.querySelector(".personnage").className = "personnage endright";
+}
 
-        //DEPALACEMENT FIN
-        // TEST
-        //     })
-        // };
-        // console.log("Loaded");
-    }, 1000);
+function walkleft() {
+    console.log("left");
+    document.body.querySelector(".personnage").className = "personnage walkleft";
+    wait(2400);
+    document.body.querySelector(".personnage").className = "personnage endleft";
+}
 
-});
-//FORM END
+function walkup() {
+    document.body.querySelector(".personnage").className = "personnage walkup";
+    wait(2400);
+    document.body.querySelector(".personnage").className = "personnage endup";
+}
+
+function walkdown() {
+    document.body.querySelector(".personnage").className = "personnage walkdown";
+    wait(2400);
+    document.body.querySelector(".personnage").className = "personnage enddown";
+}
+
+function init() {
+    //while (document.body.querySelector("#name").value === "") {
+    //    document.body.querySelector("#name").id = "nameempty";
+    //    wait(500);
+    //    document.body.querySelector("#nameempty").id = "name";
+    //}
+    //joueur.name = document.body.querySelector("#name").value;
+    joueur.name = "name";
+    document.body.querySelector("#head").style.opacity = 0;
+    wait(1000);
+    document.body.querySelector("header").remove();
+    return false;
+}
 
 function setTexture() {
+    let texture = ["img/01.jpg", "img/02.jpg", "img/03.jpg", "img/04.jpg", "img/05.jpg"];
     let bloc = document.querySelectorAll(".mapBlock");
     for (let i = 0; i < bloc.length; i++) {
-        let randomTile = mapSquare.texture[Math.floor((Math.random() * mapSquare.texture.length) + 0)];
+        let randomTile = texture[Math.floor((Math.random() * texture.length) + 0)];
         let imgBlock = document.createElement("img");
         imgBlock.src = randomTile;
         imgBlock.className = "imgTexture";
@@ -202,11 +204,6 @@ function setTexture() {
 
 }
 
-function distance(tilenum) {
-    let line = Math.floor(tilenum / 10);
-    let column = (tilenum - 10 * line);
-    return [line, column];
-}
 
 function createMap() {
     for (let x = 0; x <= 9; x++) {
@@ -244,8 +241,17 @@ function moveAnim(tilex, tiley, persox, persoy) {
 function move(caseArray) {
     document.body.querySelector(".personnage").style.left = caseArray.getBoundingClientRect().left - 35 + "px";
     document.body.querySelector(".personnage").style.top = caseArray.getBoundingClientRect().top - 45 + "px";
-    perso.position = caseArray;
-    // console.log(perso.position);
+    joueur.position = caseArray;
+    joueur.x = target.x;
+    joueur.y = target.y;
+    // console.log(joueur.position);
+}
+
+function initialPosition(xx, yy) {
+    joueur.x = xx;
+    joueur.y = yy;
+    document.body.querySelector(".personnage").style.left = map[xx][yy].getBoundingClientRect().left - 35 + "px";
+    document.body.querySelector(".personnage").style.top = map[xx][yy].getBoundingClientRect().top - 45 + "px";
 }
 
 function preloadImages(array) {
@@ -267,4 +273,12 @@ function preloadImages(array) {
         img.src = array[i];
     }
     console.log("images loaded")
+}
+
+function wait(ms) {
+    let start = new Date().getTime();
+    let end = start;
+    while (end < start + ms) {
+        end = new Date().getTime();
+    }
 }

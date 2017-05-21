@@ -211,7 +211,7 @@ main {
     width: 90px;
     /*left:250px;
     top:200px;*/
-    transition: 3s;
+    /*transition: 0s;*/
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     -khtml-user-select: none;
