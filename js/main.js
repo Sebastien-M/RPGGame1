@@ -35,7 +35,7 @@ console.log("tebit");
 exit = init();
 console.log("bitebitebite");
 //LOAD GAME ON FORM SUMBIT
-if (exit == false) {
+if (exit === false) {
     wait(1000);
     document.body.querySelector(".nom").textContent = joueur.name;
     // A METTRE DANS FONCTION SPAWN ENNEMY
@@ -64,7 +64,7 @@ if (exit == false) {
 
 //
 function update() {
-    if (exit == false) {
+    if (exit === false) {
         if (target.x == joueur.x && target.y == joueur.y) {} else {
             console.log(target.x, joueur.x, target.y, joueur.y)
             path(joueur.x, joueur.y, target.x, target.y);
