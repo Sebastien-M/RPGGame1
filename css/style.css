@@ -485,6 +485,7 @@ main {
         background-image: url("../img/player/Walk/walk_40009.png");
     }
 }
+
 .walkdownleft {
     height: 80px;
     width: 90px;
@@ -526,6 +527,7 @@ main {
         background-image: url("../img/player/Walk/walk_60009.png");
     }
 }
+
 .walkdownright {
     height: 80px;
     width: 90px;
@@ -537,36 +539,38 @@ main {
 
 @keyframes walkDownRight {
     0% {
-        background-image: url("../img/player/Walk/walk_60000.png");
+        background-image: url("../img/player/Walk/walk_00000.png");
     }
     20% {
-        background-image: url("../img/player/Walk/walk_60001.png");
+        background-image: url("../img/player/Walk/walk_00001.png");
     }
     30% {
-        background-image: url("../img/player/Walk/walk_60002.png");
+        background-image: url("../img/player/Walk/walk_00002.png");
     }
     40% {
-        background-image: url("../img/player/Walk/walk_60003.png");
+        background-image: url("../img/player/Walk/walk_00003.png");
     }
     50% {
-        background-image: url("../img/player/Walk/walk_60004.png");
+        background-image: url("../img/player/Walk/walk_00004.png");
     }
     60% {
-        background-image: url("../img/player/Walk/walk_60005.png");
+        background-image: url("../img/player/Walk/walk_00005.png");
     }
     70% {
-        background-image: url("../img/player/Walk/walk_60006.png");
+        background-image: url("../img/player/Walk/walk_00006.png");
     }
     80% {
-        background-image: url("../img/player/Walk/walk_60007.png");
+        background-image: url("../img/player/Walk/walk_00007.png");
     }
     90% {
-        background-image: url("../img/player/Walk/walk_60008.png");
+        background-image: url("../img/player/Walk/walk_00008.png");
     }
     100% {
-        background-image: url("../img/player/Walk/walk_60009.png");
+        background-image: url("../img/player/Walk/walk_00009.png");
     }
 }
+
+
 /*animations end*/
 
 
@@ -599,31 +603,34 @@ main {
     background-size: 100% 100%;
     background-image: url("../img/player/Walk/walk_70000.png");
 }
+
 .enddownright {
     height: 80px;
     width: 90px;
     background-size: 100% 100%;
     background-image: url("../img/player/Walk/walk_00000.png");
 }
+
 .endupright {
     height: 80px;
     width: 90px;
     background-size: 100% 100%;
     background-image: url("../img/player/Walk/walk_20000.png");
 }
+
 .enddownleft {
     height: 80px;
     width: 90px;
     background-size: 100% 100%;
     background-image: url("../img/player/Walk/walk_60000.png");
 }
+
 .endupleft {
     height: 80px;
     width: 90px;
     background-size: 100% 100%;
     background-image: url("../img/player/Walk/walk_40000.png");
 }
-
 
 
 /*End position end*/

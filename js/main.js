@@ -1,4 +1,3 @@
-
 var tour = 0;
 preloadImages(["img/player/Walk/walk_10000.png",
     "img/player/Walk/walk_10001.png",
@@ -44,7 +43,7 @@ if (exit === false) {
     initialPosition(0, 0);
     for (let x = 0; x < 10; x++) {
         for (let y = 0; y < 10; y++) {
-            map[x][y].addEventListener("click", function (e) {
+            map[x][y].addEventListener("click", function(e) {
                 console.log("click on : x:" + x + " y:" + y);
                 move(joueur, x, y);
 
@@ -66,6 +65,7 @@ function perso() {
     this.position = [0][0];
     this.x = 0;
     this.y = 0;
+    this.selector = "";
 }
 
 
@@ -73,17 +73,18 @@ function perso() {
 function walkright() {
     console.log("right");
     document.body.querySelector(".personnage").className = "personnage walkright";
-    setTimeout(function () {
+    setTimeout(function() {
         document.body.querySelector(".personnage").className = "personnage endright";
-    }, 2400);
+    }, 2000);
 
 }
+
 function walkupright() {
     console.log("upright");
     document.body.querySelector(".personnage").className = "personnage walkupright";
-    setTimeout(function () {
+    setTimeout(function() {
         document.body.querySelector(".personnage").className = "personnage endupright";
-    }, 2400);
+    }, 2000);
 
 }
 
@@ -91,31 +92,45 @@ function walkupright() {
 function walkleft() {
     console.log("left");
     document.body.querySelector(".personnage").className = "personnage walkleft";
-    setTimeout(function () {
+    setTimeout(function() {
         document.body.querySelector(".personnage").className = "personnage endleft";
-    }, 2400)
+    }, 2000)
 }
 
 function walkupleft() {
     console.log("upleft");
     document.body.querySelector(".personnage").className = "personnage walkupleft";
-    setTimeout(function () {
+    setTimeout(function() {
         document.body.querySelector(".personnage").className = "personnage endupleft";
-    }, 2400);
+    }, 2000);
 
 }
 
 function walkup() {
     document.body.querySelector(".personnage").className = "personnage walkup";
-    setTimeout(function () {
+    setTimeout(function() {
         document.body.querySelector(".personnage").className = "personnage endup";
-    }, 2400);
+    }, 2000);
 }
 
 function walkdown() {
     document.body.querySelector(".personnage").className = "personnage walkdown";
-    setTimeout(function () {
+    setTimeout(function() {
         document.body.querySelector(".personnage").className = "personnage enddown";
+    }, 2400)
+}
+
+function walkdownright() {
+    document.body.querySelector(".personnage").className = "personnage walkdownright";
+    setTimeout(function() {
+        document.body.querySelector(".personnage").className = "personnage enddownright";
+    }, 2400)
+}
+
+function walkdownleft() {
+    document.body.querySelector(".personnage").className = "personnage walkdownleft";
+    setTimeout(function() {
+        document.body.querySelector(".personnage").className = "personnage enddownleft";
     }, 2400)
 }
 
@@ -145,6 +160,7 @@ function setTexture() {
     }
 
 }
+
 function walkdirection(xdir, ydir) {
 
 }
@@ -173,21 +189,23 @@ function move(character, xpos, ypos) {
     //WALK ANIMATIONS
     if (xpos > joueur.x && ypos > joueur.y) {
         walkright();
-    }
-    else if (xpos < joueur.x && ypos > joueur.y) {
+    } else if (xpos < joueur.x && ypos > joueur.y) {
         walkup();
-    }
-    else if (xpos < joueur.x && ypos < joueur.y) {
+    } else if (xpos < joueur.x && ypos < joueur.y) {
         walkleft();
-    }
-    else if (xpos > joueur.x && ypos < joueur.y) {
+    } else if (xpos > joueur.x && ypos < joueur.y) {
         walkdown();
-    }
-    else if (xpos === joueur.x && ypos > joueur.y) {
+    } else if (xpos === joueur.x && ypos > joueur.y) {
         walkupright();
-    }
-    else if (xpos === joueur.x && ypos > joueur.y) {
-        walkupright();
+    } else if (xpos < joueur.x && ypos === joueur.y) {
+        console.log("upleft");
+        walkupleft();
+    } else if (xpos > joueur.x && ypos === joueur.y) {
+        console.log("downright");
+        walkdownright();
+    } else if (xpos === joueur.x && ypos < joueur.y) {
+        console.log("downright");
+        walkdownleft();
     }
     //WALK ANIMATIONS END
     joueur.position = map[xpos][ypos];
@@ -211,7 +229,7 @@ function preloadImages(array) {
     let list = preloadImages.list;
     for (let i = 0; i < array.length; i++) {
         let img = new Image();
-        img.onload = function () {
+        img.onload = function() {
             let index = list.indexOf(this);
             if (index !== -1) {
                 // remove image from the array once it's loaded
@@ -232,6 +250,7 @@ function wait(ms) {
         end = new Date().getTime();
     }
 }
-function highlight(xplayer,yplayer){
-    map[xpos+1][xpos-1].style.opacity = "0.5";
+
+function highlight(xplayer, yplayer) {
+    map[xpos + 1][xpos - 1].style.opacity = "0.5";
 }
