@@ -1,5 +1,5 @@
-var tour = 0;
 
+var tour = 0;
 preloadImages(["img/player/Walk/walk_10000.png",
     "img/player/Walk/walk_10001.png",
     "img/player/Walk/walk_10002.png",
@@ -26,14 +26,9 @@ var listcharacter = [];
 var endgame = false;
 var joueur = new perso;
 listcharacter[0] = joueur;
-var target = new targetcell;
 var exit = false;
-var ydep = [];
-var xdep = [];
-var clicTour;
-console.log("tebit");
 exit = init();
-console.log("bitebitebite");
+console.log("initialized");
 //LOAD GAME ON FORM SUMBIT
 if (exit === false) {
     wait(1000);
@@ -42,20 +37,17 @@ if (exit === false) {
     //document.body.querySelector(".nomEnnemy").textContent = ennemy.name;
     //var ennemy = new perso;
     document.body.querySelector(".persohidden").className = "personnage";
+    document.body.querySelector(".ennemyHealth").style.display = "block";
+    document.body.querySelector(".playerHealth").style.display = "block";
     createMap();
-    initialPosition(4, 4);
+    console.log("map created");
+    initialPosition(0, 0);
     for (let x = 0; x < 10; x++) {
         for (let y = 0; y < 10; y++) {
-            map[x][y].addEventListener("click", function(e) {
-                console.log("before occupe false");
-                /* for (let charac of listcharacter) {
-                     if ((charac.x == x) && (charac.y == y)) {
-                         occupe = true;
-                     }
-                 }*/
-                target.x = x;
-                target.y = y;
-                update();
+            map[x][y].addEventListener("click", function (e) {
+                console.log("click on : x:" + x + " y:" + y);
+                move(joueur, x, y);
+
             })
 
         }
@@ -63,38 +55,6 @@ if (exit === false) {
 }
 
 //
-function update() {
-    if (exit === false) {
-        if (target.x == joueur.x && target.y == joueur.y) {} else {
-            console.log(target.x, joueur.x, target.y, joueur.y)
-            path(joueur.x, joueur.y, target.x, target.y);
-        }
-        if (xdep.length != 0) {
-            while (xdep.length != 0) {
-                deplacementvers(ydep[tour - clicTour], xdep[tour - clicTour]);
-                if (tour - clicTour == xdep.length - 1) {
-                    xdep = [];
-                    ydep = [];
-                }
-                tour += 1;
-            }
-        }
-
-
-    } else {}
-}
-
-function deplacementvers(xxx, yyy) {
-    document.body.querySelector(".personnage").remove();
-    let create = document.createElement("section");
-    create.className = "personnage";
-    document.body.querySelector(".game").appendChild(create);
-    document.body.querySelector(".personnage").style.left = map[xxx][yyy].getBoundingClientRect().left - 35 + "px";
-    document.body.querySelector(".personnage").style.top = map[xxx][yyy].getBoundingClientRect().top - 45 + "px";
-    joueur.position = map[xxx][yyy];
-    joueur.x = xxx;
-    joueur.y = yyy;
-}
 
 function perso() {
     this.name = "";
@@ -108,73 +68,55 @@ function perso() {
     this.y = 0;
 }
 
-function targetcell() {
-    this.position = [0][0];
-    this.x = 0;
-    this.y = 0;
-    this.isfree = true;
-}
 
-function path(playerx, playery, tarx, tarz) {
-    xdep = [];
-    ydep = [];
-    console.log(xdep);
-    let lTarget = tarx;
-    let cTarget = tarz;
-    let lPlayer = playerx;
-    let cPlayer = playery;
-    var distance;
-    let deltaL = lTarget - lPlayer;
-    let deltaC = cTarget - cPlayer;
-    console.log(deltaL);
-
-    let absDL = Math.abs(deltaL);
-    let absDC = Math.abs(deltaC);
-    var disdiag = Math.min(absDL, absDC);
-    var disline;
-    if (absDL > absDC) {
-        disline = absDL - absDC;
-    } else {
-        disline = absDC - absDL;
-    }
-    distance = disdiag + disline;
-    for (let j = 0; j <= disdiag + disline; j++) {
-        if (j <= disdiag) {
-            xdep[j] = cPlayer + j * Math.sign(deltaC);
-            ydep[j] = lPlayer + j * Math.sign(deltaL);
-        } else {
-            xdep[j] = cPlayer + disdiag + (j - disdiag) * Math.sign(deltaC - disdiag);
-            ydep[j] = lPlayer + disdiag + (j - disdiag) * Math.sign(deltaL - disdiag);
-        }
-    }
-    clicTour = tour;
-    console.log(xdep);
-}
 
 function walkright() {
     console.log("right");
     document.body.querySelector(".personnage").className = "personnage walkright";
-    wait(2400);
-    document.body.querySelector(".personnage").className = "personnage endright";
+    setTimeout(function () {
+        document.body.querySelector(".personnage").className = "personnage endright";
+    }, 2400);
+
 }
+function walkupright() {
+    console.log("upright");
+    document.body.querySelector(".personnage").className = "personnage walkupright";
+    setTimeout(function () {
+        document.body.querySelector(".personnage").className = "personnage endupright";
+    }, 2400);
+
+}
+
 
 function walkleft() {
     console.log("left");
     document.body.querySelector(".personnage").className = "personnage walkleft";
-    wait(2400);
-    document.body.querySelector(".personnage").className = "personnage endleft";
+    setTimeout(function () {
+        document.body.querySelector(".personnage").className = "personnage endleft";
+    }, 2400)
+}
+
+function walkupleft() {
+    console.log("upleft");
+    document.body.querySelector(".personnage").className = "personnage walkupleft";
+    setTimeout(function () {
+        document.body.querySelector(".personnage").className = "personnage endupleft";
+    }, 2400);
+
 }
 
 function walkup() {
     document.body.querySelector(".personnage").className = "personnage walkup";
-    wait(2400);
-    document.body.querySelector(".personnage").className = "personnage endup";
+    setTimeout(function () {
+        document.body.querySelector(".personnage").className = "personnage endup";
+    }, 2400);
 }
 
 function walkdown() {
     document.body.querySelector(".personnage").className = "personnage walkdown";
-    wait(2400);
-    document.body.querySelector(".personnage").className = "personnage enddown";
+    setTimeout(function () {
+        document.body.querySelector(".personnage").className = "personnage enddown";
+    }, 2400)
 }
 
 function init() {
@@ -203,7 +145,9 @@ function setTexture() {
     }
 
 }
+function walkdirection(xdir, ydir) {
 
+}
 
 function createMap() {
     for (let x = 0; x <= 9; x++) {
@@ -222,28 +166,34 @@ function createMap() {
     setTexture();
 }
 
-function moveAnim(tilex, tiley, persox, persoy) {
-    if (tilex > persox) {
 
+function move(character, xpos, ypos) {
+    document.body.querySelector(".personnage").style.left = map[xpos][ypos].getBoundingClientRect().left - 35 + "px";
+    document.body.querySelector(".personnage").style.top = map[xpos][ypos].getBoundingClientRect().top - 45 + "px";
+    //WALK ANIMATIONS
+    if (xpos > joueur.x && ypos > joueur.y) {
+        walkright();
     }
-    if (tilex < persox) {
-
+    else if (xpos < joueur.x && ypos > joueur.y) {
+        walkup();
     }
-    if (tiley > persoy) {
-
+    else if (xpos < joueur.x && ypos < joueur.y) {
+        walkleft();
     }
-    if (tiley < persoy) {
-
+    else if (xpos > joueur.x && ypos < joueur.y) {
+        walkdown();
     }
-
-}
-
-function move(caseArray) {
-    document.body.querySelector(".personnage").style.left = caseArray.getBoundingClientRect().left - 35 + "px";
-    document.body.querySelector(".personnage").style.top = caseArray.getBoundingClientRect().top - 45 + "px";
-    joueur.position = caseArray;
-    joueur.x = target.x;
-    joueur.y = target.y;
+    else if (xpos === joueur.x && ypos > joueur.y) {
+        walkupright();
+    }
+    else if (xpos === joueur.x && ypos > joueur.y) {
+        walkupright();
+    }
+    //WALK ANIMATIONS END
+    joueur.position = map[xpos][ypos];
+    joueur.x = xpos;
+    joueur.y = ypos;
+    character.mp = character.mp - 1;
     // console.log(joueur.position);
 }
 
@@ -261,7 +211,7 @@ function preloadImages(array) {
     let list = preloadImages.list;
     for (let i = 0; i < array.length; i++) {
         let img = new Image();
-        img.onload = function() {
+        img.onload = function () {
             let index = list.indexOf(this);
             if (index !== -1) {
                 // remove image from the array once it's loaded
@@ -281,4 +231,7 @@ function wait(ms) {
     while (end < start + ms) {
         end = new Date().getTime();
     }
+}
+function highlight(xplayer,yplayer){
+    map[xpos+1][xpos-1].style.opacity = "0.5";
 }
