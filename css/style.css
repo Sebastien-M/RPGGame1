@@ -100,8 +100,9 @@ main {
 }
 
 p {
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Oswald', sans-serif;
     font-weight: bolder;
+    margin: 0;
 }
 
 .infos {
@@ -165,7 +166,7 @@ p {
     margin: 0;
     padding-left: 0px;
     display: flex;
-    background-color: #49b293;
+    background-color: green;
     transition: 0.5s;
     border: 2px solid white;
 }
@@ -230,12 +231,33 @@ p {
     background-size: 100% 100%;
     transition: 2.4s;
 }
-
+.persoennemy{
+    position: absolute;
+    height: 80px;
+    width: 90px;
+    /*left:250px;
+    top:200px;*/
+    /*transition: 0s;*/
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    pointer-events: none;
+    background-image: url("../img/player/Walk/walk_10000.png");
+    background-size: 100% 100%;
+    transition: 2.4s;
+}
 #perso {
     height: 100%;
     width: 100%;
 }
-
+#entxt{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
 
 /*animations*/
 

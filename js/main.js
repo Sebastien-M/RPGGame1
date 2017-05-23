@@ -19,6 +19,46 @@ preloadImages(["img/player/Walk/walk_10000.png",
     "img/player/Walk/walk_50007.png",
     "img/player/Walk/walk_50008.png",
     "img/player/Walk/walk_50009.png",
+    "img/player/Walk/walk_20000.png",
+    "img/player/Walk/walk_20001.png",
+    "img/player/Walk/walk_20002.png",
+    "img/player/Walk/walk_20003.png",
+    "img/player/Walk/walk_20004.png",
+    "img/player/Walk/walk_20005.png",
+    "img/player/Walk/walk_20006.png",
+    "img/player/Walk/walk_20007.png",
+    "img/player/Walk/walk_20008.png",
+    "img/player/Walk/walk_20009.png",
+    "img/player/Walk/walk_30000.png",
+    "img/player/Walk/walk_30001.png",
+    "img/player/Walk/walk_30002.png",
+    "img/player/Walk/walk_30003.png",
+    "img/player/Walk/walk_30004.png",
+    "img/player/Walk/walk_30005.png",
+    "img/player/Walk/walk_30006.png",
+    "img/player/Walk/walk_30007.png",
+    "img/player/Walk/walk_30008.png",
+    "img/player/Walk/walk_30009.png",
+    "img/player/Walk/walk_40000.png",
+    "img/player/Walk/walk_40001.png",
+    "img/player/Walk/walk_40002.png",
+    "img/player/Walk/walk_40003.png",
+    "img/player/Walk/walk_40004.png",
+    "img/player/Walk/walk_40005.png",
+    "img/player/Walk/walk_40006.png",
+    "img/player/Walk/walk_40007.png",
+    "img/player/Walk/walk_40008.png",
+    "img/player/Walk/walk_40009.png",
+    "img/player/Walk/walk_60000.png",
+    "img/player/Walk/walk_60001.png",
+    "img/player/Walk/walk_60002.png",
+    "img/player/Walk/walk_60003.png",
+    "img/player/Walk/walk_60004.png",
+    "img/player/Walk/walk_60005.png",
+    "img/player/Walk/walk_60006.png",
+    "img/player/Walk/walk_60007.png",
+    "img/player/Walk/walk_60008.png",
+    "img/player/Walk/walk_60009.png",
 ]);
 var map = [];
 var listcharacter = [];
@@ -27,39 +67,37 @@ var endgame = false;
 var joueur = new perso;
 var ennemy = new perso;
 joueur.selector = ".personnage";
+joueur.absoluteClass = "personnage";
+ennemy.selector = ".persoennemy";
+ennemy.absoluteClass = "persoennemy";
 listcharacter[0] = joueur;
 var exit = false;
 exit = init();
 console.log("initialized");
+
 //LOAD GAME ON FORM SUMBIT
 if (exit === false) {
+
+    displayStats();
     document.body.querySelector(".nom").textContent = joueur.name;
     document.body.querySelector(".nomEnnemy").textContent = ennemy.name;
     // A METTRE DANS FONCTION SPAWN ENNEMY
     //document.body.querySelector(".nomEnnemy").textContent = ennemy.name;
     //var ennemy = new perso;
-    document.body.querySelector(".persohidden").className = "personnage";
+    document.body.querySelector(".personnage").className = "personnage";
+    document.body.querySelector(".persoennemy").className = "persoennemy";
     document.body.querySelector(".ennemyHealth").style.display = "block";
     document.body.querySelector(".playerHealth").style.display = "block";
     createMap();
     var previousCase = [0, 0];
+    var previousEnnemyCase = [0, 0];
     console.log("map created");
     console.log("----------------------------------------------------------------");
     //initialPosition(joueur, Math.floor((Math.random() * 9) + 0), Math.floor((Math.random() * 9) + 0)); //TO IMPLEMENT AT THE END
     initialPosition(joueur, 4, 4);
-    for (let x = 0; x < 10; x++) {
-        for (let y = 0; y < 10; y++) {
-            map[x][y].addEventListener("click", function(e) {
-
-                console.log("click on : x:" + x + " y:" + y);
-                move(joueur, x, y);
-                //highlight(x, y);
-                previousCase = [x, y];
-
-            })
-
-        }
-    }
+    initialPosition(ennemy, 5, 5);
+    // PLAYER TURN ON TILE CLICK
+    playerTurn();
 }
 
 //
@@ -69,23 +107,62 @@ function perso() {
     this.items = [];
     this.money = 0;
     this.hp = 100;
-    this.mp = 2;
+    this.mp = 40;
     this.ap = 1;
     this.position = [0][0];
     this.x = 0;
     this.y = 0;
     this.selector = "";
+    this.absoluteClass = "";
+    this.canmove = true;
+    this.canattack = false;
+}
+function ennemyTurn() {
+    let randomx = Math.floor((Math.random() * 9) + 0);
+    let randomy = Math.floor((Math.random() * 9) + 0);
+    while (randomx === joueur.x && randomy === joueur.y) {
+        let randomx = Math.floor((Math.random() * 9) + 0);
+        let randomy = Math.floor((Math.random() * 9) + 0);
+    }
+    move(ennemy, randomx, randomy);//TEST
+    previousEnnemyCase = [randomx, randomy];
+}
+function playerTurn() {
+    for (let x = 0; x < 10; x++) {
+        for (let y = 0; y < 10; y++) {
+            map[x][y].addEventListener("click", function (e) {
+                console.log("click on : x:" + x + " y:" + y);
+                if (x === joueur.x && y === joueur.y) { }
+                else if ((x - joueur.x) + (y - joueur.y) > 8) { console.log("more than 2pm"); }
+                else {
+                    move(joueur, x, y);
+                    if (canattack(joueur, ennemy) === true) { console.log("You can attack the ennemy"); } //ATTACK
+                    previousCase = [x, y];
+                    setTimeout(function () {
+                        ennemyTurn();
+                        if (canattack(ennemy,joueur ) === true) { console.log("Ennemy can attack you"); }
+                    }, 2400)
+                }
+
+            })
+        }
+    }
+
 }
 
+function submit() {
+    document.body.querySelector("form").addEventListener("submit", function () {
+        while (document.body.querySelector("#name").value === "") {
+            document.body.querySelector("#name").id = "nameempty";
+            wait(500);
+            document.body.querySelector("#nameempty").id = "name";
+        }
+    });
 
-
+}
 function init() {
-    //while (document.body.querySelector("#name").value === "") {
-    //    document.body.querySelector("#name").id = "nameempty";
-    //    wait(500);
-    //    document.body.querySelector("#nameempty").id = "name";
-    //}
-    //joueur.name = document.body.querySelector("#name").value;
+
+    joueur.name = document.body.querySelector("#name").value;
     joueur.name = "PLAYER";
     ennemy.name = "ENNEMY"
     document.body.querySelector("#head").style.opacity = 0;
@@ -93,7 +170,18 @@ function init() {
     document.body.querySelector("header").remove();
     return false;
 }
-
+//CHECK IF CHARACTER CAN ATTCK OR NOT
+function canattack(player, target) {
+    if ((Math.abs(player.x - target.x) < 2 && player.y === target.y) || (Math.abs(player.y - target.y) < 2 && player.x === target.x)) {
+        return true;
+    }
+    else if (((target.x === player.x - 1) || (target.x === player.x + 1)) && ((target.y === player.y - 1) || (target.y === player.y + 1))) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
 function createMap() {
     for (let x = 0; x <= 9; x++) {
         map[x] = [];
@@ -116,41 +204,59 @@ function createMap() {
         imgBlock.src = randomTile;
         imgBlock.className = "imgTexture";
         bloc[i].appendChild(imgBlock);
+
     }
 
 }
 
 function move(character, xpos, ypos) {
-    map[previousCase[0]][previousCase[1]].style.border = "2px solid white";
-    document.body.querySelector(".personnage").style.left = map[xpos][ypos].getBoundingClientRect().left - 35 + "px";
-    document.body.querySelector(".personnage").style.top = map[xpos][ypos].getBoundingClientRect().top - 45 + "px";
-    //WALK ANIMATIONS
-    if (xpos > joueur.x && ypos > joueur.y) {
-        walkright(joueur.selector);
-    } else if (xpos < joueur.x && ypos > joueur.y) {
-        walkup(joueur.selector);
-    } else if (xpos < joueur.x && ypos < joueur.y) {
-        walkleft(joueur.selector);
-    } else if (xpos > joueur.x && ypos < joueur.y) {
-        walkdown(joueur.selector);
-    } else if (xpos === joueur.x && ypos > joueur.y) {
-        walkupright(joueur.selector);
-    } else if (xpos < joueur.x && ypos === joueur.y) {
-        walkupleft(joueur.selector);
-    } else if (xpos > joueur.x && ypos === joueur.y) {
-        walkdownright(joueur.selector);
-    } else if (xpos === joueur.x && ypos < joueur.y) {
-        walkdownleft(joueur.selector);
+    //CHECK IF ENOUGH MOVEMENT POINTS
+    if (character.mp <= 0) {
+        console.log("No more mp");
+        character.canmove = false;
     }
-    //WALK ANIMATIONS END
-    map[xpos][ypos].style.border = "2px solid blue";
-    joueur.position = map[xpos][ypos];
-    joueur.x = xpos;
-    joueur.y = ypos;
-    character.mp = character.mp - 1;
-    // console.log(joueur.position);
+    //else if (character.x === xpos && character.y === ypos){}
+    else {
+        character.mp -= 1;
+        displayStats();
+        map[previousCase[0]][previousCase[1]].style.border = "2px solid white";
+        document.body.querySelector(character.selector).style.left = map[xpos][ypos].getBoundingClientRect().left - 35 + "px";
+        document.body.querySelector(character.selector).style.top = map[xpos][ypos].getBoundingClientRect().top - 45 + "px";
+        //WALK ANIMATIONS
+        if (xpos > character.x && ypos > character.y) {
+            walkright(character.absoluteClass);
+        } else if (xpos < character.x && ypos > character.y) {
+            walkup(character.absoluteClass);
+        } else if (xpos < character.x && ypos < character.y) {
+            walkleft(character.absoluteClass);
+        } else if (xpos > character.x && ypos < character.y) {
+            walkdown(character.absoluteClass);
+        } else if (xpos === character.x && ypos > character.y) {
+            walkupright(character.absoluteClass);
+        } else if (xpos < character.x && ypos === character.y) {
+            walkupleft(character.absoluteClass);
+        } else if (xpos > character.x && ypos === character.y) {
+            walkdownright(character.absoluteClass);
+        } else if (xpos === character.x && ypos < character.y) {
+            walkdownleft(character.absoluteClass);
+        }
+        //WALK ANIMATIONS END
+        if (character === joueur) { map[xpos][ypos].style.border = "2px solid blue"; }
+        character.position = map[xpos][ypos];
+        character.x = xpos;
+        character.y = ypos;
+
+        // console.log(character.position);
+        character.canmove = true;
+    }
 }
 
+function displayStats() {
+    document.body.querySelector("#pm").textContent = "MP : " + joueur.mp;
+    document.body.querySelector("#health").textContent = "Health : " + joueur.hp;
+    document.body.querySelector("#ennemypm").textContent = "MP : " + ennemy.mp;
+    document.body.querySelector("#ennemyhealth").textContent = "Health : " + ennemy.hp;
+}
 function initialPosition(target, xx, yy) {
     target.x = xx;
     target.y = yy;
@@ -165,7 +271,7 @@ function preloadImages(array) {
     let list = preloadImages.list;
     for (let i = 0; i < array.length; i++) {
         let img = new Image();
-        img.onload = function() {
+        img.onload = function () {
             let index = list.indexOf(this);
             if (index !== -1) {
                 // remove image from the array once it's loaded
@@ -188,66 +294,66 @@ function wait(ms) {
 }
 
 function highlight(xplayer, yplayer) {
-    //map[previousCase[0] + 1][previousCase[1] - 1].style.opacity = "1";
+    map[previousCase[0] + 1][previousCase[1] - 1].style.opacity = "1";
     map[xplayer + 1][yplayer - 1].style.opacity = "0.5";
 }
 
 function walkright(select) {
-    document.body.querySelector(select).className = "personnage walkright";
-    setTimeout(function() {
-        document.body.querySelector(select).className = "personnage endright";
+    document.body.querySelector("." + select).className = select + " walkright";
+    setTimeout(function () {
+        document.body.querySelector("." + select).className = select + " endright";
     }, 2000);
 
 }
 
 function walkupright(select) {
-    document.body.querySelector(select).className = "personnage walkupright";
-    setTimeout(function() {
-        document.body.querySelector(select).className = "personnage endupright";
+    document.body.querySelector("." + select).className = select + " walkupright";
+    setTimeout(function () {
+        document.body.querySelector("." + select).className = select + " endupright";
     }, 2000);
 
 }
 
 
 function walkleft(select) {
-    document.body.querySelector(select).className = "personnage walkleft";
-    setTimeout(function() {
-        document.body.querySelector(select).className = "personnage endleft";
+    document.body.querySelector("." + select).className = select + " walkleft";
+    setTimeout(function () {
+        document.body.querySelector("." + select).className = select + " endleft";
     }, 2000)
 }
 
 function walkupleft(select) {
-    document.body.querySelector(select).className = "personnage walkupleft";
-    setTimeout(function() {
-        document.body.querySelector(select).className = "personnage endupleft";
+    document.body.querySelector("." + select).className = select + " walkupleft";
+    setTimeout(function () {
+        document.body.querySelector("." + select).className = select + " endupleft";
     }, 2000);
 
 }
 
 function walkup(select) {
-    document.body.querySelector(select).className = "personnage walkup";
-    setTimeout(function() {
-        document.body.querySelector(select).className = "personnage endup";
+    document.body.querySelector("." + select).className = select + " walkup";
+    setTimeout(function () {
+        document.body.querySelector("." + select).className = select + " endup";
     }, 2000);
 }
 
 function walkdown(select) {
-    document.body.querySelector(select).className = "personnage walkdown";
-    setTimeout(function() {
-        document.body.querySelector(select).className = "personnage enddown";
+    document.body.querySelector("." + select).className = select + " walkdown";
+    setTimeout(function () {
+        document.body.querySelector("." + select).className = select + " enddown";
     }, 2400)
 }
 
 function walkdownright(select) {
-    document.body.querySelector(select).className = "personnage walkdownright";
-    setTimeout(function() {
-        document.body.querySelector(select).className = "personnage enddownright";
+    document.body.querySelector("." + select).className = select + " walkdownright";
+    setTimeout(function () {
+        document.body.querySelector("." + select).className = select + " enddownright";
     }, 2400)
 }
 
 function walkdownleft(select) {
-    document.body.querySelector(select).className = "personnage walkdownleft";
-    setTimeout(function() {
-        document.body.querySelector(select).className = "personnage enddownleft";
+    document.body.querySelector("." + select).className = select + " walkdownleft";
+    setTimeout(function () {
+        document.body.querySelector("." + select).className = select + " enddownleft";
     }, 2400)
 }
