@@ -1,5 +1,15 @@
 var tour = 0;
-preloadImages(["img/player/Walk/walk_10000.png",
+preloadImages(["img/player/Walk/walk_00000.png",
+    "img/player/Walk/walk_00001.png",
+    "img/player/Walk/walk_00002.png",
+    "img/player/Walk/walk_00003.png",
+    "img/player/Walk/walk_00004.png",
+    "img/player/Walk/walk_00005.png",
+    "img/player/Walk/walk_00006.png",
+    "img/player/Walk/walk_00007.png",
+    "img/player/Walk/walk_00008.png",
+    "img/player/Walk/walk_00009.png",
+    "img/player/Walk/walk_10000.png",
     "img/player/Walk/walk_10001.png",
     "img/player/Walk/walk_10002.png",
     "img/player/Walk/walk_10003.png",
@@ -59,6 +69,16 @@ preloadImages(["img/player/Walk/walk_10000.png",
     "img/player/Walk/walk_60007.png",
     "img/player/Walk/walk_60008.png",
     "img/player/Walk/walk_60009.png",
+    "img/player/Walk/walk_70000.png",
+    "img/player/Walk/walk_70001.png",
+    "img/player/Walk/walk_70002.png",
+    "img/player/Walk/walk_70003.png",
+    "img/player/Walk/walk_70004.png",
+    "img/player/Walk/walk_70005.png",
+    "img/player/Walk/walk_70006.png",
+    "img/player/Walk/walk_70007.png",
+    "img/player/Walk/walk_70008.png",
+    "img/player/Walk/walk_70009.png"
 ]);
 var map = [];
 var listcharacter = [];
@@ -120,9 +140,13 @@ function perso() {
 function ennemyTurn() {
     let randomx = Math.floor((Math.random() * 9) + 0);
     let randomy = Math.floor((Math.random() * 9) + 0);
-    while (randomx === joueur.x && randomy === joueur.y) {
+    if (randomx === joueur.x && randomy === joueur.y) {
         let randomx = Math.floor((Math.random() * 9) + 0);
         let randomy = Math.floor((Math.random() * 9) + 0);
+        if (randomx === joueur.x && randomy === joueur.y) {
+            let randomx = Math.floor((Math.random() * 9) + 0);
+            let randomy = Math.floor((Math.random() * 9) + 0);
+        }
     }
     move(ennemy, randomx, randomy);//TEST
     previousEnnemyCase = [randomx, randomy];
@@ -140,14 +164,36 @@ function playerTurn() {
                     previousCase = [x, y];
                     setTimeout(function () {
                         ennemyTurn();
-                        if (canattack(ennemy,joueur ) === true) { console.log("Ennemy can attack you"); }
+                        if (canattack(ennemy, joueur) === true) {
+                            attack(joueur, ennemy);
+                            console.log("Ennemy can attack you");
+                        }
                     }, 2400)
                 }
 
             })
         }
     }
-
+}
+function attack(character, target) {
+        if (target.x > character.x && target.y > character.y) {
+            attackright(character.absoluteClass);
+        } else if (target.x < character.x && target.y > character.y) {
+            attackup(character.absoluteClass);
+        } else if (target.x < character.x && target.y < character.y) {
+            attackleft(character.absoluteClass);
+        } else if (target.x > character.x && target.y < character.y) {
+            attackdown(character.absoluteClass);
+        } else if (target.x === character.x && target.y > character.y) {
+            attackupright(character.absoluteClass);
+        } else if (target.x < character.x && target.y === character.y) {
+            attackupleft(character.absoluteClass);
+        } else if (target.x > character.x && target.y === character.y) {
+            attackdownright(character.absoluteClass);
+        } else if (target.x === character.x && target.y < character.y) {
+            attackdownleft(character.absoluteClass);
+        }
+        console.log("attacked");
 }
 
 function submit() {
@@ -161,7 +207,6 @@ function submit() {
 
 }
 function init() {
-
     joueur.name = document.body.querySelector("#name").value;
     joueur.name = "PLAYER";
     ennemy.name = "ENNEMY"
@@ -293,6 +338,12 @@ function wait(ms) {
     }
 }
 
+
+/*_______________________________________________________ANIMATIONS_______________________________________________________________
+  --------------------------------------------------------------------------------------------------------------------------------*/
+
+
+// WALKING ANIMATIONS
 function highlight(xplayer, yplayer) {
     map[previousCase[0] + 1][previousCase[1] - 1].style.opacity = "1";
     map[xplayer + 1][yplayer - 1].style.opacity = "0.5";
@@ -353,6 +404,67 @@ function walkdownright(select) {
 
 function walkdownleft(select) {
     document.body.querySelector("." + select).className = select + " walkdownleft";
+    setTimeout(function () {
+        document.body.querySelector("." + select).className = select + " enddownleft";
+    }, 2400)
+}
+
+//ATTACK ANIMATIONS
+function attackright(select) {
+    document.body.querySelector("." + select).className = select + " attackright";
+    setTimeout(function () {
+        document.body.querySelector("." + select).className = select + " endright";
+    }, 2000);
+
+}
+
+function attackupright(select) {
+    document.body.querySelector("." + select).className = select + " attackupright";
+    setTimeout(function () {
+        document.body.querySelector("." + select).className = select + " endupright";
+    }, 2000);
+
+}
+
+
+function attackleft(select) {
+    document.body.querySelector("." + select).className = select + " attackleft";
+    setTimeout(function () {
+        document.body.querySelector("." + select).className = select + " endleft";
+    }, 2000)
+}
+
+function attackupleft(select) {
+    document.body.querySelector("." + select).className = select + " attackupleft";
+    setTimeout(function () {
+        document.body.querySelector("." + select).className = select + " endupleft";
+    }, 2000);
+
+}
+
+function attackup(select) {
+    document.body.querySelector("." + select).className = select + " attackup";
+    setTimeout(function () {
+        document.body.querySelector("." + select).className = select + " endup";
+    }, 2000);
+}
+
+function attackdown(select) {
+    document.body.querySelector("." + select).className = select + " attackdown";
+    setTimeout(function () {
+        document.body.querySelector("." + select).className = select + " enddown";
+    }, 2400)
+}
+
+function attackdownright(select) {
+    document.body.querySelector("." + select).className = select + " attackright";
+    setTimeout(function () {
+        document.body.querySelector("." + select).className = select + " enddownright";
+    }, 2400)
+}
+
+function attackdownleft(select) {
+    document.body.querySelector("." + select).className = select + " attackdownleft";
     setTimeout(function () {
         document.body.querySelector("." + select).className = select + " enddownleft";
     }, 2400)

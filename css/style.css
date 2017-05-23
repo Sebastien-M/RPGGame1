@@ -596,8 +596,336 @@ p {
         background-image: url("../img/player/Walk/walk_00009.png");
     }
 }
+/*ATTACK*/
+.attackdownright {
+    height: 80px;
+    width: 90px;
+    animation-name: attackDownRight;
+    animation-duration: 1s;
+    background-size: 100% 100%;
+    animation-iteration-count: infinite;
+}
 
+@keyframes attackDownRight {
+    0% {
+        background-image: url("../img/player/Attack_01/attack_00000.png");
+    }
+    20% {
+        background-image: url("../img/player/Attack_01/attack_00001.png");
+    }
+    30% {
+        background-image: url("../img/player/Attack_01/attack_00002.png");
+    }
+    40% {
+        background-image: url("../img/player/Attack_01/attack_00003.png");
+    }
+    50% {
+        background-image: url("../img/player/Attack_01/attack_00004.png");
+    }
+    60% {
+        background-image: url("../img/player/Attack_01/attack_00005.png");
+    }
+    70% {
+        background-image: url("../img/player/Attack_01/attack_00006.png");
+    }
+    80% {
+        background-image: url("../img/player/Attack_01/attack_00007.png");
+    }
+    90% {
+        background-image: url("../img/player/Attack_01/attack_00008.png");
+    }
+    100% {
+        background-image: url("../img/player/Attack_01/attack_00009.png");
+    }
+}
 
+.attackright {
+    height: 80px;
+    width: 90px;
+    animation-name: attackRight;
+    animation-duration: 1s;
+    background-size: 100% 100%;
+    animation-iteration-count: infinite;
+}
+
+@keyframes attackRight {
+    0% {
+        background-image: url("../img/player/Attack_01/attack_10000.png");
+    }
+    20% {
+        background-image: url("../img/player/Attack_01/attack_10001.png");
+    }
+    30% {
+        background-image: url("../img/player/Attack_01/attack_10002.png");
+    }
+    40% {
+        background-image: url("../img/player/Attack_01/attack_10003.png");
+    }
+    50% {
+        background-image: url("../img/player/Attack_01/attack_10004.png");
+    }
+    60% {
+        background-image: url("../img/player/Attack_01/attack_10005.png");
+    }
+    70% {
+        background-image: url("../img/player/Attack_01/attack_10006.png");
+    }
+    80% {
+        background-image: url("../img/player/Attack_01/attack_10007.png");
+    }
+    90% {
+        background-image: url("../img/player/Attack_01/attack_10008.png");
+    }
+    100% {
+        background-image: url("../img/player/Attack_01/attack_10009.png");
+    }
+}
+.attackupright {
+    height: 80px;
+    width: 90px;
+    animation-name: attackDownRight;
+    animation-duration: 1s;
+    background-size: 100% 100%;
+    animation-iteration-count: infinite;
+}
+
+@keyframes attackUpRight {
+    0% {
+        background-image: url("../img/player/Attack_01/attack_20000.png");
+    }
+    20% {
+        background-image: url("../img/player/Attack_01/attack_20001.png");
+    }
+    30% {
+        background-image: url("../img/player/Attack_01/attack_20002.png");
+    }
+    40% {
+        background-image: url("../img/player/Attack_01/attack_20003.png");
+    }
+    50% {
+        background-image: url("../img/player/Attack_01/attack_20004.png");
+    }
+    60% {
+        background-image: url("../img/player/Attack_01/attack_20005.png");
+    }
+    70% {
+        background-image: url("../img/player/Attack_01/attack_20006.png");
+    }
+    80% {
+        background-image: url("../img/player/Attack_01/attack_20007.png");
+    }
+    90% {
+        background-image: url("../img/player/Attack_01/attack_20008.png");
+    }
+    100% {
+        background-image: url("../img/player/Attack_01/attack_20009.png");
+    }
+}
+.attackup {
+    height: 80px;
+    width: 90px;
+    animation-name: attackUp;
+    animation-duration: 1s;
+    background-size: 100% 100%;
+    animation-iteration-count: infinite;
+}
+
+@keyframes attackUp {
+    0% {
+        background-image: url("../img/player/Attack_01/attack_30000.png");
+    }
+    20% {
+        background-image: url("../img/player/Attack_01/attack_30001.png");
+    }
+    30% {
+        background-image: url("../img/player/Attack_01/attack_30002.png");
+    }
+    40% {
+        background-image: url("../img/player/Attack_01/attack_30003.png");
+    }
+    50% {
+        background-image: url("../img/player/Attack_01/attack_30004.png");
+    }
+    60% {
+        background-image: url("../img/player/Attack_01/attack_30005.png");
+    }
+    70% {
+        background-image: url("../img/player/Attack_01/attack_30006.png");
+    }
+    80% {
+        background-image: url("../img/player/Attack_01/attack_30007.png");
+    }
+    90% {
+        background-image: url("../img/player/Attack_01/attack_30008.png");
+    }
+    100% {
+        background-image: url("../img/player/Attack_01/attack_30009.png");
+    }
+}
+.attackuoleft {
+    height: 80px;
+    width: 90px;
+    animation-name: attackDownRight;
+    animation-duration: 1s;
+    background-size: 100% 100%;
+    animation-iteration-count: infinite;
+}
+
+@keyframes attackUpLeft {
+    0% {
+        background-image: url("../img/player/Attack_01/attack_40000.png");
+    }
+    20% {
+        background-image: url("../img/player/Attack_01/attack_40001.png");
+    }
+    30% {
+        background-image: url("../img/player/Attack_01/attack_40002.png");
+    }
+    40% {
+        background-image: url("../img/player/Attack_01/attack_40003.png");
+    }
+    50% {
+        background-image: url("../img/player/Attack_01/attack_40004.png");
+    }
+    60% {
+        background-image: url("../img/player/Attack_01/attack_40005.png");
+    }
+    70% {
+        background-image: url("../img/player/Attack_01/attack_40006.png");
+    }
+    80% {
+        background-image: url("../img/player/Attack_01/attack_40007.png");
+    }
+    90% {
+        background-image: url("../img/player/Attack_01/attack_40008.png");
+    }
+    100% {
+        background-image: url("../img/player/Attack_01/attack_40009.png");
+    }
+}
+.attackleft {
+    height: 80px;
+    width: 90px;
+    animation-name: attackLeft;
+    animation-duration: 1s;
+    background-size: 100% 100%;
+    animation-iteration-count: infinite;
+}
+
+@keyframes attackLeft {
+    0% {
+        background-image: url("../img/player/Attack_01/attack_50000.png");
+    }
+    20% {
+        background-image: url("../img/player/Attack_01/attack_50001.png");
+    }
+    30% {
+        background-image: url("../img/player/Attack_01/attack_50002.png");
+    }
+    40% {
+        background-image: url("../img/player/Attack_01/attack_50003.png");
+    }
+    50% {
+        background-image: url("../img/player/Attack_01/attack_50004.png");
+    }
+    60% {
+        background-image: url("../img/player/Attack_01/attack_50005.png");
+    }
+    70% {
+        background-image: url("../img/player/Attack_01/attack_50006.png");
+    }
+    80% {
+        background-image: url("../img/player/Attack_01/attack_50007.png");
+    }
+    90% {
+        background-image: url("../img/player/Attack_01/attack_50008.png");
+    }
+    100% {
+        background-image: url("../img/player/Attack_01/attack_50009.png");
+    }
+}
+.attackdownleft {
+    height: 80px;
+    width: 90px;
+    animation-name: attackDownLeft;
+    animation-duration: 1s;
+    background-size: 100% 100%;
+    animation-iteration-count: infinite;
+}
+
+@keyframes attackDownLeft {
+    0% {
+        background-image: url("../img/player/Attack_01/attack_60000.png");
+    }
+    20% {
+        background-image: url("../img/player/Attack_01/attack_60001.png");
+    }
+    30% {
+        background-image: url("../img/player/Attack_01/attack_60002.png");
+    }
+    40% {
+        background-image: url("../img/player/Attack_01/attack_60003.png");
+    }
+    50% {
+        background-image: url("../img/player/Attack_01/attack_60004.png");
+    }
+    60% {
+        background-image: url("../img/player/Attack_01/attack_60005.png");
+    }
+    70% {
+        background-image: url("../img/player/Attack_01/attack_60006.png");
+    }
+    80% {
+        background-image: url("../img/player/Attack_01/attack_60007.png");
+    }
+    90% {
+        background-image: url("../img/player/Attack_01/attack_60008.png");
+    }
+    100% {
+        background-image: url("../img/player/Attack_01/attack_60009.png");
+    }
+}
+.attackdown {
+    height: 80px;
+    width: 90px;
+    animation-name: attackDown;
+    animation-duration: 1s;
+    background-size: 100% 100%;
+    animation-iteration-count: infinite;
+}
+
+@keyframes attackDown {
+    0% {
+        background-image: url("../img/player/Attack_01/attack_70000.png");
+    }
+    20% {
+        background-image: url("../img/player/Attack_01/attack_70001.png");
+    }
+    30% {
+        background-image: url("../img/player/Attack_01/attack_70002.png");
+    }
+    40% {
+        background-image: url("../img/player/Attack_01/attack_70003.png");
+    }
+    50% {
+        background-image: url("../img/player/Attack_01/attack_70004.png");
+    }
+    60% {
+        background-image: url("../img/player/Attack_01/attack_70005.png");
+    }
+    70% {
+        background-image: url("../img/player/Attack_01/attack_70006.png");
+    }
+    80% {
+        background-image: url("../img/player/Attack_01/attack_70007.png");
+    }
+    90% {
+        background-image: url("../img/player/Attack_01/attack_70008.png");
+    }
+    100% {
+        background-image: url("../img/player/Attack_01/attack_70009.png");
+    }
+}
 /*animations end*/
 
 
