@@ -123,8 +123,13 @@ p {
 }
 
 .player {
+    width: 300px;
     display: flex;
     flex-direction: column;
+}
+
+.ennemy {
+    width: 300px;
 }
 
 .playerHealth {
@@ -133,6 +138,11 @@ p {
     width: 300px;
     transition: 0.5s;
     display: none;
+}
+
+.healthcontain {
+    display: flex;
+    justify-content: flex-end;
 }
 
 .ennemyHealth {
@@ -231,7 +241,8 @@ p {
     background-size: 100% 100%;
     transition: 2.4s;
 }
-.persoennemy{
+
+.persoennemy {
     position: absolute;
     height: 80px;
     width: 90px;
@@ -249,15 +260,18 @@ p {
     background-size: 100% 100%;
     transition: 2.4s;
 }
+
 #perso {
     height: 100%;
     width: 100%;
 }
-#entxt{
+
+#entxt {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
 }
+
 
 /*animations*/
 
@@ -596,11 +610,14 @@ p {
         background-image: url("../img/player/Walk/walk_00009.png");
     }
 }
+
+
 /*ATTACK*/
+
 .attackdownright {
     height: 80px;
     width: 90px;
-    background-repeat:no-repeat;
+    background-repeat: no-repeat;
     animation-name: attackDownRight;
     animation-duration: 1s;
     background-size: 100% 100%;
@@ -643,7 +660,7 @@ p {
 .attackright {
     height: 80px;
     width: 90px;
-    background-repeat:no-repeat;
+    background-repeat: no-repeat;
     animation-name: attackRight;
     animation-duration: 1s;
     background-size: 100%;
@@ -682,11 +699,12 @@ p {
         background-image: url("../img/player/Attack_01/attack_10009.png");
     }
 }
+
 .attackupright {
     height: 80px;
     width: 90px;
-    background-repeat:no-repeat;
-    animation-name: attackDownRight;
+    background-repeat: no-repeat;
+    animation-name: attackUpRight;
     animation-duration: 1s;
     background-size: 100% 100%;
     animation-iteration-count: infinite;
@@ -724,10 +742,11 @@ p {
         background-image: url("../img/player/Attack_01/attack_20009.png");
     }
 }
+
 .attackup {
     height: 80px;
     width: 90px;
-    background-repeat:no-repeat;
+    background-repeat: no-repeat;
     animation-name: attackUp;
     animation-duration: 1s;
     background-size: 100% 100%;
@@ -766,11 +785,12 @@ p {
         background-image: url("../img/player/Attack_01/attack_30009.png");
     }
 }
+
 .attackupleft {
     height: 80px;
     width: 90px;
-    background-repeat:no-repeat;
-    animation-name: attackDownRight;
+    background-repeat: no-repeat;
+    animation-name: attackUpLeft;
     animation-duration: 1s;
     background-size: 100% 100%;
     animation-iteration-count: infinite;
@@ -808,10 +828,11 @@ p {
         background-image: url("../img/player/Attack_01/attack_40009.png");
     }
 }
+
 .attackleft {
     height: 80px;
     width: 90px;
-    background-repeat:no-repeat;
+    background-repeat: no-repeat;
     animation-name: attackLeft;
     animation-duration: 1s;
     background-size: 100% 100%;
@@ -850,10 +871,11 @@ p {
         background-image: url("../img/player/Attack_01/attack_50009.png");
     }
 }
+
 .attackdownleft {
     height: 80px;
     width: 90px;
-    background-repeat:no-repeat;
+    background-repeat: no-repeat;
     animation-name: attackDownLeft;
     animation-duration: 1s;
     background-size: 100% 100%;
@@ -892,10 +914,11 @@ p {
         background-image: url("../img/player/Attack_01/attack_60009.png");
     }
 }
+
 .attackdown {
     height: 80px;
     width: 90px;
-    background-repeat:no-repeat;
+    background-repeat: no-repeat;
     animation-name: attackDown;
     animation-duration: 1s;
     background-size: 100% 100%;
@@ -934,6 +957,8 @@ p {
         background-image: url("../img/player/Attack_01/attack_70009.png");
     }
 }
+
+
 /*animations end*/
 
 
@@ -945,7 +970,6 @@ p {
     background-size: 100% 100%;
     background-image: url("../img/player/Walk/walk_50000.png");
 }
-
 
 .endright {
     height: 80px;
