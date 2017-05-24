@@ -600,6 +600,7 @@ p {
 .attackdownright {
     height: 80px;
     width: 90px;
+    background-repeat:no-repeat;
     animation-name: attackDownRight;
     animation-duration: 1s;
     background-size: 100% 100%;
@@ -642,9 +643,10 @@ p {
 .attackright {
     height: 80px;
     width: 90px;
+    background-repeat:no-repeat;
     animation-name: attackRight;
     animation-duration: 1s;
-    background-size: 100% 100%;
+    background-size: 100%;
     animation-iteration-count: infinite;
 }
 
@@ -683,6 +685,7 @@ p {
 .attackupright {
     height: 80px;
     width: 90px;
+    background-repeat:no-repeat;
     animation-name: attackDownRight;
     animation-duration: 1s;
     background-size: 100% 100%;
@@ -724,6 +727,7 @@ p {
 .attackup {
     height: 80px;
     width: 90px;
+    background-repeat:no-repeat;
     animation-name: attackUp;
     animation-duration: 1s;
     background-size: 100% 100%;
@@ -762,9 +766,10 @@ p {
         background-image: url("../img/player/Attack_01/attack_30009.png");
     }
 }
-.attackuoleft {
+.attackupleft {
     height: 80px;
     width: 90px;
+    background-repeat:no-repeat;
     animation-name: attackDownRight;
     animation-duration: 1s;
     background-size: 100% 100%;
@@ -806,6 +811,7 @@ p {
 .attackleft {
     height: 80px;
     width: 90px;
+    background-repeat:no-repeat;
     animation-name: attackLeft;
     animation-duration: 1s;
     background-size: 100% 100%;
@@ -847,6 +853,7 @@ p {
 .attackdownleft {
     height: 80px;
     width: 90px;
+    background-repeat:no-repeat;
     animation-name: attackDownLeft;
     animation-duration: 1s;
     background-size: 100% 100%;
@@ -888,6 +895,7 @@ p {
 .attackdown {
     height: 80px;
     width: 90px;
+    background-repeat:no-repeat;
     animation-name: attackDown;
     animation-duration: 1s;
     background-size: 100% 100%;

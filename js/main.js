@@ -1,85 +1,5 @@
 var tour = 0;
-preloadImages(["img/player/Walk/walk_00000.png",
-    "img/player/Walk/walk_00001.png",
-    "img/player/Walk/walk_00002.png",
-    "img/player/Walk/walk_00003.png",
-    "img/player/Walk/walk_00004.png",
-    "img/player/Walk/walk_00005.png",
-    "img/player/Walk/walk_00006.png",
-    "img/player/Walk/walk_00007.png",
-    "img/player/Walk/walk_00008.png",
-    "img/player/Walk/walk_00009.png",
-    "img/player/Walk/walk_10000.png",
-    "img/player/Walk/walk_10001.png",
-    "img/player/Walk/walk_10002.png",
-    "img/player/Walk/walk_10003.png",
-    "img/player/Walk/walk_10004.png",
-    "img/player/Walk/walk_10005.png",
-    "img/player/Walk/walk_10006.png",
-    "img/player/Walk/walk_10007.png",
-    "img/player/Walk/walk_10008.png",
-    "img/player/Walk/walk_10009.png",
-    "img/player/Walk/walk_50000.png",
-    "img/player/Walk/walk_50001.png",
-    "img/player/Walk/walk_50002.png",
-    "img/player/Walk/walk_50003.png",
-    "img/player/Walk/walk_50004.png",
-    "img/player/Walk/walk_50005.png",
-    "img/player/Walk/walk_50006.png",
-    "img/player/Walk/walk_50007.png",
-    "img/player/Walk/walk_50008.png",
-    "img/player/Walk/walk_50009.png",
-    "img/player/Walk/walk_20000.png",
-    "img/player/Walk/walk_20001.png",
-    "img/player/Walk/walk_20002.png",
-    "img/player/Walk/walk_20003.png",
-    "img/player/Walk/walk_20004.png",
-    "img/player/Walk/walk_20005.png",
-    "img/player/Walk/walk_20006.png",
-    "img/player/Walk/walk_20007.png",
-    "img/player/Walk/walk_20008.png",
-    "img/player/Walk/walk_20009.png",
-    "img/player/Walk/walk_30000.png",
-    "img/player/Walk/walk_30001.png",
-    "img/player/Walk/walk_30002.png",
-    "img/player/Walk/walk_30003.png",
-    "img/player/Walk/walk_30004.png",
-    "img/player/Walk/walk_30005.png",
-    "img/player/Walk/walk_30006.png",
-    "img/player/Walk/walk_30007.png",
-    "img/player/Walk/walk_30008.png",
-    "img/player/Walk/walk_30009.png",
-    "img/player/Walk/walk_40000.png",
-    "img/player/Walk/walk_40001.png",
-    "img/player/Walk/walk_40002.png",
-    "img/player/Walk/walk_40003.png",
-    "img/player/Walk/walk_40004.png",
-    "img/player/Walk/walk_40005.png",
-    "img/player/Walk/walk_40006.png",
-    "img/player/Walk/walk_40007.png",
-    "img/player/Walk/walk_40008.png",
-    "img/player/Walk/walk_40009.png",
-    "img/player/Walk/walk_60000.png",
-    "img/player/Walk/walk_60001.png",
-    "img/player/Walk/walk_60002.png",
-    "img/player/Walk/walk_60003.png",
-    "img/player/Walk/walk_60004.png",
-    "img/player/Walk/walk_60005.png",
-    "img/player/Walk/walk_60006.png",
-    "img/player/Walk/walk_60007.png",
-    "img/player/Walk/walk_60008.png",
-    "img/player/Walk/walk_60009.png",
-    "img/player/Walk/walk_70000.png",
-    "img/player/Walk/walk_70001.png",
-    "img/player/Walk/walk_70002.png",
-    "img/player/Walk/walk_70003.png",
-    "img/player/Walk/walk_70004.png",
-    "img/player/Walk/walk_70005.png",
-    "img/player/Walk/walk_70006.png",
-    "img/player/Walk/walk_70007.png",
-    "img/player/Walk/walk_70008.png",
-    "img/player/Walk/walk_70009.png"
-]);
+loadpics();
 var map = [];
 var listcharacter = [];
 
@@ -88,8 +8,10 @@ var joueur = new perso;
 var ennemy = new perso;
 joueur.selector = ".personnage";
 joueur.absoluteClass = "personnage";
+joueur.healthselector = ".playerHealth";
 ennemy.selector = ".persoennemy";
 ennemy.absoluteClass = "persoennemy";
+ennemy.healthselector = ".ennemyHealth";
 listcharacter[0] = joueur;
 var exit = false;
 exit = init();
@@ -126,7 +48,7 @@ function perso() {
     this.name = "";
     this.items = [];
     this.money = 0;
-    this.hp = 100;
+    this.hp = 300;
     this.mp = 40;
     this.ap = 1;
     this.position = [0][0];
@@ -136,6 +58,7 @@ function perso() {
     this.absoluteClass = "";
     this.canmove = true;
     this.canattack = false;
+    this.healthselector = "";
 }
 function ennemyTurn() {
     let randomx = Math.floor((Math.random() * 9) + 0);
@@ -160,15 +83,24 @@ function playerTurn() {
                 else if ((x - joueur.x) + (y - joueur.y) > 8) { console.log("more than 2pm"); }
                 else {
                     move(joueur, x, y);
-                    if (canattack(joueur, ennemy) === true) { console.log("You can attack the ennemy"); } //ATTACK
+                    if (canattack(joueur, ennemy) === true) {
+                        console.log("You can attack the ennemy");
+                        setTimeout(function () {
+                            attack(joueur, ennemy);
+                        }, 2400)
+                    }
+                    //ATTACK
                     previousCase = [x, y];
                     setTimeout(function () {
                         ennemyTurn();
                         if (canattack(ennemy, joueur) === true) {
-                            attack(joueur, ennemy);
-                            console.log("Ennemy can attack you");
+                            setTimeout(function () {
+                                attack(ennemy, joueur);
+                                hpUpdate(joueur, ennemy)
+                                console.log("Ennemy can attack you");
+                            }, 2400)
                         }
-                    }, 2400)
+                    }, 4500)
                 }
 
             })
@@ -176,24 +108,26 @@ function playerTurn() {
     }
 }
 function attack(character, target) {
-        if (target.x > character.x && target.y > character.y) {
-            attackright(character.absoluteClass);
-        } else if (target.x < character.x && target.y > character.y) {
-            attackup(character.absoluteClass);
-        } else if (target.x < character.x && target.y < character.y) {
-            attackleft(character.absoluteClass);
-        } else if (target.x > character.x && target.y < character.y) {
-            attackdown(character.absoluteClass);
-        } else if (target.x === character.x && target.y > character.y) {
-            attackupright(character.absoluteClass);
-        } else if (target.x < character.x && target.y === character.y) {
-            attackupleft(character.absoluteClass);
-        } else if (target.x > character.x && target.y === character.y) {
-            attackdownright(character.absoluteClass);
-        } else if (target.x === character.x && target.y < character.y) {
-            attackdownleft(character.absoluteClass);
-        }
-        console.log("attacked");
+    if (target.x > character.x && target.y > character.y) {
+        attackright(character.absoluteClass);
+    } else if (target.x < character.x && target.y > character.y) {
+        attackup(character.absoluteClass);
+    } else if (target.x < character.x && target.y < character.y) {
+        attackleft(character.absoluteClass);
+    } else if (target.x > character.x && target.y < character.y) {
+        attackdown(character.absoluteClass);
+    } else if (target.x === character.x && target.y > character.y) {
+        attackupright(character.absoluteClass);
+    } else if (target.x < character.x && target.y === character.y) {
+        attackupleft(character.absoluteClass);
+    } else if (target.x > character.x && target.y === character.y) {
+        attackdownright(character.absoluteClass);
+    } else if (target.x === character.x && target.y < character.y) {
+        attackdownleft(character.absoluteClass);
+    }
+    target.hp = target.hp - 30;
+    hpUpdate(character, target);
+    console.log("attacked");
 }
 
 function submit() {
@@ -294,6 +228,11 @@ function move(character, xpos, ypos) {
         // console.log(character.position);
         character.canmove = true;
     }
+}
+
+function hpUpdate(character1, character2) {
+    document.body.querySelector(character1.healthselector).style.width = character1.hp + "px";
+    document.body.querySelector(character2.healthselector).style.width = character2.hp + "px";
 }
 
 function displayStats() {
@@ -468,4 +407,153 @@ function attackdownleft(select) {
     setTimeout(function () {
         document.body.querySelector("." + select).className = select + " enddownleft";
     }, 2400)
+}
+//_________________________________________________________________________________________________________
+
+function loadpics() {
+    preloadImages(["img/player/Walk/walk_00000.png",
+        "img/player/Walk/walk_00001.png",
+        "img/player/Walk/walk_00002.png",
+        "img/player/Walk/walk_00003.png",
+        "img/player/Walk/walk_00004.png",
+        "img/player/Walk/walk_00005.png",
+        "img/player/Walk/walk_00006.png",
+        "img/player/Walk/walk_00007.png",
+        "img/player/Walk/walk_00008.png",
+        "img/player/Walk/walk_00009.png",
+        "img/player/Walk/walk_10000.png",
+        "img/player/Walk/walk_10001.png",
+        "img/player/Walk/walk_10002.png",
+        "img/player/Walk/walk_10003.png",
+        "img/player/Walk/walk_10004.png",
+        "img/player/Walk/walk_10005.png",
+        "img/player/Walk/walk_10006.png",
+        "img/player/Walk/walk_10007.png",
+        "img/player/Walk/walk_10008.png",
+        "img/player/Walk/walk_10009.png",
+        "img/player/Walk/walk_50000.png",
+        "img/player/Walk/walk_50001.png",
+        "img/player/Walk/walk_50002.png",
+        "img/player/Walk/walk_50003.png",
+        "img/player/Walk/walk_50004.png",
+        "img/player/Walk/walk_50005.png",
+        "img/player/Walk/walk_50006.png",
+        "img/player/Walk/walk_50007.png",
+        "img/player/Walk/walk_50008.png",
+        "img/player/Walk/walk_50009.png",
+        "img/player/Walk/walk_20000.png",
+        "img/player/Walk/walk_20001.png",
+        "img/player/Walk/walk_20002.png",
+        "img/player/Walk/walk_20003.png",
+        "img/player/Walk/walk_20004.png",
+        "img/player/Walk/walk_20005.png",
+        "img/player/Walk/walk_20006.png",
+        "img/player/Walk/walk_20007.png",
+        "img/player/Walk/walk_20008.png",
+        "img/player/Walk/walk_20009.png",
+        "img/player/Walk/walk_30000.png",
+        "img/player/Walk/walk_30001.png",
+        "img/player/Walk/walk_30002.png",
+        "img/player/Walk/walk_30003.png",
+        "img/player/Walk/walk_30004.png",
+        "img/player/Walk/walk_30005.png",
+        "img/player/Walk/walk_30006.png",
+        "img/player/Walk/walk_30007.png",
+        "img/player/Walk/walk_30008.png",
+        "img/player/Walk/walk_30009.png",
+        "img/player/Walk/walk_40000.png",
+        "img/player/Walk/walk_40001.png",
+        "img/player/Walk/walk_40002.png",
+        "img/player/Walk/walk_40003.png",
+        "img/player/Walk/walk_40004.png",
+        "img/player/Walk/walk_40005.png",
+        "img/player/Walk/walk_40006.png",
+        "img/player/Walk/walk_40007.png",
+        "img/player/Walk/walk_40008.png",
+        "img/player/Walk/walk_40009.png",
+        "img/player/Walk/walk_60000.png",
+        "img/player/Walk/walk_60001.png",
+        "img/player/Walk/walk_60002.png",
+        "img/player/Walk/walk_60003.png",
+        "img/player/Walk/walk_60004.png",
+        "img/player/Walk/walk_60005.png",
+        "img/player/Walk/walk_60006.png",
+        "img/player/Walk/walk_60007.png",
+        "img/player/Walk/walk_60008.png",
+        "img/player/Walk/walk_60009.png",
+        "img/player/Walk/walk_70000.png",
+        "img/player/Walk/walk_70001.png",
+        "img/player/Walk/walk_70002.png",
+        "img/player/Walk/walk_70003.png",
+        "img/player/Walk/walk_70004.png",
+        "img/player/Walk/walk_70005.png",
+        "img/player/Walk/walk_70006.png",
+        "img/player/Walk/walk_70007.png",
+        "img/player/Walk/walk_70008.png",
+        "img/player/Walk/walk_70009.png",
+        "img/player/Attack_01/attack_00000.png",
+        "img/player/Attack_01/attack_00001.png",
+        "img/player/Attack_01/attack_00002.png",
+        "img/player/Attack_01/attack_00003.png",
+        "img/player/Attack_01/attack_00004.png",
+        "img/player/Attack_01/attack_00005.png",
+        "img/player/Attack_01/attack_00006.png",
+        "img/player/Attack_01/attack_00007.png",
+        "img/player/Attack_01/attack_10000.png",
+        "img/player/Attack_01/attack_10001.png",
+        "img/player/Attack_01/attack_10002.png",
+        "img/player/Attack_01/attack_10003.png",
+        "img/player/Attack_01/attack_10004.png",
+        "img/player/Attack_01/attack_10005.png",
+        "img/player/Attack_01/attack_10006.png",
+        "img/player/Attack_01/attack_10007.png",
+        "img/player/Attack_01/attack_20000.png",
+        "img/player/Attack_01/attack_20001.png",
+        "img/player/Attack_01/attack_20002.png",
+        "img/player/Attack_01/attack_20003.png",
+        "img/player/Attack_01/attack_20004.png",
+        "img/player/Attack_01/attack_20005.png",
+        "img/player/Attack_01/attack_20006.png",
+        "img/player/Attack_01/attack_20007.png",
+        "img/player/Attack_01/attack_30000.png",
+        "img/player/Attack_01/attack_30001.png",
+        "img/player/Attack_01/attack_30002.png",
+        "img/player/Attack_01/attack_30003.png",
+        "img/player/Attack_01/attack_30004.png",
+        "img/player/Attack_01/attack_30005.png",
+        "img/player/Attack_01/attack_30006.png",
+        "img/player/Attack_01/attack_30007.png",
+        "img/player/Attack_01/attack_40000.png",
+        "img/player/Attack_01/attack_40001.png",
+        "img/player/Attack_01/attack_40002.png",
+        "img/player/Attack_01/attack_40003.png",
+        "img/player/Attack_01/attack_40004.png",
+        "img/player/Attack_01/attack_40005.png",
+        "img/player/Attack_01/attack_40006.png",
+        "img/player/Attack_01/attack_40007.png",
+        "img/player/Attack_01/attack_50000.png",
+        "img/player/Attack_01/attack_50001.png",
+        "img/player/Attack_01/attack_50002.png",
+        "img/player/Attack_01/attack_50003.png",
+        "img/player/Attack_01/attack_50004.png",
+        "img/player/Attack_01/attack_50005.png",
+        "img/player/Attack_01/attack_50006.png",
+        "img/player/Attack_01/attack_50007.png",
+        "img/player/Attack_01/attack_60000.png",
+        "img/player/Attack_01/attack_60001.png",
+        "img/player/Attack_01/attack_60002.png",
+        "img/player/Attack_01/attack_60003.png",
+        "img/player/Attack_01/attack_60004.png",
+        "img/player/Attack_01/attack_60005.png",
+        "img/player/Attack_01/attack_60006.png",
+        "img/player/Attack_01/attack_60007.png",
+        "img/player/Attack_01/attack_70000.png",
+        "img/player/Attack_01/attack_70001.png",
+        "img/player/Attack_01/attack_70002.png",
+        "img/player/Attack_01/attack_70003.png",
+        "img/player/Attack_01/attack_70004.png",
+        "img/player/Attack_01/attack_70005.png",
+        "img/player/Attack_01/attack_70006.png",
+        "img/player/Attack_01/attack_70007.png",
+    ]);
 }
