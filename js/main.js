@@ -19,7 +19,6 @@ console.log("initialized");
 
 //LOAD GAME ON FORM SUMBIT
 if (exit === false) {
-
     displayStats();
     document.body.querySelector(".nom").textContent = joueur.name;
     document.body.querySelector(".nomEnnemy").textContent = ennemy.name;
