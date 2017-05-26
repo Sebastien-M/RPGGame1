@@ -36,6 +36,7 @@ if (exit === false) {
     console.log("map created");
     console.log("----------------------------------------------------------------");
     //initialPosition(joueur, Math.floor((Math.random() * 9) + 0), Math.floor((Math.random() * 9) + 0)); //TO IMPLEMENT AT THE END
+    //initialPosition(ennemy, Math.floor((Math.random() * 9) + 0), Math.floor((Math.random() * 9) + 0));
     initialPosition(joueur, 4, 4);
     initialPosition(ennemy, 5, 5);
     // PLAYER TURN ON TILE CLICK
@@ -83,6 +84,7 @@ function playerTurn() {
         for (let y = 0; y < 10; y++) {
             entiremap = document.body.querySelectorAll(".mapBlock");
             map[x][y].addEventListener("click", function(e) {
+                map[previousCase[0]][previousCase[1]].style.border = "";
                 resetOpacity();
                 console.log("click on : x:" + x + " y:" + y);
                 if (x === joueur.x && y === joueur.y) {} else if ((x - joueur.x) + (y - joueur.y) > 8) { console.log("more than 2pm"); } else {
@@ -132,6 +134,7 @@ function attack(character, target) {
         attackdownleft(character.absoluteClass);
     }
     target.hp = target.hp - 30;
+    displayStats();
     hpUpdate(character, target);
     console.log("attacked");
 }
@@ -204,7 +207,7 @@ function move(character, xpos, ypos) {
     else {
         character.mp -= 1;
         displayStats();
-        map[previousCase[0]][previousCase[1]].style.border = "";
+        //map[previousCase[0]][previousCase[1]].style.border = "";
         document.body.querySelector(character.selector).style.left = map[xpos][ypos].getBoundingClientRect().left - 35 + "px";
         document.body.querySelector(character.selector).style.top = map[xpos][ypos].getBoundingClientRect().top - 45 + "px";
         //WALK ANIMATIONS
@@ -432,7 +435,7 @@ function attackdownleft(select) {
 }
 
 
-//_________________________________________________________________________________________________________
+//________________________________________________LOADING IMAGES_________________________________________________________
 
 function loadpics() {
     preloadImages(["img/player/Walk/walk_00000.png",
