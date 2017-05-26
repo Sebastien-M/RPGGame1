@@ -6,6 +6,7 @@ var listcharacter = [];
 var endgame = false;
 var joueur = new perso;
 var ennemy = new perso;
+var entiremap = document.body.querySelectorAll(".mapBlock");
 joueur.selector = ".personnage";
 joueur.absoluteClass = "personnage";
 joueur.healthselector = ".playerHealth";
@@ -38,6 +39,7 @@ if (exit === false) {
     initialPosition(joueur, 4, 4);
     initialPosition(ennemy, 5, 5);
     // PLAYER TURN ON TILE CLICK
+    highlight(joueur.x, joueur.y)
     playerTurn();
 }
 
@@ -59,6 +61,7 @@ function perso() {
     this.canattack = false;
     this.healthselector = "";
 }
+
 function ennemyTurn() {
     let randomx = Math.floor((Math.random() * 9) + 0);
     let randomy = Math.floor((Math.random() * 9) + 0);
@@ -70,35 +73,38 @@ function ennemyTurn() {
             let randomy = Math.floor((Math.random() * 9) + 0);
         }
     }
-    move(ennemy, randomx, randomy);//TEST
+    move(ennemy, randomx, randomy); //TEST
+
     previousEnnemyCase = [randomx, randomy];
 }
+
 function playerTurn() {
     for (let x = 0; x < 10; x++) {
         for (let y = 0; y < 10; y++) {
-            map[x][y].addEventListener("click", function (e) {
+            entiremap = document.body.querySelectorAll(".mapBlock");
+            map[x][y].addEventListener("click", function(e) {
+                resetOpacity();
                 console.log("click on : x:" + x + " y:" + y);
-                if (x === joueur.x && y === joueur.y) { }
-                else if ((x - joueur.x) + (y - joueur.y) > 8) { console.log("more than 2pm"); }
-                else {
+                if (x === joueur.x && y === joueur.y) {} else if ((x - joueur.x) + (y - joueur.y) > 8) { console.log("more than 2pm"); } else {
                     move(joueur, x, y);
                     if (canattack(joueur, ennemy) === true) {
                         console.log("You can attack the ennemy");
-                        setTimeout(function () {
+                        setTimeout(function() {
                             attack(joueur, ennemy);
                         }, 2400)
                     }
                     //ATTACK
                     previousCase = [x, y];
-                    setTimeout(function () {
+                    setTimeout(function() {
                         ennemyTurn();
                         if (canattack(ennemy, joueur) === true) {
-                            setTimeout(function () {
+                            setTimeout(function() {
                                 attack(ennemy, joueur);
                                 hpUpdate(joueur, ennemy)
                                 console.log("Ennemy can attack you");
                             }, 2400)
                         }
+                        highlight(joueur.x, joueur.y);
                     }, 4500)
                 }
 
@@ -106,6 +112,7 @@ function playerTurn() {
         }
     }
 }
+
 function attack(character, target) {
     if (target.x > character.x && target.y > character.y) {
         attackright(character.absoluteClass);
@@ -130,7 +137,7 @@ function attack(character, target) {
 }
 
 function submit() {
-    document.body.querySelector("form").addEventListener("submit", function () {
+    document.body.querySelector("form").addEventListener("submit", function() {
         while (document.body.querySelector("#name").value === "") {
             document.body.querySelector("#name").id = "nameempty";
             wait(500);
@@ -139,6 +146,7 @@ function submit() {
     });
 
 }
+
 function init() {
     joueur.name = document.body.querySelector("#name").value;
     joueur.name = "PLAYER";
@@ -152,14 +160,13 @@ function init() {
 function canattack(player, target) {
     if ((Math.abs(player.x - target.x) < 2 && player.y === target.y) || (Math.abs(player.y - target.y) < 2 && player.x === target.x)) {
         return true;
-    }
-    else if (((target.x === player.x - 1) || (target.x === player.x + 1)) && ((target.y === player.y - 1) || (target.y === player.y + 1))) {
+    } else if (((target.x === player.x - 1) || (target.x === player.x + 1)) && ((target.y === player.y - 1) || (target.y === player.y + 1))) {
         return true;
-    }
-    else {
+    } else {
         return false;
     }
 }
+
 function createMap() {
     for (let x = 0; x <= 9; x++) {
         map[x] = [];
@@ -197,7 +204,7 @@ function move(character, xpos, ypos) {
     else {
         character.mp -= 1;
         displayStats();
-        map[previousCase[0]][previousCase[1]].style.border = "2px solid white";
+        map[previousCase[0]][previousCase[1]].style.border = "";
         document.body.querySelector(character.selector).style.left = map[xpos][ypos].getBoundingClientRect().left - 35 + "px";
         document.body.querySelector(character.selector).style.top = map[xpos][ypos].getBoundingClientRect().top - 45 + "px";
         //WALK ANIMATIONS
@@ -240,6 +247,7 @@ function displayStats() {
     document.body.querySelector("#ennemypm").textContent = "MP : " + ennemy.mp;
     document.body.querySelector("#ennemyhealth").textContent = "Health : " + ennemy.hp;
 }
+
 function initialPosition(target, xx, yy) {
     target.x = xx;
     target.y = yy;
@@ -254,7 +262,7 @@ function preloadImages(array) {
     let list = preloadImages.list;
     for (let i = 0; i < array.length; i++) {
         let img = new Image();
-        img.onload = function () {
+        img.onload = function() {
             let index = list.indexOf(this);
             if (index !== -1) {
                 // remove image from the array once it's loaded
@@ -276,20 +284,35 @@ function wait(ms) {
     }
 }
 
+function highlight(xplayer, yplayer) {
+    setTimeout(function() {
+        try { map[xplayer + 1][yplayer - 1].style.opacity = "0.5"; } catch (e) {}
+        try { map[xplayer + 1][yplayer].style.opacity = "0.5"; } catch (e) {}
+        try { map[xplayer + 1][yplayer + 1].style.opacity = "0.5"; } catch (e) {}
+        try { map[xplayer][yplayer + 1].style.opacity = "0.5"; } catch (e) {}
+        try { map[xplayer - 1][yplayer].style.opacity = "0.5"; } catch (e) {}
+        try { map[xplayer - 1][yplayer - 1].style.opacity = "0.5"; } catch (e) {}
+        try { map[xplayer][yplayer - 1].style.opacity = "0.5"; } catch (e) {}
+        try { map[xplayer - 1][yplayer + 1].style.opacity = "0.5"; } catch (e) {}
+    }, 2400);
+
+}
+
+function resetOpacity() {
+    for (let i = 0; i < entiremap.length; i++) {
+        entiremap[i].style.opacity = "1";
+    }
+}
 
 /*_______________________________________________________ANIMATIONS_______________________________________________________________
-  --------------------------------------------------------------------------------------------------------------------------------*/ 
+  --------------------------------------------------------------------------------------------------------------------------------*/
 
 
 // WALKING ANIMATIONS
-function highlight(xplayer, yplayer) {
-    map[previousCase[0] + 1][previousCase[1] - 1].style.opacity = "1";
-    map[xplayer + 1][yplayer - 1].style.opacity = "0.5";
-}
 
 function walkright(select) {
     document.body.querySelector("." + select).className = select + " walkright";
-    setTimeout(function () {
+    setTimeout(function() {
         document.body.querySelector("." + select).className = select + " endright";
     }, 2000);
 
@@ -297,7 +320,7 @@ function walkright(select) {
 
 function walkupright(select) {
     document.body.querySelector("." + select).className = select + " walkupright";
-    setTimeout(function () {
+    setTimeout(function() {
         document.body.querySelector("." + select).className = select + " endupright";
     }, 2000);
 
@@ -306,14 +329,14 @@ function walkupright(select) {
 
 function walkleft(select) {
     document.body.querySelector("." + select).className = select + " walkleft";
-    setTimeout(function () {
+    setTimeout(function() {
         document.body.querySelector("." + select).className = select + " endleft";
     }, 2000)
 }
 
 function walkupleft(select) {
     document.body.querySelector("." + select).className = select + " walkupleft";
-    setTimeout(function () {
+    setTimeout(function() {
         document.body.querySelector("." + select).className = select + " endupleft";
     }, 2000);
 
@@ -321,36 +344,36 @@ function walkupleft(select) {
 
 function walkup(select) {
     document.body.querySelector("." + select).className = select + " walkup";
-    setTimeout(function () {
+    setTimeout(function() {
         document.body.querySelector("." + select).className = select + " endup";
     }, 2000);
 }
 
 function walkdown(select) {
     document.body.querySelector("." + select).className = select + " walkdown";
-    setTimeout(function () {
+    setTimeout(function() {
         document.body.querySelector("." + select).className = select + " enddown";
     }, 2400)
 }
 
 function walkdownright(select) {
     document.body.querySelector("." + select).className = select + " walkdownright";
-    setTimeout(function () {
+    setTimeout(function() {
         document.body.querySelector("." + select).className = select + " enddownright";
     }, 2400)
 }
 
 function walkdownleft(select) {
     document.body.querySelector("." + select).className = select + " walkdownleft";
-    setTimeout(function () {
+    setTimeout(function() {
         document.body.querySelector("." + select).className = select + " enddownleft";
     }, 2400)
 }
 
-//ATTACK ANIMATIONS
+//ATTACK ANIMATIONS-------------------------------------------------------------------------------------------------------
 function attackright(select) {
     document.body.querySelector("." + select).className = select + " attackright";
-    setTimeout(function () {
+    setTimeout(function() {
         document.body.querySelector("." + select).className = select + " endright";
     }, 2000);
 
@@ -358,7 +381,7 @@ function attackright(select) {
 
 function attackupright(select) {
     document.body.querySelector("." + select).className = select + " attackupright";
-    setTimeout(function () {
+    setTimeout(function() {
         document.body.querySelector("." + select).className = select + " endupright";
     }, 2000);
 
@@ -367,14 +390,14 @@ function attackupright(select) {
 
 function attackleft(select) {
     document.body.querySelector("." + select).className = select + " attackleft";
-    setTimeout(function () {
+    setTimeout(function() {
         document.body.querySelector("." + select).className = select + " endleft";
     }, 2000)
 }
 
 function attackupleft(select) {
     document.body.querySelector("." + select).className = select + " attackupleft";
-    setTimeout(function () {
+    setTimeout(function() {
         document.body.querySelector("." + select).className = select + " endupleft";
     }, 2000);
 
@@ -382,31 +405,33 @@ function attackupleft(select) {
 
 function attackup(select) {
     document.body.querySelector("." + select).className = select + " attackup";
-    setTimeout(function () {
+    setTimeout(function() {
         document.body.querySelector("." + select).className = select + " endup";
     }, 2000);
 }
 
 function attackdown(select) {
     document.body.querySelector("." + select).className = select + " attackdown";
-    setTimeout(function () {
+    setTimeout(function() {
         document.body.querySelector("." + select).className = select + " enddown";
     }, 2400)
 }
 
 function attackdownright(select) {
     document.body.querySelector("." + select).className = select + " attackright";
-    setTimeout(function () {
+    setTimeout(function() {
         document.body.querySelector("." + select).className = select + " enddownright";
     }, 2400)
 }
 
 function attackdownleft(select) {
     document.body.querySelector("." + select).className = select + " attackdownleft";
-    setTimeout(function () {
+    setTimeout(function() {
         document.body.querySelector("." + select).className = select + " enddownleft";
     }, 2400)
 }
+
+
 //_________________________________________________________________________________________________________
 
 function loadpics() {

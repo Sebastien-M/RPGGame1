@@ -830,8 +830,9 @@ p {
 }
 
 .attackleft {
-    height: 80px;
-    width: 90px;
+    height: 130px;
+    width: 160px;
+    /*CHANGED */
     background-repeat: no-repeat;
     animation-name: attackLeft;
     animation-duration: 1s;
