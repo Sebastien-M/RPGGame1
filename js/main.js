@@ -40,7 +40,7 @@ if (exit === false) {
     initialPosition(joueur, 4, 4);
     initialPosition(ennemy, 5, 5);
     // PLAYER TURN ON TILE CLICK
-    highlight(joueur.x, joueur.y)
+    highlight(joueur.x, joueur.y, joueur.mp);
     playerTurn();
 }
 
@@ -51,7 +51,7 @@ function perso() {
     this.items = [];
     this.money = 0;
     this.hp = 300;
-    this.mp = 40;
+    this.mp = 2;
     this.ap = 1;
     this.position = [0][0];
     this.x = 0;
@@ -75,7 +75,9 @@ function ennemyTurn() {
         }
     }
     move(ennemy, randomx, randomy); //TEST
-
+    joueur.mp = 2;
+    ennemy.mp = 2;
+    displayStats();
     previousEnnemyCase = [randomx, randomy];
 }
 
@@ -106,7 +108,7 @@ function playerTurn() {
                                 console.log("Ennemy can attack you");
                             }, 2400)
                         }
-                        highlight(joueur.x, joueur.y);
+                        highlight(joueur.x, joueur.y, joueur.mp);
                     }, 4500)
                 }
 
@@ -287,34 +289,46 @@ function wait(ms) {
     }
 }
 
-function highlight(xplayer, yplayer) {
+function highlight(xplayer, yplayer, playermp) {
     setTimeout(function() {
         //+1 case
-        try { map[xplayer + 1][yplayer - 1].style.opacity = "0.5"; } catch (e) {}
-        try { map[xplayer + 1][yplayer].style.opacity = "0.5"; } catch (e) {}
-        try { map[xplayer + 1][yplayer + 1].style.opacity = "0.5"; } catch (e) {}
-        try { map[xplayer][yplayer + 1].style.opacity = "0.5"; } catch (e) {}
-        try { map[xplayer - 1][yplayer].style.opacity = "0.5"; } catch (e) {}
-        try { map[xplayer - 1][yplayer - 1].style.opacity = "0.5"; } catch (e) {}
-        try { map[xplayer][yplayer - 1].style.opacity = "0.5"; } catch (e) {}
-        try { map[xplayer - 1][yplayer + 1].style.opacity = "0.5"; } catch (e) {}
+        if (playermp === 1) {
+            try { map[xplayer + 1][yplayer - 1].style.opacity = "0.5"; } catch (e) {}
+            try { map[xplayer + 1][yplayer].style.opacity = "0.5"; } catch (e) {}
+            try { map[xplayer + 1][yplayer + 1].style.opacity = "0.5"; } catch (e) {}
+            try { map[xplayer][yplayer + 1].style.opacity = "0.5"; } catch (e) {}
+            try { map[xplayer - 1][yplayer].style.opacity = "0.5"; } catch (e) {}
+            try { map[xplayer - 1][yplayer - 1].style.opacity = "0.5"; } catch (e) {}
+            try { map[xplayer][yplayer - 1].style.opacity = "0.5"; } catch (e) {}
+            try { map[xplayer - 1][yplayer + 1].style.opacity = "0.5"; } catch (e) {}
+        }
         //+2cases
-        try { map[xplayer][yplayer - 2].style.opacity = "0.5"; } catch (e) {}
-        try { map[xplayer - 1][yplayer - 2].style.opacity = "0.5"; } catch (e) {}
-        try { map[xplayer - 2][yplayer - 2].style.opacity = "0.5"; } catch (e) {}
-        try { map[xplayer - 2][yplayer - 1].style.opacity = "0.5"; } catch (e) {}
-        try { map[xplayer - 2][yplayer].style.opacity = "0.5"; } catch (e) {}
-        try { map[xplayer - 2][yplayer + 1].style.opacity = "0.5"; } catch (e) {}
-        try { map[xplayer - 2][yplayer + 2].style.opacity = "0.5"; } catch (e) {}
-        try { map[xplayer - 1][yplayer + 2].style.opacity = "0.5"; } catch (e) {}
-        try { map[xplayer][yplayer + 2].style.opacity = "0.5"; } catch (e) {}
-        try { map[xplayer + 1][yplayer + 2].style.opacity = "0.5"; } catch (e) {}
-        try { map[xplayer + 2][yplayer + 2].style.opacity = "0.5"; } catch (e) {}
-        try { map[xplayer + 2][yplayer + 1].style.opacity = "0.5"; } catch (e) {}
-        try { map[xplayer + 2][yplayer].style.opacity = "0.5"; } catch (e) {}
-        try { map[xplayer + 2][yplayer - 1].style.opacity = "0.5"; } catch (e) {}
-        try { map[xplayer + 2][yplayer - 2].style.opacity = "0.5"; } catch (e) {}
-        try { map[xplayer + 1][yplayer - 2].style.opacity = "0.5"; } catch (e) {}
+        else if (playermp === 2) {
+            try { map[xplayer + 1][yplayer - 1].style.opacity = "0.5"; } catch (e) {}
+            try { map[xplayer + 1][yplayer].style.opacity = "0.5"; } catch (e) {}
+            try { map[xplayer + 1][yplayer + 1].style.opacity = "0.5"; } catch (e) {}
+            try { map[xplayer][yplayer + 1].style.opacity = "0.5"; } catch (e) {}
+            try { map[xplayer - 1][yplayer].style.opacity = "0.5"; } catch (e) {}
+            try { map[xplayer - 1][yplayer - 1].style.opacity = "0.5"; } catch (e) {}
+            try { map[xplayer][yplayer - 1].style.opacity = "0.5"; } catch (e) {}
+            try { map[xplayer - 1][yplayer + 1].style.opacity = "0.5"; } catch (e) {}
+            try { map[xplayer][yplayer - 2].style.opacity = "0.5"; } catch (e) {}
+            try { map[xplayer - 1][yplayer - 2].style.opacity = "0.5"; } catch (e) {}
+            try { map[xplayer - 2][yplayer - 2].style.opacity = "0.5"; } catch (e) {}
+            try { map[xplayer - 2][yplayer - 1].style.opacity = "0.5"; } catch (e) {}
+            try { map[xplayer - 2][yplayer].style.opacity = "0.5"; } catch (e) {}
+            try { map[xplayer - 2][yplayer + 1].style.opacity = "0.5"; } catch (e) {}
+            try { map[xplayer - 2][yplayer + 2].style.opacity = "0.5"; } catch (e) {}
+            try { map[xplayer - 1][yplayer + 2].style.opacity = "0.5"; } catch (e) {}
+            try { map[xplayer][yplayer + 2].style.opacity = "0.5"; } catch (e) {}
+            try { map[xplayer + 1][yplayer + 2].style.opacity = "0.5"; } catch (e) {}
+            try { map[xplayer + 2][yplayer + 2].style.opacity = "0.5"; } catch (e) {}
+            try { map[xplayer + 2][yplayer + 1].style.opacity = "0.5"; } catch (e) {}
+            try { map[xplayer + 2][yplayer].style.opacity = "0.5"; } catch (e) {}
+            try { map[xplayer + 2][yplayer - 1].style.opacity = "0.5"; } catch (e) {}
+            try { map[xplayer + 2][yplayer - 2].style.opacity = "0.5"; } catch (e) {}
+            try { map[xplayer + 1][yplayer - 2].style.opacity = "0.5"; } catch (e) {}
+        }
 
     }, 2400);
 
