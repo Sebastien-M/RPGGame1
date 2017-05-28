@@ -615,8 +615,8 @@ p {
 /*ATTACK*/
 
 .attackdownright {
-    height: 80px;
-    width: 90px;
+    height: 120px;
+    width: 170px;
     background-repeat: no-repeat;
     animation-name: attackDownRight;
     animation-duration: 1s;
@@ -658,8 +658,8 @@ p {
 }
 
 .attackright {
-    height: 80px;
-    width: 90px;
+    height: 120px;
+    width: 170px;
     background-repeat: no-repeat;
     animation-name: attackRight;
     animation-duration: 1s;
@@ -701,8 +701,8 @@ p {
 }
 
 .attackupright {
-    height: 80px;
-    width: 90px;
+    height: 120px;
+    width: 170px;
     background-repeat: no-repeat;
     animation-name: attackUpRight;
     animation-duration: 1s;
@@ -744,8 +744,8 @@ p {
 }
 
 .attackup {
-    height: 80px;
-    width: 90px;
+    height: 120px;
+    width: 170px;
     background-repeat: no-repeat;
     animation-name: attackUp;
     animation-duration: 1s;
@@ -787,8 +787,8 @@ p {
 }
 
 .attackupleft {
-    height: 80px;
-    width: 90px;
+    height: 120px;
+    width: 170px;
     background-repeat: no-repeat;
     animation-name: attackUpLeft;
     animation-duration: 1s;
@@ -830,8 +830,8 @@ p {
 }
 
 .attackleft {
-    height: 130px;
-    width: 160px;
+    height: 120px;
+    width: 170px;
     /*CHANGED */
     background-repeat: no-repeat;
     animation-name: attackLeft;
@@ -874,8 +874,8 @@ p {
 }
 
 .attackdownleft {
-    height: 80px;
-    width: 90px;
+    height: 120px;
+    width: 170px;
     background-repeat: no-repeat;
     animation-name: attackDownLeft;
     animation-duration: 1s;
@@ -917,8 +917,8 @@ p {
 }
 
 .attackdown {
-    height: 80px;
-    width: 90px;
+    height: 120px;
+    width: 170px;
     background-repeat: no-repeat;
     animation-name: attackDown;
     animation-duration: 1s;
