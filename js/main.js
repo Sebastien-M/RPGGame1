@@ -88,11 +88,13 @@ function playerTurn() {
             map[joueur.x][joueur.y].style.border = "2px solid blue";
             entiremap = document.body.querySelectorAll(".mapBlock");
             map[x][y].addEventListener("click", function (e) {
+                joueur.ap = 1;
+                ennemy.ap = 1;
                 map[joueur.x][joueur.y].style.border = "";
                 map[previousCase[0]][previousCase[1]].style.border = "";
                 resetOpacity();
                 console.log("click on : x:" + x + " y:" + y);
-                if (x === joueur.x && y === joueur.y) { console.log("Clicked on own case"); } /*else if ((x - joueur.x) + (y - joueur.y) > 8) { console.log("more than 2pm"); }*/
+                if (x === joueur.x && y === joueur.y) { console.log("Clicked on own case");} /*else if ((x - joueur.x) + (y - joueur.y) > 8) { console.log("more than 2pm"); }*/
                 //ATTACK
                 else if (x === ennemy.x && y === ennemy.y) {
                     if (canattack(joueur, ennemy) === true) {
@@ -141,6 +143,7 @@ function attack(character, target) {
         attackdownleft(character.absoluteClass);
     }
     target.hp = target.hp - 30;
+    character.ap -= 1;
     displayStats();
     hpUpdate(character, target);
     console.log("attacked");
@@ -171,6 +174,8 @@ function init() {
 function canattack(player, target) {
     if ((Math.abs(player.x - target.x) < 2 && player.y === target.y) || (Math.abs(player.y - target.y) < 2 && player.x === target.x)) {
         return true;
+    }else if(player.ap <= 0){
+        return false;
     } else if (((target.x === player.x - 1) || (target.x === player.x + 1)) && ((target.y === player.y - 1) || (target.y === player.y + 1))) {
         return true;
     } else {
@@ -253,10 +258,12 @@ function hpUpdate(character1, character2) {
 }
 
 function displayStats() {
-    document.body.querySelector("#pm").textContent = "MP : " + joueur.mp;
+    document.body.querySelector("#pm").textContent = "Movement Points : " + joueur.mp;
     document.body.querySelector("#health").textContent = "Health : " + joueur.hp;
-    document.body.querySelector("#ennemypm").textContent = "MP : " + ennemy.mp;
+    document.body.querySelector("#ennemypm").textContent = "Movement Points : " + ennemy.mp;
     document.body.querySelector("#ennemyhealth").textContent = "Health : " + ennemy.hp;
+    document.body.querySelector("#attackPoints").textContent = "Attack points : " + joueur.ap;
+    document.body.querySelector("#ennemyAttackPoints").textContent = "Attack points : " + ennemy.ap;
 }
 
 function initialPosition(target, xx, yy) {
