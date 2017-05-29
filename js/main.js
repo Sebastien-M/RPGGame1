@@ -23,7 +23,6 @@ if (exit === false) {
     displayStats();
     document.body.querySelector(".nom").textContent = joueur.name;
     document.body.querySelector(".nomEnnemy").textContent = ennemy.name;
-    // A METTRE DANS FONCTION SPAWN ENNEMY
     //document.body.querySelector(".nomEnnemy").textContent = ennemy.name;
     //var ennemy = new perso;
     document.body.querySelector(".personnage").className = "personnage";
@@ -35,16 +34,16 @@ if (exit === false) {
     var previousEnnemyCase = [0, 0];
     console.log("map created");
     console.log("----------------------------------------------------------------");
+    let initialEnnemyPosition = [5, 5];
     //initialPosition(joueur, Math.floor((Math.random() * 9) + 0), Math.floor((Math.random() * 9) + 0)); //TO IMPLEMENT AT THE END
     //initialPosition(ennemy, Math.floor((Math.random() * 9) + 0), Math.floor((Math.random() * 9) + 0));
     initialPosition(joueur, 4, 4);
-    initialPosition(ennemy, 5, 5);
+    initialPosition(ennemy, initialEnnemyPosition[0], initialEnnemyPosition[1]);
     // PLAYER TURN ON TILE CLICK
     highlight(joueur.x, joueur.y, joueur.mp);
     playerTurn();
 }
 
-//
 
 function perso() {
     this.name = "";
@@ -75,6 +74,8 @@ function ennemyTurn() {
         }
     }
     move(ennemy, randomx, randomy); //TEST
+    ennemy.x = randomx;
+    ennemy.y = randomy;
     joueur.mp = 2;
     ennemy.mp = 2;
     displayStats();
@@ -84,25 +85,29 @@ function ennemyTurn() {
 function playerTurn() {
     for (let x = 0; x < 10; x++) {
         for (let y = 0; y < 10; y++) {
+            map[joueur.x][joueur.y].style.border = "2px solid blue";
             entiremap = document.body.querySelectorAll(".mapBlock");
-            map[x][y].addEventListener("click", function(e) {
+            map[x][y].addEventListener("click", function (e) {
+                map[joueur.x][joueur.y].style.border = "";
                 map[previousCase[0]][previousCase[1]].style.border = "";
                 resetOpacity();
                 console.log("click on : x:" + x + " y:" + y);
-                if (x === joueur.x && y === joueur.y) {} else if ((x - joueur.x) + (y - joueur.y) > 8) { console.log("more than 2pm"); } else {
-                    move(joueur, x, y);
+                if (x === joueur.x && y === joueur.y) { console.log("Clicked on own case"); } /*else if ((x - joueur.x) + (y - joueur.y) > 8) { console.log("more than 2pm"); }*/
+                else if (x === ennemy.x && y === ennemy.y) {
                     if (canattack(joueur, ennemy) === true) {
                         console.log("You can attack the ennemy");
-                        setTimeout(function() {
-                            attack(joueur, ennemy);
-                        }, 2400)
+                        attack(joueur, ennemy);
                     }
+                }
+                else {
+                    move(joueur, x, y);
+
                     //ATTACK
                     previousCase = [x, y];
-                    setTimeout(function() {
+                    setTimeout(function () {
                         ennemyTurn();
                         if (canattack(ennemy, joueur) === true) {
-                            setTimeout(function() {
+                            setTimeout(function () {
                                 attack(ennemy, joueur);
                                 hpUpdate(joueur, ennemy)
                                 console.log("Ennemy can attack you");
@@ -142,7 +147,7 @@ function attack(character, target) {
 }
 
 function submit() {
-    document.body.querySelector("form").addEventListener("submit", function() {
+    document.body.querySelector("form").addEventListener("submit", function () {
         while (document.body.querySelector("#name").value === "") {
             document.body.querySelector("#name").id = "nameempty";
             wait(500);
@@ -161,6 +166,7 @@ function init() {
     document.body.querySelector("header").remove();
     return false;
 }
+
 //CHECK IF CHARACTER CAN ATTCK OR NOT
 function canattack(player, target) {
     if ((Math.abs(player.x - target.x) < 2 && player.y === target.y) || (Math.abs(player.y - target.y) < 2 && player.x === target.x)) {
@@ -267,7 +273,7 @@ function preloadImages(array) {
     let list = preloadImages.list;
     for (let i = 0; i < array.length; i++) {
         let img = new Image();
-        img.onload = function() {
+        img.onload = function () {
             let index = list.indexOf(this);
             if (index !== -1) {
                 // remove image from the array once it's loaded
@@ -290,44 +296,44 @@ function wait(ms) {
 }
 
 function highlight(xplayer, yplayer, playermp) {
-    setTimeout(function() {
+    setTimeout(function () {
         //+1 case
         if (playermp === 1) {
-            try { map[xplayer + 1][yplayer - 1].style.opacity = "0.5"; } catch (e) {}
-            try { map[xplayer + 1][yplayer].style.opacity = "0.5"; } catch (e) {}
-            try { map[xplayer + 1][yplayer + 1].style.opacity = "0.5"; } catch (e) {}
-            try { map[xplayer][yplayer + 1].style.opacity = "0.5"; } catch (e) {}
-            try { map[xplayer - 1][yplayer].style.opacity = "0.5"; } catch (e) {}
-            try { map[xplayer - 1][yplayer - 1].style.opacity = "0.5"; } catch (e) {}
-            try { map[xplayer][yplayer - 1].style.opacity = "0.5"; } catch (e) {}
-            try { map[xplayer - 1][yplayer + 1].style.opacity = "0.5"; } catch (e) {}
+            try { map[xplayer + 1][yplayer - 1].style.opacity = "0.5"; } catch (e) { }
+            try { map[xplayer + 1][yplayer].style.opacity = "0.5"; } catch (e) { }
+            try { map[xplayer + 1][yplayer + 1].style.opacity = "0.5"; } catch (e) { }
+            try { map[xplayer][yplayer + 1].style.opacity = "0.5"; } catch (e) { }
+            try { map[xplayer - 1][yplayer].style.opacity = "0.5"; } catch (e) { }
+            try { map[xplayer - 1][yplayer - 1].style.opacity = "0.5"; } catch (e) { }
+            try { map[xplayer][yplayer - 1].style.opacity = "0.5"; } catch (e) { }
+            try { map[xplayer - 1][yplayer + 1].style.opacity = "0.5"; } catch (e) { }
         }
         //+2cases
         else if (playermp === 2) {
-            try { map[xplayer + 1][yplayer - 1].style.opacity = "0.5"; } catch (e) {}
-            try { map[xplayer + 1][yplayer].style.opacity = "0.5"; } catch (e) {}
-            try { map[xplayer + 1][yplayer + 1].style.opacity = "0.5"; } catch (e) {}
-            try { map[xplayer][yplayer + 1].style.opacity = "0.5"; } catch (e) {}
-            try { map[xplayer - 1][yplayer].style.opacity = "0.5"; } catch (e) {}
-            try { map[xplayer - 1][yplayer - 1].style.opacity = "0.5"; } catch (e) {}
-            try { map[xplayer][yplayer - 1].style.opacity = "0.5"; } catch (e) {}
-            try { map[xplayer - 1][yplayer + 1].style.opacity = "0.5"; } catch (e) {}
-            try { map[xplayer][yplayer - 2].style.opacity = "0.5"; } catch (e) {}
-            try { map[xplayer - 1][yplayer - 2].style.opacity = "0.5"; } catch (e) {}
-            try { map[xplayer - 2][yplayer - 2].style.opacity = "0.5"; } catch (e) {}
-            try { map[xplayer - 2][yplayer - 1].style.opacity = "0.5"; } catch (e) {}
-            try { map[xplayer - 2][yplayer].style.opacity = "0.5"; } catch (e) {}
-            try { map[xplayer - 2][yplayer + 1].style.opacity = "0.5"; } catch (e) {}
-            try { map[xplayer - 2][yplayer + 2].style.opacity = "0.5"; } catch (e) {}
-            try { map[xplayer - 1][yplayer + 2].style.opacity = "0.5"; } catch (e) {}
-            try { map[xplayer][yplayer + 2].style.opacity = "0.5"; } catch (e) {}
-            try { map[xplayer + 1][yplayer + 2].style.opacity = "0.5"; } catch (e) {}
-            try { map[xplayer + 2][yplayer + 2].style.opacity = "0.5"; } catch (e) {}
-            try { map[xplayer + 2][yplayer + 1].style.opacity = "0.5"; } catch (e) {}
-            try { map[xplayer + 2][yplayer].style.opacity = "0.5"; } catch (e) {}
-            try { map[xplayer + 2][yplayer - 1].style.opacity = "0.5"; } catch (e) {}
-            try { map[xplayer + 2][yplayer - 2].style.opacity = "0.5"; } catch (e) {}
-            try { map[xplayer + 1][yplayer - 2].style.opacity = "0.5"; } catch (e) {}
+            try { map[xplayer + 1][yplayer - 1].style.opacity = "0.5"; } catch (e) { }
+            try { map[xplayer + 1][yplayer].style.opacity = "0.5"; } catch (e) { }
+            try { map[xplayer + 1][yplayer + 1].style.opacity = "0.5"; } catch (e) { }
+            try { map[xplayer][yplayer + 1].style.opacity = "0.5"; } catch (e) { }
+            try { map[xplayer - 1][yplayer].style.opacity = "0.5"; } catch (e) { }
+            try { map[xplayer - 1][yplayer - 1].style.opacity = "0.5"; } catch (e) { }
+            try { map[xplayer][yplayer - 1].style.opacity = "0.5"; } catch (e) { }
+            try { map[xplayer - 1][yplayer + 1].style.opacity = "0.5"; } catch (e) { }
+            try { map[xplayer][yplayer - 2].style.opacity = "0.5"; } catch (e) { }
+            try { map[xplayer - 1][yplayer - 2].style.opacity = "0.5"; } catch (e) { }
+            try { map[xplayer - 2][yplayer - 2].style.opacity = "0.5"; } catch (e) { }
+            try { map[xplayer - 2][yplayer - 1].style.opacity = "0.5"; } catch (e) { }
+            try { map[xplayer - 2][yplayer].style.opacity = "0.5"; } catch (e) { }
+            try { map[xplayer - 2][yplayer + 1].style.opacity = "0.5"; } catch (e) { }
+            try { map[xplayer - 2][yplayer + 2].style.opacity = "0.5"; } catch (e) { }
+            try { map[xplayer - 1][yplayer + 2].style.opacity = "0.5"; } catch (e) { }
+            try { map[xplayer][yplayer + 2].style.opacity = "0.5"; } catch (e) { }
+            try { map[xplayer + 1][yplayer + 2].style.opacity = "0.5"; } catch (e) { }
+            try { map[xplayer + 2][yplayer + 2].style.opacity = "0.5"; } catch (e) { }
+            try { map[xplayer + 2][yplayer + 1].style.opacity = "0.5"; } catch (e) { }
+            try { map[xplayer + 2][yplayer].style.opacity = "0.5"; } catch (e) { }
+            try { map[xplayer + 2][yplayer - 1].style.opacity = "0.5"; } catch (e) { }
+            try { map[xplayer + 2][yplayer - 2].style.opacity = "0.5"; } catch (e) { }
+            try { map[xplayer + 1][yplayer - 2].style.opacity = "0.5"; } catch (e) { }
         }
 
     }, 2400);
@@ -348,7 +354,7 @@ function resetOpacity() {
 
 function walkright(select) {
     document.body.querySelector("." + select).className = select + " walkright";
-    setTimeout(function() {
+    setTimeout(function () {
         document.body.querySelector("." + select).className = select + " endright";
     }, 2000);
 
@@ -356,7 +362,7 @@ function walkright(select) {
 
 function walkupright(select) {
     document.body.querySelector("." + select).className = select + " walkupright";
-    setTimeout(function() {
+    setTimeout(function () {
         document.body.querySelector("." + select).className = select + " endupright";
     }, 2000);
 
@@ -365,14 +371,14 @@ function walkupright(select) {
 
 function walkleft(select) {
     document.body.querySelector("." + select).className = select + " walkleft";
-    setTimeout(function() {
+    setTimeout(function () {
         document.body.querySelector("." + select).className = select + " endleft";
     }, 2000)
 }
 
 function walkupleft(select) {
     document.body.querySelector("." + select).className = select + " walkupleft";
-    setTimeout(function() {
+    setTimeout(function () {
         document.body.querySelector("." + select).className = select + " endupleft";
     }, 2000);
 
@@ -380,28 +386,28 @@ function walkupleft(select) {
 
 function walkup(select) {
     document.body.querySelector("." + select).className = select + " walkup";
-    setTimeout(function() {
+    setTimeout(function () {
         document.body.querySelector("." + select).className = select + " endup";
     }, 2000);
 }
 
 function walkdown(select) {
     document.body.querySelector("." + select).className = select + " walkdown";
-    setTimeout(function() {
+    setTimeout(function () {
         document.body.querySelector("." + select).className = select + " enddown";
     }, 2400)
 }
 
 function walkdownright(select) {
     document.body.querySelector("." + select).className = select + " walkdownright";
-    setTimeout(function() {
+    setTimeout(function () {
         document.body.querySelector("." + select).className = select + " enddownright";
     }, 2400)
 }
 
 function walkdownleft(select) {
     document.body.querySelector("." + select).className = select + " walkdownleft";
-    setTimeout(function() {
+    setTimeout(function () {
         document.body.querySelector("." + select).className = select + " enddownleft";
     }, 2400)
 }
@@ -414,12 +420,12 @@ function attackright(select) {
     document.body.querySelector("." + select).style.left = document.body.querySelector("." + select).getBoundingClientRect().left - 40 + "px";
     document.body.querySelector("." + select).style.top = document.body.querySelector("." + select).getBoundingClientRect().top - 20 + "px";
     document.body.querySelector("." + select).className = select + " attackright";
-    setTimeout(function() {
+    setTimeout(function () {
         document.body.querySelector("." + select).style.left = document.body.querySelector("." + select).getBoundingClientRect().left + 45 + "px";
         document.body.querySelector("." + select).style.top = document.body.querySelector("." + select).getBoundingClientRect().top + 20 + "px";
         document.body.querySelector("." + select).className = select + " endright";
     }, 2000);
-    setTimeout(function() {
+    setTimeout(function () {
         document.body.querySelector("." + select).style.transition = "2.4s";
     }, 4000)
 
@@ -430,12 +436,12 @@ function attackupright(select) {
     document.body.querySelector("." + select).style.left = document.body.querySelector("." + select).getBoundingClientRect().left - 40 + "px";
     document.body.querySelector("." + select).style.top = document.body.querySelector("." + select).getBoundingClientRect().top - 20 + "px";
     document.body.querySelector("." + select).className = select + " attackupright";
-    setTimeout(function() {
+    setTimeout(function () {
         document.body.querySelector("." + select).style.left = document.body.querySelector("." + select).getBoundingClientRect().left + 45 + "px";
         document.body.querySelector("." + select).style.top = document.body.querySelector("." + select).getBoundingClientRect().top + 20 + "px";
         document.body.querySelector("." + select).className = select + " endupright";
     }, 2000);
-    setTimeout(function() {
+    setTimeout(function () {
         document.body.querySelector("." + select).style.transition = "2.4s";
     }, 4000)
 
@@ -447,12 +453,12 @@ function attackleft(select) {
     document.body.querySelector("." + select).style.left = document.body.querySelector("." + select).getBoundingClientRect().left - 40 + "px";
     document.body.querySelector("." + select).style.top = document.body.querySelector("." + select).getBoundingClientRect().top - 20 + "px";
     document.body.querySelector("." + select).className = select + " attackleft";
-    setTimeout(function() {
+    setTimeout(function () {
         document.body.querySelector("." + select).style.left = document.body.querySelector("." + select).getBoundingClientRect().left + 45 + "px";
         document.body.querySelector("." + select).style.top = document.body.querySelector("." + select).getBoundingClientRect().top + 20 + "px";
         document.body.querySelector("." + select).className = select + " endleft";
     }, 2000)
-    setTimeout(function() {
+    setTimeout(function () {
         document.body.querySelector("." + select).style.transition = "2.4s";
     }, 4000)
 
@@ -463,12 +469,12 @@ function attackupleft(select) {
     document.body.querySelector("." + select).style.left = document.body.querySelector("." + select).getBoundingClientRect().left - 40 + "px";
     document.body.querySelector("." + select).style.top = document.body.querySelector("." + select).getBoundingClientRect().top - 20 + "px";
     document.body.querySelector("." + select).className = select + " attackupleft";
-    setTimeout(function() {
+    setTimeout(function () {
         document.body.querySelector("." + select).style.left = document.body.querySelector("." + select).getBoundingClientRect().left + 45 + "px";
         document.body.querySelector("." + select).style.top = document.body.querySelector("." + select).getBoundingClientRect().top + 20 + "px";
         document.body.querySelector("." + select).className = select + " endupleft";
     }, 2000);
-    setTimeout(function() {
+    setTimeout(function () {
         document.body.querySelector("." + select).style.transition = "2.4s";
     }, 4000)
 
@@ -479,12 +485,12 @@ function attackup(select) {
     document.body.querySelector("." + select).style.left = document.body.querySelector("." + select).getBoundingClientRect().left - 40 + "px";
     document.body.querySelector("." + select).style.top = document.body.querySelector("." + select).getBoundingClientRect().top - 20 + "px";
     document.body.querySelector("." + select).className = select + " attackup";
-    setTimeout(function() {
+    setTimeout(function () {
         document.body.querySelector("." + select).style.left = document.body.querySelector("." + select).getBoundingClientRect().left + 45 + "px";
         document.body.querySelector("." + select).style.top = document.body.querySelector("." + select).getBoundingClientRect().top + 20 + "px";
         document.body.querySelector("." + select).className = select + " endup";
     }, 2000);
-    setTimeout(function() {
+    setTimeout(function () {
         document.body.querySelector("." + select).style.transition = "2.4s";
     }, 4000)
 }
@@ -494,12 +500,12 @@ function attackdown(select) {
     document.body.querySelector("." + select).style.left = document.body.querySelector("." + select).getBoundingClientRect().left - 40 + "px";
     document.body.querySelector("." + select).style.top = document.body.querySelector("." + select).getBoundingClientRect().top - 20 + "px";
     document.body.querySelector("." + select).className = select + " attackdown";
-    setTimeout(function() {
+    setTimeout(function () {
         document.body.querySelector("." + select).style.left = document.body.querySelector("." + select).getBoundingClientRect().left + 45 + "px";
         document.body.querySelector("." + select).style.top = document.body.querySelector("." + select).getBoundingClientRect().top + 20 + "px";
         document.body.querySelector("." + select).className = select + " enddown";
     }, 2400)
-    setTimeout(function() {
+    setTimeout(function () {
         document.body.querySelector("." + select).style.transition = "2.4s";
     }, 4000)
 }
@@ -509,12 +515,12 @@ function attackdownright(select) {
     document.body.querySelector("." + select).style.left = document.body.querySelector("." + select).getBoundingClientRect().left - 40 + "px";
     document.body.querySelector("." + select).style.top = document.body.querySelector("." + select).getBoundingClientRect().top - 20 + "px";
     document.body.querySelector("." + select).className = select + " attackdownright";
-    setTimeout(function() {
+    setTimeout(function () {
         document.body.querySelector("." + select).style.left = document.body.querySelector("." + select).getBoundingClientRect().left + 45 + "px";
         document.body.querySelector("." + select).style.top = document.body.querySelector("." + select).getBoundingClientRect().top + 20 + "px";
         document.body.querySelector("." + select).className = select + " enddownright";
     }, 2400)
-    setTimeout(function() {
+    setTimeout(function () {
         document.body.querySelector("." + select).style.transition = "2.4s";
     }, 4000)
 }
@@ -524,12 +530,12 @@ function attackdownleft(select) {
     document.body.querySelector("." + select).style.left = document.body.querySelector("." + select).getBoundingClientRect().left - 40 + "px";
     document.body.querySelector("." + select).style.top = document.body.querySelector("." + select).getBoundingClientRect().top - 20 + "px";
     document.body.querySelector("." + select).className = select + " attackdownleft";
-    setTimeout(function() {
+    setTimeout(function () {
         document.body.querySelector("." + select).style.left = document.body.querySelector("." + select).getBoundingClientRect().left + 45 + "px";
         document.body.querySelector("." + select).style.top = document.body.querySelector("." + select).getBoundingClientRect().top + 20 + "px";
         document.body.querySelector("." + select).className = select + " enddownleft";
     }, 2400)
-    setTimeout(function() {
+    setTimeout(function () {
         document.body.querySelector("." + select).style.transition = "2.4s";
     }, 4000)
 }
