@@ -93,12 +93,13 @@ function playerTurn() {
                 resetOpacity();
                 console.log("click on : x:" + x + " y:" + y);
                 if (x === joueur.x && y === joueur.y) { console.log("Clicked on own case"); } /*else if ((x - joueur.x) + (y - joueur.y) > 8) { console.log("more than 2pm"); }*/
-                 //ATTACK
+                //ATTACK
                 else if (x === ennemy.x && y === ennemy.y) {
                     if (canattack(joueur, ennemy) === true) {
                         console.log("You can attack the ennemy");
                         attack(joueur, ennemy);
                     }
+                    else {}
                 }
                 else {
                     move(joueur, x, y);
