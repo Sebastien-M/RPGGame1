@@ -19,30 +19,28 @@ exit = init();
 console.log("initialized");
 
 //LOAD GAME ON FORM SUMBIT
-if (exit === false) {
-    displayStats();
-    document.body.querySelector(".nom").textContent = joueur.name;
-    document.body.querySelector(".nomEnnemy").textContent = ennemy.name;
-    //document.body.querySelector(".nomEnnemy").textContent = ennemy.name;
-    //var ennemy = new perso;
-    document.body.querySelector(".personnage").className = "personnage";
-    document.body.querySelector(".persoennemy").className = "persoennemy";
-    document.body.querySelector(".ennemyHealth").style.display = "block";
-    document.body.querySelector(".playerHealth").style.display = "block";
-    createMap();
-    var previousCase = [0, 0];
-    var previousEnnemyCase = [0, 0];
-    console.log("map created");
-    console.log("----------------------------------------------------------------");
-    let initialEnnemyPosition = [5, 5];
-    //initialPosition(joueur, Math.floor((Math.random() * 9) + 0), Math.floor((Math.random() * 9) + 0)); //TO IMPLEMENT AT THE END
-    //initialPosition(ennemy, Math.floor((Math.random() * 9) + 0), Math.floor((Math.random() * 9) + 0));
-    initialPosition(joueur, 4, 4);
-    initialPosition(ennemy, initialEnnemyPosition[0], initialEnnemyPosition[1]);
-    // PLAYER TURN ON TILE CLICK
-    highlight(joueur.x, joueur.y, joueur.mp);
-    playerTurn();
-}
+displayStats();
+document.body.querySelector(".nom").textContent = joueur.name;
+document.body.querySelector(".nomEnnemy").textContent = ennemy.name;
+//document.body.querySelector(".nomEnnemy").textContent = ennemy.name;
+document.body.querySelector(".personnage").className = "personnage";
+document.body.querySelector(".persoennemy").className = "persoennemy";
+document.body.querySelector(".ennemyHealth").style.display = "block";
+document.body.querySelector(".playerHealth").style.display = "block";
+createMap();
+var previousCase = [0, 0];
+var previousEnnemyCase = [0, 0];
+console.log("map created");
+console.log("----------------------------------------------------------------");
+let initialEnnemyPosition = [5, 5];
+//initialPosition(joueur, Math.floor((Math.random() * 9) + 0), Math.floor((Math.random() * 9) + 0)); //TO IMPLEMENT AT THE END
+//initialPosition(ennemy, Math.floor((Math.random() * 9) + 0), Math.floor((Math.random() * 9) + 0));
+initialPosition(joueur, 4, 4);
+initialPosition(ennemy, initialEnnemyPosition[0], initialEnnemyPosition[1]);
+// PLAYER TURN ON TILE CLICK
+highlight(joueur.x, joueur.y, joueur.mp);
+playerTurn();
+
 
 
 function perso() {
@@ -94,14 +92,14 @@ function playerTurn() {
                 map[previousCase[0]][previousCase[1]].style.border = "";
                 resetOpacity();
                 console.log("click on : x:" + x + " y:" + y);
-                if (x === joueur.x && y === joueur.y) { console.log("Clicked on own case");} /*else if ((x - joueur.x) + (y - joueur.y) > 8) { console.log("more than 2pm"); }*/
+                if (x === joueur.x && y === joueur.y) { console.log("Clicked on own case"); } /*else if ((x - joueur.x) + (y - joueur.y) > 8) { console.log("more than 2pm"); }*/
                 //ATTACK
                 else if (x === ennemy.x && y === ennemy.y) {
                     if (canattack(joueur, ennemy) === true) {
                         console.log("You can attack the ennemy");
                         attack(joueur, ennemy);
                     }
-                    else {}
+                    else { }
                 }
                 else {
                     move(joueur, x, y);
@@ -176,7 +174,7 @@ function canattack(player, target) {
         return true;
     } else if (((target.x === player.x - 1) || (target.x === player.x + 1)) && ((target.y === player.y - 1) || (target.y === player.y + 1))) {
         return true;
-    }else if(player.ap <= 0){
+    } else if (player.ap <= 0) {
         return false;
     } else {
         return false;
