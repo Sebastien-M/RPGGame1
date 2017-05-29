@@ -174,10 +174,10 @@ function init() {
 function canattack(player, target) {
     if ((Math.abs(player.x - target.x) < 2 && player.y === target.y) || (Math.abs(player.y - target.y) < 2 && player.x === target.x)) {
         return true;
-    }else if(player.ap <= 0){
-        return false;
     } else if (((target.x === player.x - 1) || (target.x === player.x + 1)) && ((target.y === player.y - 1) || (target.y === player.y + 1))) {
         return true;
+    }else if(player.ap <= 0){
+        return false;
     } else {
         return false;
     }
