@@ -83,11 +83,11 @@ function ennemyTurn() {
 function playerTurn() {
     for (let x = 0; x < 10; x++) {
         for (let y = 0; y < 10; y++) {
+            joueur.ap = 1;
+            ennemy.ap = 1;
             map[joueur.x][joueur.y].style.border = "2px solid blue";
             entiremap = document.body.querySelectorAll(".mapBlock");
             map[x][y].addEventListener("click", function (e) {
-                joueur.ap = 1;
-                ennemy.ap = 1;
                 map[joueur.x][joueur.y].style.border = "";
                 map[previousCase[0]][previousCase[1]].style.border = "";
                 resetOpacity();
@@ -172,11 +172,11 @@ function init() {
 function canattack(player, target) {
     if ((Math.abs(player.x - target.x) < 2 && player.y === target.y) || (Math.abs(player.y - target.y) < 2 && player.x === target.x)) {
         return true;
-    } else if (((target.x === player.x - 1) || (target.x === player.x + 1)) && ((target.y === player.y - 1) || (target.y === player.y + 1))) {
-        return true;
     } else if (player.ap <= 0) {
         return false;
-    } else {
+    } else if (((target.x === player.x - 1) || (target.x === player.x + 1)) && ((target.y === player.y - 1) || (target.y === player.y + 1))) {
+        return true;
+    }  else {
         return false;
     }
 }
