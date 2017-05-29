@@ -1,49 +1,24 @@
 var tour = 0;
 loadpics();
 var map = [];
-var listcharacter = [];
+
 
 var endgame = false;
-var joueur = new perso;
-var ennemy = new perso;
+var joueur = new perso(".personnage", "personnage", ".playerHealth");
+var ennemy = new perso(".persoennemy", "persoennemy", ".ennemyHealth");
 var entiremap = document.body.querySelectorAll(".mapBlock");
-joueur.selector = ".personnage";
-joueur.absoluteClass = "personnage";
-joueur.healthselector = ".playerHealth";
-ennemy.selector = ".persoennemy";
-ennemy.absoluteClass = "persoennemy";
-ennemy.healthselector = ".ennemyHealth";
-listcharacter[0] = joueur;
 var exit = false;
-exit = init();
-console.log("initialized");
-
-//LOAD GAME ON FORM SUMBIT
-displayStats();
-document.body.querySelector(".nom").textContent = joueur.name;
-document.body.querySelector(".nomEnnemy").textContent = ennemy.name;
-//document.body.querySelector(".nomEnnemy").textContent = ennemy.name;
-document.body.querySelector(".personnage").className = "personnage";
-document.body.querySelector(".persoennemy").className = "persoennemy";
-document.body.querySelector(".ennemyHealth").style.display = "block";
-document.body.querySelector(".playerHealth").style.display = "block";
-createMap();
+// exit = init();
+submit();
 var previousCase = [0, 0];
 var previousEnnemyCase = [0, 0];
-console.log("map created");
-console.log("----------------------------------------------------------------");
-let initialEnnemyPosition = [5, 5];
-//initialPosition(joueur, Math.floor((Math.random() * 9) + 0), Math.floor((Math.random() * 9) + 0)); //TO IMPLEMENT AT THE END
-//initialPosition(ennemy, Math.floor((Math.random() * 9) + 0), Math.floor((Math.random() * 9) + 0));
-initialPosition(joueur, 4, 4);
-initialPosition(ennemy, initialEnnemyPosition[0], initialEnnemyPosition[1]);
-// PLAYER TURN ON TILE CLICK
-highlight(joueur.x, joueur.y, joueur.mp);
-playerTurn();
+console.log("initialized");
+//LOAD GAME ON FORM SUMBIT
 
 
 
-function perso() {
+
+function perso(select, absolutec, healthselect) {
     this.name = "";
     this.items = [];
     this.money = 0;
@@ -53,23 +28,18 @@ function perso() {
     this.position = [0][0];
     this.x = 0;
     this.y = 0;
-    this.selector = "";
-    this.absoluteClass = "";
+    this.selector = select;
+    this.absoluteClass = absolutec;
     this.canmove = true;
     this.canattack = false;
-    this.healthselector = "";
+    this.healthselector = healthselect;
 }
 
 function ennemyTurn() {
-    let randomx = Math.floor((Math.random() * 9) + 0);
-    let randomy = Math.floor((Math.random() * 9) + 0);
+    let randomx = randomisator();
+    let randomy = randomisator();
     if (randomx === joueur.x && randomy === joueur.y) {
-        let randomx = Math.floor((Math.random() * 9) + 0);
-        let randomy = Math.floor((Math.random() * 9) + 0);
-        if (randomx === joueur.x && randomy === joueur.y) {
-            let randomx = Math.floor((Math.random() * 9) + 0);
-            let randomy = Math.floor((Math.random() * 9) + 0);
-        }
+        ennemyTurn();
     }
     move(ennemy, randomx, randomy); //TEST
     ennemy.x = randomx;
@@ -80,6 +50,11 @@ function ennemyTurn() {
     previousEnnemyCase = [randomx, randomy];
 }
 
+function randomisator() {
+    let result = Math.floor((Math.random() * 9) + 0);
+    return (result);
+}
+
 function playerTurn() {
     for (let x = 0; x < 10; x++) {
         for (let y = 0; y < 10; y++) {
@@ -88,6 +63,8 @@ function playerTurn() {
             map[joueur.x][joueur.y].style.border = "2px solid blue";
             entiremap = document.body.querySelectorAll(".mapBlock");
             map[x][y].addEventListener("click", function (e) {
+                joueur.ap = 1;
+                ennemy.ap = 1;
                 map[joueur.x][joueur.y].style.border = "";
                 map[previousCase[0]][previousCase[1]].style.border = "";
                 resetOpacity();
@@ -144,28 +121,53 @@ function attack(character, target) {
     character.ap -= 1;
     displayStats();
     hpUpdate(character, target);
-    console.log("attacked");
+    console.log(character.name + " attacked");
 }
 
 function submit() {
-    document.body.querySelector("form").addEventListener("submit", function () {
-        while (document.body.querySelector("#name").value === "") {
+    document.body.querySelector("form").addEventListener("submit", function (e) {
+        e.preventDefault();
+        if (document.body.querySelector("#name").value === "") {
             document.body.querySelector("#name").id = "nameempty";
-            wait(500);
-            document.body.querySelector("#nameempty").id = "name";
+            setTimeout(function () {
+                document.body.querySelector("#nameempty").id = "name";
+            }, 500)
+        }
+        else {
+            init();
         }
     });
-
 }
 
 function init() {
-    joueur.name = document.body.querySelector("#name").value;
-    joueur.name = "PLAYER";
+    joueur.name = document.body.querySelector("#name").value.toUpperCase();
     ennemy.name = "ENNEMY"
     document.body.querySelector("#head").style.opacity = 0;
     wait(1000);
     document.body.querySelector("header").remove();
-    return false;
+    document.body.querySelector("main").style.display = "flex";
+
+
+    displayStats();
+    document.body.querySelector(".nom").textContent = joueur.name;
+    document.body.querySelector(".nomEnnemy").textContent = ennemy.name;
+    //document.body.querySelector(".nomEnnemy").textContent = ennemy.name;
+    document.body.querySelector(".personnage").className = "personnage";
+    document.body.querySelector(".persoennemy").className = "persoennemy";
+    document.body.querySelector(".ennemyHealth").style.display = "block";
+    document.body.querySelector(".playerHealth").style.display = "block";
+    createMap();
+
+    console.log("map created");
+    console.log("----------------------------------------------------------------");
+    let initialEnnemyPosition = [5, 5];
+    //initialPosition(joueur, Math.floor((Math.random() * 9) + 0), Math.floor((Math.random() * 9) + 0)); //TO IMPLEMENT AT THE END
+    //initialPosition(ennemy, Math.floor((Math.random() * 9) + 0), Math.floor((Math.random() * 9) + 0));
+    initialPosition(joueur, 4, 4);
+    initialPosition(ennemy, initialEnnemyPosition[0], initialEnnemyPosition[1]);
+    // PLAYER TURN ON TILE CLICK
+    highlight(joueur.x, joueur.y, joueur.mp);
+    playerTurn();
 }
 
 //CHECK IF CHARACTER CAN ATTCK OR NOT
@@ -176,7 +178,7 @@ function canattack(player, target) {
         return false;
     } else if (((target.x === player.x - 1) || (target.x === player.x + 1)) && ((target.y === player.y - 1) || (target.y === player.y + 1))) {
         return true;
-    }  else {
+    } else {
         return false;
     }
 }
@@ -205,7 +207,6 @@ function createMap() {
         bloc[i].appendChild(imgBlock);
 
     }
-
 }
 
 function move(character, xpos, ypos) {
