@@ -15,26 +15,38 @@ h1 {
     font-size: 5em;
     color: black;
 }
-.rulesSection{
-    display: none;
+
+.rulesSection {
+    display: flex;
     padding-top: 10px;
     /*display: flex;*/
     flex-direction: column;
     align-items: center;
     justify-content: flex-end;
+    transition: 0.5s;
 }
-h2{
+
+.rulesSection:hover {
+    color: black;
+}
+
+.rulesSection p {
+    transition: 0.5s;
+    opacity: 0;
+}
+
+h2 {
     text-align: center;
     font-family: 'Oswald', sans-serif;
-    color:#9e9e9e;
+    color: #9e9e9e;
     margin: 0;
     padding-top: 40px;
 }
-#rules{
-    text-align: center;
-    color:#9e9e9e;
-}
 
+#rules {
+    text-align: center;
+    color: #9e9e9e;
+}
 
 form {
     display: flex;

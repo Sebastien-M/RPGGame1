@@ -12,6 +12,7 @@ var exit = false;
 submit();
 var previousCase = [0, 0];
 var previousEnnemyCase = [0, 0];
+var clickRules = 0;
 console.log("initialized");
 //LOAD GAME ON FORM SUMBIT
 
@@ -62,7 +63,7 @@ function playerTurn() {
             ennemy.ap = 1;
             map[joueur.x][joueur.y].style.border = "2px solid blue";
             entiremap = document.body.querySelectorAll(".mapBlock");
-            map[x][y].addEventListener("click", function (e) {
+            map[x][y].addEventListener("click", function(e) {
                 joueur.ap = 1;
                 ennemy.ap = 1;
                 map[joueur.x][joueur.y].style.border = "";
@@ -75,16 +76,14 @@ function playerTurn() {
                     if (canattack(joueur, ennemy) === true) {
                         console.log("You can attack the ennemy");
                         attack(joueur, ennemy);
-                    }
-                    else { }
-                }
-                else {
+                    } else {}
+                } else {
                     move(joueur, x, y);
                     previousCase = [x, y];
-                    setTimeout(function () {
+                    setTimeout(function() {
                         ennemyTurn();
                         if (canattack(ennemy, joueur) === true) {
-                            setTimeout(function () {
+                            setTimeout(function() {
                                 attack(ennemy, joueur);
                                 hpUpdate(joueur, ennemy)
                                 console.log("Ennemy can attack you");
@@ -125,15 +124,24 @@ function attack(character, target) {
 }
 
 function submit() {
-    document.body.querySelector("form").addEventListener("submit", function (e) {
+    document.body.querySelector("h2").addEventListener("click", function(e) {
+        console.log('click');
+        clickRules += 1;
+        if (clickRules % 2 == 0) {
+            document.body.querySelector(".rulesSection p").style.opacity = 0;
+        } else {
+            document.body.querySelector(".rulesSection p").style.opacity = 1;
+        }
+    })
+
+    document.body.querySelector("form").addEventListener("submit", function(e) {
         e.preventDefault();
         if (document.body.querySelector("#name").value === "") {
             document.body.querySelector("#name").id = "nameempty";
-            setTimeout(function () {
+            setTimeout(function() {
                 document.body.querySelector("#nameempty").id = "name";
             }, 500)
-        }
-        else {
+        } else {
             init();
         }
     });
@@ -279,7 +287,7 @@ function preloadImages(array) {
     let list = preloadImages.list;
     for (let i = 0; i < array.length; i++) {
         let img = new Image();
-        img.onload = function () {
+        img.onload = function() {
             let index = list.indexOf(this);
             if (index !== -1) {
                 // remove image from the array once it's loaded
@@ -302,44 +310,44 @@ function wait(ms) {
 }
 
 function highlight(xplayer, yplayer, playermp) {
-    setTimeout(function () {
+    setTimeout(function() {
         //+1 case
         if (playermp === 1) {
-            try { map[xplayer + 1][yplayer - 1].style.opacity = "0.5"; } catch (e) { }
-            try { map[xplayer + 1][yplayer].style.opacity = "0.5"; } catch (e) { }
-            try { map[xplayer + 1][yplayer + 1].style.opacity = "0.5"; } catch (e) { }
-            try { map[xplayer][yplayer + 1].style.opacity = "0.5"; } catch (e) { }
-            try { map[xplayer - 1][yplayer].style.opacity = "0.5"; } catch (e) { }
-            try { map[xplayer - 1][yplayer - 1].style.opacity = "0.5"; } catch (e) { }
-            try { map[xplayer][yplayer - 1].style.opacity = "0.5"; } catch (e) { }
-            try { map[xplayer - 1][yplayer + 1].style.opacity = "0.5"; } catch (e) { }
+            try { map[xplayer + 1][yplayer - 1].style.opacity = "0.5"; } catch (e) {}
+            try { map[xplayer + 1][yplayer].style.opacity = "0.5"; } catch (e) {}
+            try { map[xplayer + 1][yplayer + 1].style.opacity = "0.5"; } catch (e) {}
+            try { map[xplayer][yplayer + 1].style.opacity = "0.5"; } catch (e) {}
+            try { map[xplayer - 1][yplayer].style.opacity = "0.5"; } catch (e) {}
+            try { map[xplayer - 1][yplayer - 1].style.opacity = "0.5"; } catch (e) {}
+            try { map[xplayer][yplayer - 1].style.opacity = "0.5"; } catch (e) {}
+            try { map[xplayer - 1][yplayer + 1].style.opacity = "0.5"; } catch (e) {}
         }
         //+2cases
         else if (playermp === 2) {
-            try { map[xplayer + 1][yplayer - 1].style.opacity = "0.5"; } catch (e) { }
-            try { map[xplayer + 1][yplayer].style.opacity = "0.5"; } catch (e) { }
-            try { map[xplayer + 1][yplayer + 1].style.opacity = "0.5"; } catch (e) { }
-            try { map[xplayer][yplayer + 1].style.opacity = "0.5"; } catch (e) { }
-            try { map[xplayer - 1][yplayer].style.opacity = "0.5"; } catch (e) { }
-            try { map[xplayer - 1][yplayer - 1].style.opacity = "0.5"; } catch (e) { }
-            try { map[xplayer][yplayer - 1].style.opacity = "0.5"; } catch (e) { }
-            try { map[xplayer - 1][yplayer + 1].style.opacity = "0.5"; } catch (e) { }
-            try { map[xplayer][yplayer - 2].style.opacity = "0.5"; } catch (e) { }
-            try { map[xplayer - 1][yplayer - 2].style.opacity = "0.5"; } catch (e) { }
-            try { map[xplayer - 2][yplayer - 2].style.opacity = "0.5"; } catch (e) { }
-            try { map[xplayer - 2][yplayer - 1].style.opacity = "0.5"; } catch (e) { }
-            try { map[xplayer - 2][yplayer].style.opacity = "0.5"; } catch (e) { }
-            try { map[xplayer - 2][yplayer + 1].style.opacity = "0.5"; } catch (e) { }
-            try { map[xplayer - 2][yplayer + 2].style.opacity = "0.5"; } catch (e) { }
-            try { map[xplayer - 1][yplayer + 2].style.opacity = "0.5"; } catch (e) { }
-            try { map[xplayer][yplayer + 2].style.opacity = "0.5"; } catch (e) { }
-            try { map[xplayer + 1][yplayer + 2].style.opacity = "0.5"; } catch (e) { }
-            try { map[xplayer + 2][yplayer + 2].style.opacity = "0.5"; } catch (e) { }
-            try { map[xplayer + 2][yplayer + 1].style.opacity = "0.5"; } catch (e) { }
-            try { map[xplayer + 2][yplayer].style.opacity = "0.5"; } catch (e) { }
-            try { map[xplayer + 2][yplayer - 1].style.opacity = "0.5"; } catch (e) { }
-            try { map[xplayer + 2][yplayer - 2].style.opacity = "0.5"; } catch (e) { }
-            try { map[xplayer + 1][yplayer - 2].style.opacity = "0.5"; } catch (e) { }
+            try { map[xplayer + 1][yplayer - 1].style.opacity = "0.5"; } catch (e) {}
+            try { map[xplayer + 1][yplayer].style.opacity = "0.5"; } catch (e) {}
+            try { map[xplayer + 1][yplayer + 1].style.opacity = "0.5"; } catch (e) {}
+            try { map[xplayer][yplayer + 1].style.opacity = "0.5"; } catch (e) {}
+            try { map[xplayer - 1][yplayer].style.opacity = "0.5"; } catch (e) {}
+            try { map[xplayer - 1][yplayer - 1].style.opacity = "0.5"; } catch (e) {}
+            try { map[xplayer][yplayer - 1].style.opacity = "0.5"; } catch (e) {}
+            try { map[xplayer - 1][yplayer + 1].style.opacity = "0.5"; } catch (e) {}
+            try { map[xplayer][yplayer - 2].style.opacity = "0.5"; } catch (e) {}
+            try { map[xplayer - 1][yplayer - 2].style.opacity = "0.5"; } catch (e) {}
+            try { map[xplayer - 2][yplayer - 2].style.opacity = "0.5"; } catch (e) {}
+            try { map[xplayer - 2][yplayer - 1].style.opacity = "0.5"; } catch (e) {}
+            try { map[xplayer - 2][yplayer].style.opacity = "0.5"; } catch (e) {}
+            try { map[xplayer - 2][yplayer + 1].style.opacity = "0.5"; } catch (e) {}
+            try { map[xplayer - 2][yplayer + 2].style.opacity = "0.5"; } catch (e) {}
+            try { map[xplayer - 1][yplayer + 2].style.opacity = "0.5"; } catch (e) {}
+            try { map[xplayer][yplayer + 2].style.opacity = "0.5"; } catch (e) {}
+            try { map[xplayer + 1][yplayer + 2].style.opacity = "0.5"; } catch (e) {}
+            try { map[xplayer + 2][yplayer + 2].style.opacity = "0.5"; } catch (e) {}
+            try { map[xplayer + 2][yplayer + 1].style.opacity = "0.5"; } catch (e) {}
+            try { map[xplayer + 2][yplayer].style.opacity = "0.5"; } catch (e) {}
+            try { map[xplayer + 2][yplayer - 1].style.opacity = "0.5"; } catch (e) {}
+            try { map[xplayer + 2][yplayer - 2].style.opacity = "0.5"; } catch (e) {}
+            try { map[xplayer + 1][yplayer - 2].style.opacity = "0.5"; } catch (e) {}
         }
 
     }, 2400);
@@ -360,7 +368,7 @@ function resetOpacity() {
 
 function walkright(select) {
     document.body.querySelector("." + select).className = select + " walkright";
-    setTimeout(function () {
+    setTimeout(function() {
         document.body.querySelector("." + select).className = select + " endright";
     }, 2000);
 
@@ -368,7 +376,7 @@ function walkright(select) {
 
 function walkupright(select) {
     document.body.querySelector("." + select).className = select + " walkupright";
-    setTimeout(function () {
+    setTimeout(function() {
         document.body.querySelector("." + select).className = select + " endupright";
     }, 2000);
 
@@ -377,14 +385,14 @@ function walkupright(select) {
 
 function walkleft(select) {
     document.body.querySelector("." + select).className = select + " walkleft";
-    setTimeout(function () {
+    setTimeout(function() {
         document.body.querySelector("." + select).className = select + " endleft";
     }, 2000)
 }
 
 function walkupleft(select) {
     document.body.querySelector("." + select).className = select + " walkupleft";
-    setTimeout(function () {
+    setTimeout(function() {
         document.body.querySelector("." + select).className = select + " endupleft";
     }, 2000);
 
@@ -392,28 +400,28 @@ function walkupleft(select) {
 
 function walkup(select) {
     document.body.querySelector("." + select).className = select + " walkup";
-    setTimeout(function () {
+    setTimeout(function() {
         document.body.querySelector("." + select).className = select + " endup";
     }, 2000);
 }
 
 function walkdown(select) {
     document.body.querySelector("." + select).className = select + " walkdown";
-    setTimeout(function () {
+    setTimeout(function() {
         document.body.querySelector("." + select).className = select + " enddown";
     }, 2400)
 }
 
 function walkdownright(select) {
     document.body.querySelector("." + select).className = select + " walkdownright";
-    setTimeout(function () {
+    setTimeout(function() {
         document.body.querySelector("." + select).className = select + " enddownright";
     }, 2400)
 }
 
 function walkdownleft(select) {
     document.body.querySelector("." + select).className = select + " walkdownleft";
-    setTimeout(function () {
+    setTimeout(function() {
         document.body.querySelector("." + select).className = select + " enddownleft";
     }, 2400)
 }
@@ -426,12 +434,12 @@ function attackright(select) {
     document.body.querySelector("." + select).style.left = document.body.querySelector("." + select).getBoundingClientRect().left - 40 + "px";
     document.body.querySelector("." + select).style.top = document.body.querySelector("." + select).getBoundingClientRect().top - 20 + "px";
     document.body.querySelector("." + select).className = select + " attackright";
-    setTimeout(function () {
+    setTimeout(function() {
         document.body.querySelector("." + select).style.left = document.body.querySelector("." + select).getBoundingClientRect().left + 45 + "px";
         document.body.querySelector("." + select).style.top = document.body.querySelector("." + select).getBoundingClientRect().top + 20 + "px";
         document.body.querySelector("." + select).className = select + " endright";
     }, 2000);
-    setTimeout(function () {
+    setTimeout(function() {
         document.body.querySelector("." + select).style.transition = "2.4s";
     }, 4000)
 
@@ -442,12 +450,12 @@ function attackupright(select) {
     document.body.querySelector("." + select).style.left = document.body.querySelector("." + select).getBoundingClientRect().left - 40 + "px";
     document.body.querySelector("." + select).style.top = document.body.querySelector("." + select).getBoundingClientRect().top - 20 + "px";
     document.body.querySelector("." + select).className = select + " attackupright";
-    setTimeout(function () {
+    setTimeout(function() {
         document.body.querySelector("." + select).style.left = document.body.querySelector("." + select).getBoundingClientRect().left + 45 + "px";
         document.body.querySelector("." + select).style.top = document.body.querySelector("." + select).getBoundingClientRect().top + 20 + "px";
         document.body.querySelector("." + select).className = select + " endupright";
     }, 2000);
-    setTimeout(function () {
+    setTimeout(function() {
         document.body.querySelector("." + select).style.transition = "2.4s";
     }, 4000)
 
@@ -459,12 +467,12 @@ function attackleft(select) {
     document.body.querySelector("." + select).style.left = document.body.querySelector("." + select).getBoundingClientRect().left - 40 + "px";
     document.body.querySelector("." + select).style.top = document.body.querySelector("." + select).getBoundingClientRect().top - 20 + "px";
     document.body.querySelector("." + select).className = select + " attackleft";
-    setTimeout(function () {
+    setTimeout(function() {
         document.body.querySelector("." + select).style.left = document.body.querySelector("." + select).getBoundingClientRect().left + 45 + "px";
         document.body.querySelector("." + select).style.top = document.body.querySelector("." + select).getBoundingClientRect().top + 20 + "px";
         document.body.querySelector("." + select).className = select + " endleft";
     }, 2000)
-    setTimeout(function () {
+    setTimeout(function() {
         document.body.querySelector("." + select).style.transition = "2.4s";
     }, 4000)
 
@@ -475,12 +483,12 @@ function attackupleft(select) {
     document.body.querySelector("." + select).style.left = document.body.querySelector("." + select).getBoundingClientRect().left - 40 + "px";
     document.body.querySelector("." + select).style.top = document.body.querySelector("." + select).getBoundingClientRect().top - 20 + "px";
     document.body.querySelector("." + select).className = select + " attackupleft";
-    setTimeout(function () {
+    setTimeout(function() {
         document.body.querySelector("." + select).style.left = document.body.querySelector("." + select).getBoundingClientRect().left + 45 + "px";
         document.body.querySelector("." + select).style.top = document.body.querySelector("." + select).getBoundingClientRect().top + 20 + "px";
         document.body.querySelector("." + select).className = select + " endupleft";
     }, 2000);
-    setTimeout(function () {
+    setTimeout(function() {
         document.body.querySelector("." + select).style.transition = "2.4s";
     }, 4000)
 
@@ -491,12 +499,12 @@ function attackup(select) {
     document.body.querySelector("." + select).style.left = document.body.querySelector("." + select).getBoundingClientRect().left - 40 + "px";
     document.body.querySelector("." + select).style.top = document.body.querySelector("." + select).getBoundingClientRect().top - 20 + "px";
     document.body.querySelector("." + select).className = select + " attackup";
-    setTimeout(function () {
+    setTimeout(function() {
         document.body.querySelector("." + select).style.left = document.body.querySelector("." + select).getBoundingClientRect().left + 45 + "px";
         document.body.querySelector("." + select).style.top = document.body.querySelector("." + select).getBoundingClientRect().top + 20 + "px";
         document.body.querySelector("." + select).className = select + " endup";
     }, 2000);
-    setTimeout(function () {
+    setTimeout(function() {
         document.body.querySelector("." + select).style.transition = "2.4s";
     }, 4000)
 }
@@ -506,12 +514,12 @@ function attackdown(select) {
     document.body.querySelector("." + select).style.left = document.body.querySelector("." + select).getBoundingClientRect().left - 40 + "px";
     document.body.querySelector("." + select).style.top = document.body.querySelector("." + select).getBoundingClientRect().top - 20 + "px";
     document.body.querySelector("." + select).className = select + " attackdown";
-    setTimeout(function () {
+    setTimeout(function() {
         document.body.querySelector("." + select).style.left = document.body.querySelector("." + select).getBoundingClientRect().left + 45 + "px";
         document.body.querySelector("." + select).style.top = document.body.querySelector("." + select).getBoundingClientRect().top + 20 + "px";
         document.body.querySelector("." + select).className = select + " enddown";
     }, 2400)
-    setTimeout(function () {
+    setTimeout(function() {
         document.body.querySelector("." + select).style.transition = "2.4s";
     }, 4000)
 }
@@ -521,12 +529,12 @@ function attackdownright(select) {
     document.body.querySelector("." + select).style.left = document.body.querySelector("." + select).getBoundingClientRect().left - 40 + "px";
     document.body.querySelector("." + select).style.top = document.body.querySelector("." + select).getBoundingClientRect().top - 20 + "px";
     document.body.querySelector("." + select).className = select + " attackdownright";
-    setTimeout(function () {
+    setTimeout(function() {
         document.body.querySelector("." + select).style.left = document.body.querySelector("." + select).getBoundingClientRect().left + 45 + "px";
         document.body.querySelector("." + select).style.top = document.body.querySelector("." + select).getBoundingClientRect().top + 20 + "px";
         document.body.querySelector("." + select).className = select + " enddownright";
     }, 2400)
-    setTimeout(function () {
+    setTimeout(function() {
         document.body.querySelector("." + select).style.transition = "2.4s";
     }, 4000)
 }
@@ -536,12 +544,12 @@ function attackdownleft(select) {
     document.body.querySelector("." + select).style.left = document.body.querySelector("." + select).getBoundingClientRect().left - 40 + "px";
     document.body.querySelector("." + select).style.top = document.body.querySelector("." + select).getBoundingClientRect().top - 20 + "px";
     document.body.querySelector("." + select).className = select + " attackdownleft";
-    setTimeout(function () {
+    setTimeout(function() {
         document.body.querySelector("." + select).style.left = document.body.querySelector("." + select).getBoundingClientRect().left + 45 + "px";
         document.body.querySelector("." + select).style.top = document.body.querySelector("." + select).getBoundingClientRect().top + 20 + "px";
         document.body.querySelector("." + select).className = select + " enddownleft";
     }, 2400)
-    setTimeout(function () {
+    setTimeout(function() {
         document.body.querySelector("." + select).style.transition = "2.4s";
     }, 4000)
 }
