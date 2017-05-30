@@ -41,6 +41,12 @@ h2 {
     color: #9e9e9e;
     margin: 0;
     padding-top: 40px;
+    transition: 0.5s;
+}
+
+h2:hover {
+    cursor: pointer;
+    color: black;
 }
 
 #rules {
