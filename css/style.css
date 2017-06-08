@@ -209,9 +209,27 @@ p {
 }
 
 .game {
-    padding-top: 5%;
+    padding-top: 1%;
     height: 500px;
     width: 550px;
+}
+
+#end {
+    margin-left: 42%;
+    font-weight: bolder;
+    width: 20%;
+    height: 50px;
+    background-color: white;
+    border-radius: 5px;
+    border: 2px solid black;
+    transition: 0.5s;
+    color: black;
+}
+
+#end:hover {
+    cursor: pointer;
+    color: white;
+    background-color: black;
 }
 
 .mapBlock {
