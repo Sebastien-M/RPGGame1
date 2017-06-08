@@ -68,7 +68,7 @@ function playerTurn() {
                 ennemy.ap = 1;
                 map[joueur.x][joueur.y].style.border = "";
                 map[previousCase[0]][previousCase[1]].style.border = "";
-                resetOpacity();
+
                 console.log("click on : x:" + x + " y:" + y);
                 if (x === joueur.x && y === joueur.y) { console.log("Clicked on own case"); }
                 /*else if ((x - joueur.x) + (y - joueur.y) > 8) { console.log("more than 2pm"); }*/
@@ -80,6 +80,9 @@ function playerTurn() {
                     } else {}
                 } else {
                     move(joueur, x, y);
+                    if (joueur.canmove === false || ennemy.canmove === false) {
+
+                    }
                     previousCase = [x, y];
                     setTimeout(function() {
                         ennemyTurn();
@@ -226,6 +229,7 @@ function move(character, xpos, ypos) {
     }
     //else if (character.x === xpos && character.y === ypos){}
     else {
+        resetOpacity();
         character.mp -= 1;
         displayStats();
         //map[previousCase[0]][previousCase[1]].style.border = "";
