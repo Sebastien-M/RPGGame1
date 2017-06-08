@@ -70,7 +70,8 @@ function playerTurn() {
                 map[previousCase[0]][previousCase[1]].style.border = "";
                 resetOpacity();
                 console.log("click on : x:" + x + " y:" + y);
-                if (x === joueur.x && y === joueur.y) { console.log("Clicked on own case"); } /*else if ((x - joueur.x) + (y - joueur.y) > 8) { console.log("more than 2pm"); }*/
+                if (x === joueur.x && y === joueur.y) { console.log("Clicked on own case"); }
+                /*else if ((x - joueur.x) + (y - joueur.y) > 8) { console.log("more than 2pm"); }*/
                 //ATTACK
                 else if (x === ennemy.x && y === ennemy.y) {
                     if (canattack(joueur, ennemy) === true) {
