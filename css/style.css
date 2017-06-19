@@ -148,6 +148,7 @@ p {
 }
 
 .infos {
+    padding-top: 10px;
     width: 100%;
     position: absolute;
     color: black;
@@ -224,6 +225,11 @@ p {
     border: 2px solid black;
     transition: 0.5s;
     color: black;
+    outline: 0 !important;
+}
+
+#end::-moz-focus-inner {
+    border: 0
 }
 
 #end:hover {

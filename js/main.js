@@ -2,7 +2,7 @@ var tour = 0;
 loadpics();
 var map = [];
 
-
+var canPlay = true;
 var endgame = false;
 var joueur = new perso(".personnage", "personnage", ".playerHealth");
 var ennemy = new perso(".persoennemy", "persoennemy", ".ennemyHealth");
@@ -40,7 +40,8 @@ function ennemyTurn() {
     let randomx = randomisator();
     let randomy = randomisator();
     if (randomx === joueur.x && randomy === joueur.y) {
-        ennemyTurn();
+        return ennemyTurn();
+
     }
     move(ennemy, randomx, randomy); //TEST
     ennemy.x = randomx;
@@ -49,6 +50,10 @@ function ennemyTurn() {
     ennemy.mp = 2;
     displayStats();
     previousEnnemyCase = [randomx, randomy];
+    setTimeout(function () {
+        canPlay = true;
+        console.log(canPlay);
+    }, 2400);
 }
 
 function randomisator() {
@@ -59,44 +64,42 @@ function randomisator() {
 function playerTurn() {
     for (let x = 0; x < 10; x++) {
         for (let y = 0; y < 10; y++) {
-            joueur.ap = 1;
-            ennemy.ap = 1;
             map[joueur.x][joueur.y].style.border = "2px solid blue";
             entiremap = document.body.querySelectorAll(".mapBlock");
-            map[x][y].addEventListener("click", function(e) {
-                joueur.ap = 1;
-                ennemy.ap = 1;
-                map[joueur.x][joueur.y].style.border = "";
-                map[previousCase[0]][previousCase[1]].style.border = "";
-
-                console.log("click on : x:" + x + " y:" + y);
-                if (x === joueur.x && y === joueur.y) { console.log("Clicked on own case"); }
-                /*else if ((x - joueur.x) + (y - joueur.y) > 8) { console.log("more than 2pm"); }*/
-                //ATTACK
-                else if (x === ennemy.x && y === ennemy.y) {
-                    if (canattack(joueur, ennemy) === true) {
-                        console.log("You can attack the ennemy");
-                        attack(joueur, ennemy);
-                    } else {}
-                } else {
-                    move(joueur, x, y);
-                    if (joueur.canmove === false || ennemy.canmove === false) {
-
+            map[x][y].addEventListener("click", function (e) {
+                console.log(e);
+                if (canPlay === false) {} else {
+                    map[joueur.x][joueur.y].style.border = "";
+                    map[previousCase[0]][previousCase[1]].style.border = "";
+                    console.log("click on : x:" + x + " y:" + y);
+                    if (x === joueur.x && y === joueur.y) {
+                        console.log("Clicked on own case");
                     }
-                    previousCase = [x, y];
-                    setTimeout(function() {
+                    /*else if ((x - joueur.x) + (y - joueur.y) > 8) { console.log("more than 2pm"); }*/
+                    //ATTACK
+                    else if (x === ennemy.x && y === ennemy.y) {
+                        if (canattack(joueur, ennemy) === true) {
+                            console.log("You can attack the ennemy");
+                            attack(joueur, ennemy);
+                        }
+                    }
+                    document.body.querySelector("#end").addEventListener("click", function (e) {
+                        canPlay = false;
                         ennemyTurn();
                         if (canattack(ennemy, joueur) === true) {
-                            setTimeout(function() {
-                                attack(ennemy, joueur);
-                                hpUpdate(joueur, ennemy)
-                                console.log("Ennemy can attack you");
-                            }, 2400)
+                            attack(ennemy, joueur);
+                            hpUpdate(joueur, ennemy);
+                            console.log("Ennemy can attack you");
                         }
                         highlight(joueur.x, joueur.y, joueur.mp);
-                    }, 4500)
+                    })
+                    move(joueur, x, y);
+                    if (joueur.canmove === false || ennemy.canmove === false) {}
+                    previousCase = [x, y];
+                    console.log(canPlay);
                 }
-
+                joueur.ap = 1;
+                ennemy.ap = 1;
             })
         }
     }
@@ -128,7 +131,7 @@ function attack(character, target) {
 }
 
 function submit() {
-    document.body.querySelector("h2").addEventListener("click", function(e) {
+    document.body.querySelector("h2").addEventListener("click", function (e) {
         console.log('click');
         clickRules += 1;
         if (clickRules % 2 == 0) {
@@ -138,11 +141,11 @@ function submit() {
         }
     })
 
-    document.body.querySelector("form").addEventListener("submit", function(e) {
+    document.body.querySelector("form").addEventListener("submit", function (e) {
         e.preventDefault();
         if (document.body.querySelector("#name").value === "") {
             document.body.querySelector("#name").id = "nameempty";
-            setTimeout(function() {
+            setTimeout(function () {
                 document.body.querySelector("#nameempty").id = "name";
             }, 500)
         } else {
@@ -158,8 +161,7 @@ function init() {
     wait(1000);
     document.body.querySelector("header").remove();
     document.body.querySelector("main").style.display = "flex";
-
-
+    canPlay = true;
     displayStats();
     document.body.querySelector(".nom").textContent = joueur.name;
     document.body.querySelector(".nomEnnemy").textContent = ennemy.name;
@@ -169,7 +171,6 @@ function init() {
     document.body.querySelector(".ennemyHealth").style.display = "block";
     document.body.querySelector(".playerHealth").style.display = "block";
     createMap();
-
     console.log("map created");
     console.log("----------------------------------------------------------------");
     let initialEnnemyPosition = [5, 5];
@@ -184,7 +185,7 @@ function init() {
 
 //CHECK IF CHARACTER CAN ATTCK OR NOT
 function canattack(player, target) {
-    if ((Math.abs(player.x - target.x) < 2 && player.y === target.y) || (Math.abs(player.y - target.y) < 2 && player.x === target.x)) {
+    if ((Math.abs(player.x - target.x) < 2 && player.y === target.y && player.ap > 0) || (Math.abs(player.y - target.y) < 2 && player.x === target.x && player.ap > 0)) {
         return true;
     } else if (player.ap <= 0) {
         return false;
@@ -254,7 +255,9 @@ function move(character, xpos, ypos) {
             walkdownleft(character.absoluteClass);
         }
         //WALK ANIMATIONS END
-        if (character === joueur) { map[xpos][ypos].style.border = "2px solid blue"; }
+        if (character === joueur) {
+            map[xpos][ypos].style.border = "2px solid blue";
+        }
         character.position = map[xpos][ypos];
         character.x = xpos;
         character.y = ypos;
@@ -292,7 +295,7 @@ function preloadImages(array) {
     let list = preloadImages.list;
     for (let i = 0; i < array.length; i++) {
         let img = new Image();
-        img.onload = function() {
+        img.onload = function () {
             let index = list.indexOf(this);
             if (index !== -1) {
                 // remove image from the array once it's loaded
@@ -315,44 +318,108 @@ function wait(ms) {
 }
 
 function highlight(xplayer, yplayer, playermp) {
-    setTimeout(function() {
+    setTimeout(function () {
         //+1 case
         if (playermp === 1) {
-            try { map[xplayer + 1][yplayer - 1].style.opacity = "0.5"; } catch (e) {}
-            try { map[xplayer + 1][yplayer].style.opacity = "0.5"; } catch (e) {}
-            try { map[xplayer + 1][yplayer + 1].style.opacity = "0.5"; } catch (e) {}
-            try { map[xplayer][yplayer + 1].style.opacity = "0.5"; } catch (e) {}
-            try { map[xplayer - 1][yplayer].style.opacity = "0.5"; } catch (e) {}
-            try { map[xplayer - 1][yplayer - 1].style.opacity = "0.5"; } catch (e) {}
-            try { map[xplayer][yplayer - 1].style.opacity = "0.5"; } catch (e) {}
-            try { map[xplayer - 1][yplayer + 1].style.opacity = "0.5"; } catch (e) {}
+            try {
+                map[xplayer + 1][yplayer - 1].style.opacity = "0.5";
+            } catch (e) {}
+            try {
+                map[xplayer + 1][yplayer].style.opacity = "0.5";
+            } catch (e) {}
+            try {
+                map[xplayer + 1][yplayer + 1].style.opacity = "0.5";
+            } catch (e) {}
+            try {
+                map[xplayer][yplayer + 1].style.opacity = "0.5";
+            } catch (e) {}
+            try {
+                map[xplayer - 1][yplayer].style.opacity = "0.5";
+            } catch (e) {}
+            try {
+                map[xplayer - 1][yplayer - 1].style.opacity = "0.5";
+            } catch (e) {}
+            try {
+                map[xplayer][yplayer - 1].style.opacity = "0.5";
+            } catch (e) {}
+            try {
+                map[xplayer - 1][yplayer + 1].style.opacity = "0.5";
+            } catch (e) {}
         }
         //+2cases
         else if (playermp === 2) {
-            try { map[xplayer + 1][yplayer - 1].style.opacity = "0.5"; } catch (e) {}
-            try { map[xplayer + 1][yplayer].style.opacity = "0.5"; } catch (e) {}
-            try { map[xplayer + 1][yplayer + 1].style.opacity = "0.5"; } catch (e) {}
-            try { map[xplayer][yplayer + 1].style.opacity = "0.5"; } catch (e) {}
-            try { map[xplayer - 1][yplayer].style.opacity = "0.5"; } catch (e) {}
-            try { map[xplayer - 1][yplayer - 1].style.opacity = "0.5"; } catch (e) {}
-            try { map[xplayer][yplayer - 1].style.opacity = "0.5"; } catch (e) {}
-            try { map[xplayer - 1][yplayer + 1].style.opacity = "0.5"; } catch (e) {}
-            try { map[xplayer][yplayer - 2].style.opacity = "0.5"; } catch (e) {}
-            try { map[xplayer - 1][yplayer - 2].style.opacity = "0.5"; } catch (e) {}
-            try { map[xplayer - 2][yplayer - 2].style.opacity = "0.5"; } catch (e) {}
-            try { map[xplayer - 2][yplayer - 1].style.opacity = "0.5"; } catch (e) {}
-            try { map[xplayer - 2][yplayer].style.opacity = "0.5"; } catch (e) {}
-            try { map[xplayer - 2][yplayer + 1].style.opacity = "0.5"; } catch (e) {}
-            try { map[xplayer - 2][yplayer + 2].style.opacity = "0.5"; } catch (e) {}
-            try { map[xplayer - 1][yplayer + 2].style.opacity = "0.5"; } catch (e) {}
-            try { map[xplayer][yplayer + 2].style.opacity = "0.5"; } catch (e) {}
-            try { map[xplayer + 1][yplayer + 2].style.opacity = "0.5"; } catch (e) {}
-            try { map[xplayer + 2][yplayer + 2].style.opacity = "0.5"; } catch (e) {}
-            try { map[xplayer + 2][yplayer + 1].style.opacity = "0.5"; } catch (e) {}
-            try { map[xplayer + 2][yplayer].style.opacity = "0.5"; } catch (e) {}
-            try { map[xplayer + 2][yplayer - 1].style.opacity = "0.5"; } catch (e) {}
-            try { map[xplayer + 2][yplayer - 2].style.opacity = "0.5"; } catch (e) {}
-            try { map[xplayer + 1][yplayer - 2].style.opacity = "0.5"; } catch (e) {}
+            try {
+                map[xplayer + 1][yplayer - 1].style.opacity = "0.5";
+            } catch (e) {}
+            try {
+                map[xplayer + 1][yplayer].style.opacity = "0.5";
+            } catch (e) {}
+            try {
+                map[xplayer + 1][yplayer + 1].style.opacity = "0.5";
+            } catch (e) {}
+            try {
+                map[xplayer][yplayer + 1].style.opacity = "0.5";
+            } catch (e) {}
+            try {
+                map[xplayer - 1][yplayer].style.opacity = "0.5";
+            } catch (e) {}
+            try {
+                map[xplayer - 1][yplayer - 1].style.opacity = "0.5";
+            } catch (e) {}
+            try {
+                map[xplayer][yplayer - 1].style.opacity = "0.5";
+            } catch (e) {}
+            try {
+                map[xplayer - 1][yplayer + 1].style.opacity = "0.5";
+            } catch (e) {}
+            try {
+                map[xplayer][yplayer - 2].style.opacity = "0.5";
+            } catch (e) {}
+            try {
+                map[xplayer - 1][yplayer - 2].style.opacity = "0.5";
+            } catch (e) {}
+            try {
+                map[xplayer - 2][yplayer - 2].style.opacity = "0.5";
+            } catch (e) {}
+            try {
+                map[xplayer - 2][yplayer - 1].style.opacity = "0.5";
+            } catch (e) {}
+            try {
+                map[xplayer - 2][yplayer].style.opacity = "0.5";
+            } catch (e) {}
+            try {
+                map[xplayer - 2][yplayer + 1].style.opacity = "0.5";
+            } catch (e) {}
+            try {
+                map[xplayer - 2][yplayer + 2].style.opacity = "0.5";
+            } catch (e) {}
+            try {
+                map[xplayer - 1][yplayer + 2].style.opacity = "0.5";
+            } catch (e) {}
+            try {
+                map[xplayer][yplayer + 2].style.opacity = "0.5";
+            } catch (e) {}
+            try {
+                map[xplayer + 1][yplayer + 2].style.opacity = "0.5";
+            } catch (e) {}
+            try {
+                map[xplayer + 2][yplayer + 2].style.opacity = "0.5";
+            } catch (e) {}
+            try {
+                map[xplayer + 2][yplayer + 1].style.opacity = "0.5";
+            } catch (e) {}
+            try {
+                map[xplayer + 2][yplayer].style.opacity = "0.5";
+            } catch (e) {}
+            try {
+                map[xplayer + 2][yplayer - 1].style.opacity = "0.5";
+            } catch (e) {}
+            try {
+                map[xplayer + 2][yplayer - 2].style.opacity = "0.5";
+            } catch (e) {}
+            try {
+                map[xplayer + 1][yplayer - 2].style.opacity = "0.5";
+            } catch (e) {}
         }
 
     }, 2400);
@@ -373,7 +440,7 @@ function resetOpacity() {
 
 function walkright(select) {
     document.body.querySelector("." + select).className = select + " walkright";
-    setTimeout(function() {
+    setTimeout(function () {
         document.body.querySelector("." + select).className = select + " endright";
     }, 2000);
 
@@ -381,7 +448,7 @@ function walkright(select) {
 
 function walkupright(select) {
     document.body.querySelector("." + select).className = select + " walkupright";
-    setTimeout(function() {
+    setTimeout(function () {
         document.body.querySelector("." + select).className = select + " endupright";
     }, 2000);
 
@@ -390,14 +457,14 @@ function walkupright(select) {
 
 function walkleft(select) {
     document.body.querySelector("." + select).className = select + " walkleft";
-    setTimeout(function() {
+    setTimeout(function () {
         document.body.querySelector("." + select).className = select + " endleft";
     }, 2000)
 }
 
 function walkupleft(select) {
     document.body.querySelector("." + select).className = select + " walkupleft";
-    setTimeout(function() {
+    setTimeout(function () {
         document.body.querySelector("." + select).className = select + " endupleft";
     }, 2000);
 
@@ -405,28 +472,28 @@ function walkupleft(select) {
 
 function walkup(select) {
     document.body.querySelector("." + select).className = select + " walkup";
-    setTimeout(function() {
+    setTimeout(function () {
         document.body.querySelector("." + select).className = select + " endup";
     }, 2000);
 }
 
 function walkdown(select) {
     document.body.querySelector("." + select).className = select + " walkdown";
-    setTimeout(function() {
+    setTimeout(function () {
         document.body.querySelector("." + select).className = select + " enddown";
     }, 2400)
 }
 
 function walkdownright(select) {
     document.body.querySelector("." + select).className = select + " walkdownright";
-    setTimeout(function() {
+    setTimeout(function () {
         document.body.querySelector("." + select).className = select + " enddownright";
     }, 2400)
 }
 
 function walkdownleft(select) {
     document.body.querySelector("." + select).className = select + " walkdownleft";
-    setTimeout(function() {
+    setTimeout(function () {
         document.body.querySelector("." + select).className = select + " enddownleft";
     }, 2400)
 }
@@ -439,12 +506,12 @@ function attackright(select) {
     document.body.querySelector("." + select).style.left = document.body.querySelector("." + select).getBoundingClientRect().left - 40 + "px";
     document.body.querySelector("." + select).style.top = document.body.querySelector("." + select).getBoundingClientRect().top - 20 + "px";
     document.body.querySelector("." + select).className = select + " attackright";
-    setTimeout(function() {
+    setTimeout(function () {
         document.body.querySelector("." + select).style.left = document.body.querySelector("." + select).getBoundingClientRect().left + 45 + "px";
         document.body.querySelector("." + select).style.top = document.body.querySelector("." + select).getBoundingClientRect().top + 20 + "px";
         document.body.querySelector("." + select).className = select + " endright";
     }, 2000);
-    setTimeout(function() {
+    setTimeout(function () {
         document.body.querySelector("." + select).style.transition = "2.4s";
     }, 4000)
 
@@ -455,12 +522,12 @@ function attackupright(select) {
     document.body.querySelector("." + select).style.left = document.body.querySelector("." + select).getBoundingClientRect().left - 40 + "px";
     document.body.querySelector("." + select).style.top = document.body.querySelector("." + select).getBoundingClientRect().top - 20 + "px";
     document.body.querySelector("." + select).className = select + " attackupright";
-    setTimeout(function() {
+    setTimeout(function () {
         document.body.querySelector("." + select).style.left = document.body.querySelector("." + select).getBoundingClientRect().left + 45 + "px";
         document.body.querySelector("." + select).style.top = document.body.querySelector("." + select).getBoundingClientRect().top + 20 + "px";
         document.body.querySelector("." + select).className = select + " endupright";
     }, 2000);
-    setTimeout(function() {
+    setTimeout(function () {
         document.body.querySelector("." + select).style.transition = "2.4s";
     }, 4000)
 
@@ -472,12 +539,12 @@ function attackleft(select) {
     document.body.querySelector("." + select).style.left = document.body.querySelector("." + select).getBoundingClientRect().left - 40 + "px";
     document.body.querySelector("." + select).style.top = document.body.querySelector("." + select).getBoundingClientRect().top - 20 + "px";
     document.body.querySelector("." + select).className = select + " attackleft";
-    setTimeout(function() {
+    setTimeout(function () {
         document.body.querySelector("." + select).style.left = document.body.querySelector("." + select).getBoundingClientRect().left + 45 + "px";
         document.body.querySelector("." + select).style.top = document.body.querySelector("." + select).getBoundingClientRect().top + 20 + "px";
         document.body.querySelector("." + select).className = select + " endleft";
     }, 2000)
-    setTimeout(function() {
+    setTimeout(function () {
         document.body.querySelector("." + select).style.transition = "2.4s";
     }, 4000)
 
@@ -488,12 +555,12 @@ function attackupleft(select) {
     document.body.querySelector("." + select).style.left = document.body.querySelector("." + select).getBoundingClientRect().left - 40 + "px";
     document.body.querySelector("." + select).style.top = document.body.querySelector("." + select).getBoundingClientRect().top - 20 + "px";
     document.body.querySelector("." + select).className = select + " attackupleft";
-    setTimeout(function() {
+    setTimeout(function () {
         document.body.querySelector("." + select).style.left = document.body.querySelector("." + select).getBoundingClientRect().left + 45 + "px";
         document.body.querySelector("." + select).style.top = document.body.querySelector("." + select).getBoundingClientRect().top + 20 + "px";
         document.body.querySelector("." + select).className = select + " endupleft";
     }, 2000);
-    setTimeout(function() {
+    setTimeout(function () {
         document.body.querySelector("." + select).style.transition = "2.4s";
     }, 4000)
 
@@ -504,12 +571,12 @@ function attackup(select) {
     document.body.querySelector("." + select).style.left = document.body.querySelector("." + select).getBoundingClientRect().left - 40 + "px";
     document.body.querySelector("." + select).style.top = document.body.querySelector("." + select).getBoundingClientRect().top - 20 + "px";
     document.body.querySelector("." + select).className = select + " attackup";
-    setTimeout(function() {
+    setTimeout(function () {
         document.body.querySelector("." + select).style.left = document.body.querySelector("." + select).getBoundingClientRect().left + 45 + "px";
         document.body.querySelector("." + select).style.top = document.body.querySelector("." + select).getBoundingClientRect().top + 20 + "px";
         document.body.querySelector("." + select).className = select + " endup";
     }, 2000);
-    setTimeout(function() {
+    setTimeout(function () {
         document.body.querySelector("." + select).style.transition = "2.4s";
     }, 4000)
 }
@@ -519,12 +586,12 @@ function attackdown(select) {
     document.body.querySelector("." + select).style.left = document.body.querySelector("." + select).getBoundingClientRect().left - 40 + "px";
     document.body.querySelector("." + select).style.top = document.body.querySelector("." + select).getBoundingClientRect().top - 20 + "px";
     document.body.querySelector("." + select).className = select + " attackdown";
-    setTimeout(function() {
+    setTimeout(function () {
         document.body.querySelector("." + select).style.left = document.body.querySelector("." + select).getBoundingClientRect().left + 45 + "px";
         document.body.querySelector("." + select).style.top = document.body.querySelector("." + select).getBoundingClientRect().top + 20 + "px";
         document.body.querySelector("." + select).className = select + " enddown";
     }, 2400)
-    setTimeout(function() {
+    setTimeout(function () {
         document.body.querySelector("." + select).style.transition = "2.4s";
     }, 4000)
 }
@@ -534,12 +601,12 @@ function attackdownright(select) {
     document.body.querySelector("." + select).style.left = document.body.querySelector("." + select).getBoundingClientRect().left - 40 + "px";
     document.body.querySelector("." + select).style.top = document.body.querySelector("." + select).getBoundingClientRect().top - 20 + "px";
     document.body.querySelector("." + select).className = select + " attackdownright";
-    setTimeout(function() {
+    setTimeout(function () {
         document.body.querySelector("." + select).style.left = document.body.querySelector("." + select).getBoundingClientRect().left + 45 + "px";
         document.body.querySelector("." + select).style.top = document.body.querySelector("." + select).getBoundingClientRect().top + 20 + "px";
         document.body.querySelector("." + select).className = select + " enddownright";
     }, 2400)
-    setTimeout(function() {
+    setTimeout(function () {
         document.body.querySelector("." + select).style.transition = "2.4s";
     }, 4000)
 }
@@ -549,12 +616,12 @@ function attackdownleft(select) {
     document.body.querySelector("." + select).style.left = document.body.querySelector("." + select).getBoundingClientRect().left - 40 + "px";
     document.body.querySelector("." + select).style.top = document.body.querySelector("." + select).getBoundingClientRect().top - 20 + "px";
     document.body.querySelector("." + select).className = select + " attackdownleft";
-    setTimeout(function() {
+    setTimeout(function () {
         document.body.querySelector("." + select).style.left = document.body.querySelector("." + select).getBoundingClientRect().left + 45 + "px";
         document.body.querySelector("." + select).style.top = document.body.querySelector("." + select).getBoundingClientRect().top + 20 + "px";
         document.body.querySelector("." + select).className = select + " enddownleft";
     }, 2400)
-    setTimeout(function() {
+    setTimeout(function () {
         document.body.querySelector("." + select).style.transition = "2.4s";
     }, 4000)
 }
