@@ -8,27 +8,22 @@ var joueur = new perso(".personnage", "personnage", ".playerHealth");
 var ennemy = new perso(".persoennemy", "persoennemy", ".ennemyHealth");
 var entiremap = document.body.querySelectorAll(".mapBlock");
 var exit = false;
+var distance;
 // exit = init();
 submit();
 var previousCase = [0, 0];
 var previousEnnemyCase = [0, 0];
 var clickRules = 0;
+
+var ydep = [];
+var xdep = [];
+var clicTour;
+
 console.log("initialized");
 //LOAD GAME ON FORM SUMBIT
 
-document.body.querySelector("#end").addEventListener("click", function (e) {
-    canPlay = false;
-    ennemyTurn();
-    if (canattack(ennemy, joueur) === true) {
-        attack(ennemy, joueur);
-        hpUpdate(joueur, ennemy);
-        displayStats();
-        console.log("Ennemy can attack you");
-    }
-    highlight(joueur.x, joueur.y, joueur.mp);
-    joueur.ap = 1;
-    ennemy.ap = 1;
-})
+
+
 
 function perso(select, absolutec, healthselect) {
     this.name = "";
@@ -55,11 +50,11 @@ function ennemyTurn() {
 
     }
     move(ennemy, randomx, randomy); //TEST
-    displayStats();
     ennemy.x = randomx;
     ennemy.y = randomy;
     joueur.mp = 2;
     ennemy.mp = 2;
+    displayStats();
     previousEnnemyCase = [randomx, randomy];
     setTimeout(function () {
         canPlay = true;
@@ -77,66 +72,68 @@ function playerTurn() {
         for (let y = 0; y < 10; y++) {
             map[joueur.x][joueur.y].style.border = "2px solid blue";
             entiremap = document.body.querySelectorAll(".mapBlock");
-            map[x][y].addEventListener("click", function (e) {
+            /*map[x][y].addEventListener("click", function (e) {
                 console.log(e);
-                if (canPlay === false) {
-                    return;
-                } else {
+                if (canPlay === false) {} else {
                     map[joueur.x][joueur.y].style.border = "";
                     map[previousCase[0]][previousCase[1]].style.border = "";
                     console.log("click on : x:" + x + " y:" + y);
-                    displayStats();
                     if (x === joueur.x && y === joueur.y) {
                         console.log("Clicked on own case");
                     }
-                    /*else if ((x - joueur.x) + (y - joueur.y) > 8) { console.log("more than 2pm"); }*/
+                    //else if ((x - joueur.x) + (y - joueur.y) > 8) { console.log("more than 2pm"); }
                     //ATTACK
                     else if (x === ennemy.x && y === ennemy.y) {
                         if (canattack(joueur, ennemy) === true) {
                             console.log("You can attack the ennemy");
                             attack(joueur, ennemy);
-                            displayStats();
                         }
-                    } else {
-                        move(joueur, x, y);
-                        displayStats();
                     }
-
+                    document.body.querySelector("#end").addEventListener("click", function (e) {
+                        canPlay = false;
+                        ennemyTurn();
+                        if (canattack(ennemy, joueur) === true) {
+                            attack(ennemy, joueur);
+                            hpUpdate(joueur, ennemy);
+                            console.log("Ennemy can attack you");
+                        }
+                        highlight(joueur.x, joueur.y, joueur.mp);
+                    })
+                    move(joueur, x, y);
                     if (joueur.canmove === false || ennemy.canmove === false) {}
+                    previousCase = [x, y];
                     console.log(canPlay);
                 }
-                previousCase = [x, y];
-            })
+                joueur.ap = 1;
+                ennemy.ap = 1;
+            })*/
         }
     }
 }
 
 function attack(character, target) {
-    if (character.ap <= 0) { //Probaably useless  because already checked somewhere in dat shit
-    } else {
-        if (target.x > character.x && target.y > character.y) {
-            attackright(character.absoluteClass);
-        } else if (target.x < character.x && target.y > character.y) {
-            attackup(character.absoluteClass);
-        } else if (target.x < character.x && target.y < character.y) {
-            attackleft(character.absoluteClass);
-        } else if (target.x > character.x && target.y < character.y) {
-            attackdown(character.absoluteClass);
-        } else if (target.x === character.x && target.y > character.y) {
-            attackupright(character.absoluteClass);
-        } else if (target.x < character.x && target.y === character.y) {
-            attackupleft(character.absoluteClass);
-        } else if (target.x > character.x && target.y === character.y) {
-            attackdownright(character.absoluteClass);
-        } else if (target.x === character.x && target.y < character.y) {
-            attackdownleft(character.absoluteClass);
-        }
-        target.hp = target.hp - 30;
-        character.ap -= 1;
-        displayStats();
-        hpUpdate(character, target);
-        console.log(character.name + " attacked");
+    if (target.x > character.x && target.y > character.y) {
+        attackright(character.absoluteClass);
+    } else if (target.x < character.x && target.y > character.y) {
+        attackup(character.absoluteClass);
+    } else if (target.x < character.x && target.y < character.y) {
+        attackleft(character.absoluteClass);
+    } else if (target.x > character.x && target.y < character.y) {
+        attackdown(character.absoluteClass);
+    } else if (target.x === character.x && target.y > character.y) {
+        attackupright(character.absoluteClass);
+    } else if (target.x < character.x && target.y === character.y) {
+        attackupleft(character.absoluteClass);
+    } else if (target.x > character.x && target.y === character.y) {
+        attackdownright(character.absoluteClass);
+    } else if (target.x === character.x && target.y < character.y) {
+        attackdownleft(character.absoluteClass);
     }
+    target.hp = target.hp - 30;
+    character.ap -= 1;
+    displayStats();
+    hpUpdate(character, target);
+    console.log(character.name + " attacked");
 }
 
 function submit() {
@@ -214,9 +211,59 @@ function createMap() {
             div.style.height = "50px";
             div.style.width = "50px";
             div.className = "mapBlock";
-            div.id = "x:" + x;
+            div.id = "x:" + x + "y:" + y;
             map[x][y] = div;
             document.body.querySelector(".map").appendChild(div);
+            div.addEventListener("click", function (e) {
+                console.log(e);
+                if (canPlay === true) {
+                    var mpp = joueur.mp;
+
+                    for (let k = 0; k <= mpp; k++) {
+                        //highlight(joueur.x, joueur.y, joueur.mp);
+                        map[joueur.x][joueur.y].style.border = "";
+                        map[previousCase[0]][previousCase[1]].style.border = "";
+                        console.log("click on : x:" + x + " y:" + y);
+                        path(joueur.x, joueur.y, x, y);
+                        if (x == ennemy.x && y == ennemy.y) {
+                            if (distance == 1) {
+                                if (joueur.ap > 0) {
+                                    console.log("You can attack the ennemy");
+                                    attack(joueur, ennemy);
+                                }
+                            }
+                        } else if (distance == 0) {
+                            console.log("Clicked on own case");
+                        } else if (xdep.length > 1) {
+                            move(joueur, ydep[1], xdep[1]);
+                        } else {
+
+                        }
+                        //else if ((x - joueur.x) + (y - joueur.y) > 8) { console.log("more than 2pm"); }
+                        //ATTACK
+                    }
+                    canPlay = false;
+                    ennemy.ap = 1;
+                    ennemy.mp = 2;
+                } else {
+                    var mpe = ennemy.mp;
+                    for (let n = 0; n <= mpe; n++) {
+                        path(ennemy.x, ennemy.y, joueur.x, joueur.y);
+
+                        if (distance == 1) {
+                            if (ennemy.ap > 0) {
+                                attack(ennemy, joueur);
+                            }
+                        } else {
+                            move(ennemy, ydep[1], xdep[1]);
+                            previousCase = [x, y];
+                        }
+                    }
+                    canPlay = true;
+                    joueur.ap = 1;
+                    joueur.mp = 3;
+                }
+            })
         }
     }
     let texture = ["img/01.jpg", "img/02.jpg", "img/03.jpg", "img/04.jpg", "img/05.jpg"];
@@ -229,6 +276,41 @@ function createMap() {
         bloc[i].appendChild(imgBlock);
 
     }
+}
+
+function path(playerx, playery, tarx, tarz) {
+    xdep = [];
+    ydep = [];
+    console.log(xdep);
+    let lTarget = tarx;
+    let cTarget = tarz;
+    let lPlayer = playerx;
+    let cPlayer = playery;
+    let deltaL = lTarget - lPlayer;
+    let deltaC = cTarget - cPlayer;
+    console.log(deltaL);
+
+    let absDL = Math.abs(deltaL);
+    let absDC = Math.abs(deltaC);
+    var disdiag = Math.min(absDL, absDC);
+    var disline;
+    if (absDL > absDC) {
+        disline = absDL - absDC;
+    } else {
+        disline = absDC - absDL;
+    }
+    distance = disdiag + disline;
+    for (let j = 0; j <= disdiag + disline; j++) {
+        if (j <= disdiag) {
+            xdep[j] = cPlayer + j * Math.sign(deltaC);
+            ydep[j] = lPlayer + j * Math.sign(deltaL);
+        } else {
+            xdep[j] = cPlayer + disdiag + (j - disdiag) * Math.sign(deltaC - disdiag);
+            ydep[j] = lPlayer + disdiag + (j - disdiag) * Math.sign(deltaL - disdiag);
+        }
+    }
+    clicTour = tour;
+    console.log(xdep);
 }
 
 function move(character, xpos, ypos) {
@@ -449,60 +531,62 @@ function resetOpacity() {
 
 function walkright(select) {
     document.body.querySelector("." + select).className = select + " walkright";
-    document.body.querySelector(".walkright").addEventListener("transitionend",function(){
+    setTimeout(function () {
         document.body.querySelector("." + select).className = select + " endright";
-    })
+    }, 2000);
+
 }
 
 function walkupright(select) {
     document.body.querySelector("." + select).className = select + " walkupright";
-    document.body.querySelector(".personnage").addEventListener("transitionend",function(){
+    setTimeout(function () {
         document.body.querySelector("." + select).className = select + " endupright";
-    })
+    }, 2000);
 
 }
 
 
 function walkleft(select) {
     document.body.querySelector("." + select).className = select + " walkleft";
-    document.body.querySelector(".walkleft").addEventListener("transitionend",function(){
+    setTimeout(function () {
         document.body.querySelector("." + select).className = select + " endleft";
-    })
+    }, 2000)
 }
 
 function walkupleft(select) {
     document.body.querySelector("." + select).className = select + " walkupleft";
-    document.body.querySelector(".walkupleft").addEventListener("transitionend",function(){
+    setTimeout(function () {
         document.body.querySelector("." + select).className = select + " endupleft";
-    })
+    }, 2000);
+
 }
 
 function walkup(select) {
     document.body.querySelector("." + select).className = select + " walkup";
-    document.body.querySelector(".walkup").addEventListener("transitionend",function(){
+    setTimeout(function () {
         document.body.querySelector("." + select).className = select + " endup";
-    })
+    }, 2000);
 }
 
 function walkdown(select) {
     document.body.querySelector("." + select).className = select + " walkdown";
-    document.body.querySelector(".walkdown").addEventListener("transitionend",function(){
+    setTimeout(function () {
         document.body.querySelector("." + select).className = select + " enddown";
-    })
+    }, 2400)
 }
 
 function walkdownright(select) {
     document.body.querySelector("." + select).className = select + " walkdownright";
-    document.body.querySelector(".walkdownright").addEventListener("transitionend",function(){
+    setTimeout(function () {
         document.body.querySelector("." + select).className = select + " enddownright";
-    })
+    }, 2400)
 }
 
 function walkdownleft(select) {
     document.body.querySelector("." + select).className = select + " walkdownleft";
-    document.body.querySelector(".walkdownleft").addEventListener("transitionend",function(){
+    setTimeout(function () {
         document.body.querySelector("." + select).className = select + " enddownleft";
-    })
+    }, 2400)
 }
 
 //ATTACK ANIMATIONS-------------------------------------------------------------------------------------------------------
@@ -513,16 +597,14 @@ function attackright(select) {
     document.body.querySelector("." + select).style.left = document.body.querySelector("." + select).getBoundingClientRect().left - 40 + "px";
     document.body.querySelector("." + select).style.top = document.body.querySelector("." + select).getBoundingClientRect().top - 20 + "px";
     document.body.querySelector("." + select).className = select + " attackright";
-    document.body.querySelector("." + select).style.transition = "0s";
     setTimeout(function () {
         document.body.querySelector("." + select).style.left = document.body.querySelector("." + select).getBoundingClientRect().left + 45 + "px";
         document.body.querySelector("." + select).style.top = document.body.querySelector("." + select).getBoundingClientRect().top + 20 + "px";
         document.body.querySelector("." + select).className = select + " endright";
-        setTimeout(function() {
-        document.body.querySelector("." + select).style.transition = "2.4s";
-            
-        }, 100);
     }, 2000);
+    setTimeout(function () {
+        document.body.querySelector("." + select).style.transition = "2.4s";
+    }, 4000)
 
 }
 
@@ -531,16 +613,14 @@ function attackupright(select) {
     document.body.querySelector("." + select).style.left = document.body.querySelector("." + select).getBoundingClientRect().left - 40 + "px";
     document.body.querySelector("." + select).style.top = document.body.querySelector("." + select).getBoundingClientRect().top - 20 + "px";
     document.body.querySelector("." + select).className = select + " attackupright";
-    document.body.querySelector("." + select).style.transition = "0s";
     setTimeout(function () {
         document.body.querySelector("." + select).style.left = document.body.querySelector("." + select).getBoundingClientRect().left + 45 + "px";
         document.body.querySelector("." + select).style.top = document.body.querySelector("." + select).getBoundingClientRect().top + 20 + "px";
         document.body.querySelector("." + select).className = select + " endupright";
-        setTimeout(function() {
-        document.body.querySelector("." + select).style.transition = "2.4s";
-            
-        }, 100);
     }, 2000);
+    setTimeout(function () {
+        document.body.querySelector("." + select).style.transition = "2.4s";
+    }, 4000)
 
 }
 
@@ -550,16 +630,14 @@ function attackleft(select) {
     document.body.querySelector("." + select).style.left = document.body.querySelector("." + select).getBoundingClientRect().left - 40 + "px";
     document.body.querySelector("." + select).style.top = document.body.querySelector("." + select).getBoundingClientRect().top - 20 + "px";
     document.body.querySelector("." + select).className = select + " attackleft";
-    document.body.querySelector("." + select).style.transition = "0s";
     setTimeout(function () {
         document.body.querySelector("." + select).style.left = document.body.querySelector("." + select).getBoundingClientRect().left + 45 + "px";
         document.body.querySelector("." + select).style.top = document.body.querySelector("." + select).getBoundingClientRect().top + 20 + "px";
         document.body.querySelector("." + select).className = select + " endleft";
-        setTimeout(function() {
-        document.body.querySelector("." + select).style.transition = "2.4s";
-            
-        }, 100);
     }, 2000)
+    setTimeout(function () {
+        document.body.querySelector("." + select).style.transition = "2.4s";
+    }, 4000)
 
 }
 
@@ -568,16 +646,14 @@ function attackupleft(select) {
     document.body.querySelector("." + select).style.left = document.body.querySelector("." + select).getBoundingClientRect().left - 40 + "px";
     document.body.querySelector("." + select).style.top = document.body.querySelector("." + select).getBoundingClientRect().top - 20 + "px";
     document.body.querySelector("." + select).className = select + " attackupleft";
-    document.body.querySelector("." + select).style.transition = "0s";
     setTimeout(function () {
         document.body.querySelector("." + select).style.left = document.body.querySelector("." + select).getBoundingClientRect().left + 45 + "px";
         document.body.querySelector("." + select).style.top = document.body.querySelector("." + select).getBoundingClientRect().top + 20 + "px";
         document.body.querySelector("." + select).className = select + " endupleft";
-        setTimeout(function() {
-        document.body.querySelector("." + select).style.transition = "2.4s";
-            
-        }, 100);
     }, 2000);
+    setTimeout(function () {
+        document.body.querySelector("." + select).style.transition = "2.4s";
+    }, 4000)
 
 }
 
@@ -586,16 +662,14 @@ function attackup(select) {
     document.body.querySelector("." + select).style.left = document.body.querySelector("." + select).getBoundingClientRect().left - 40 + "px";
     document.body.querySelector("." + select).style.top = document.body.querySelector("." + select).getBoundingClientRect().top - 20 + "px";
     document.body.querySelector("." + select).className = select + " attackup";
-    document.body.querySelector("." + select).style.transition = "0s";
     setTimeout(function () {
         document.body.querySelector("." + select).style.left = document.body.querySelector("." + select).getBoundingClientRect().left + 45 + "px";
         document.body.querySelector("." + select).style.top = document.body.querySelector("." + select).getBoundingClientRect().top + 20 + "px";
         document.body.querySelector("." + select).className = select + " endup";
-        setTimeout(function() {
-        document.body.querySelector("." + select).style.transition = "2.4s";
-            
-        }, 100);
     }, 2000);
+    setTimeout(function () {
+        document.body.querySelector("." + select).style.transition = "2.4s";
+    }, 4000)
 }
 
 function attackdown(select) {
@@ -603,16 +677,14 @@ function attackdown(select) {
     document.body.querySelector("." + select).style.left = document.body.querySelector("." + select).getBoundingClientRect().left - 40 + "px";
     document.body.querySelector("." + select).style.top = document.body.querySelector("." + select).getBoundingClientRect().top - 20 + "px";
     document.body.querySelector("." + select).className = select + " attackdown";
-    document.body.querySelector("." + select).style.transition = "0s";
     setTimeout(function () {
         document.body.querySelector("." + select).style.left = document.body.querySelector("." + select).getBoundingClientRect().left + 45 + "px";
         document.body.querySelector("." + select).style.top = document.body.querySelector("." + select).getBoundingClientRect().top + 20 + "px";
         document.body.querySelector("." + select).className = select + " enddown";
-        setTimeout(function() {
-        document.body.querySelector("." + select).style.transition = "2.4s";
-            
-        }, 100);
     }, 2400)
+    setTimeout(function () {
+        document.body.querySelector("." + select).style.transition = "2.4s";
+    }, 4000)
 }
 
 function attackdownright(select) {
@@ -620,16 +692,14 @@ function attackdownright(select) {
     document.body.querySelector("." + select).style.left = document.body.querySelector("." + select).getBoundingClientRect().left - 40 + "px";
     document.body.querySelector("." + select).style.top = document.body.querySelector("." + select).getBoundingClientRect().top - 20 + "px";
     document.body.querySelector("." + select).className = select + " attackdownright";
-    document.body.querySelector("." + select).style.transition = "0s";
     setTimeout(function () {
         document.body.querySelector("." + select).style.left = document.body.querySelector("." + select).getBoundingClientRect().left + 45 + "px";
         document.body.querySelector("." + select).style.top = document.body.querySelector("." + select).getBoundingClientRect().top + 20 + "px";
         document.body.querySelector("." + select).className = select + " enddownright";
-        setTimeout(function() {
-        document.body.querySelector("." + select).style.transition = "2.4s";
-            
-        }, 100);
     }, 2400)
+    setTimeout(function () {
+        document.body.querySelector("." + select).style.transition = "2.4s";
+    }, 4000)
 }
 
 function attackdownleft(select) {
@@ -637,16 +707,14 @@ function attackdownleft(select) {
     document.body.querySelector("." + select).style.left = document.body.querySelector("." + select).getBoundingClientRect().left - 40 + "px";
     document.body.querySelector("." + select).style.top = document.body.querySelector("." + select).getBoundingClientRect().top - 20 + "px";
     document.body.querySelector("." + select).className = select + " attackdownleft";
-    document.body.querySelector("." + select).style.transition = "0s";
     setTimeout(function () {
         document.body.querySelector("." + select).style.left = document.body.querySelector("." + select).getBoundingClientRect().left + 45 + "px";
         document.body.querySelector("." + select).style.top = document.body.querySelector("." + select).getBoundingClientRect().top + 20 + "px";
         document.body.querySelector("." + select).className = select + " enddownleft";
-        setTimeout(function() {
-        document.body.querySelector("." + select).style.transition = "2.4s";
-            
-        }, 100);
     }, 2400)
+    setTimeout(function () {
+        document.body.querySelector("." + select).style.transition = "2.4s";
+    }, 4000)
 }
 
 
