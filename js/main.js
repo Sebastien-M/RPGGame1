@@ -19,8 +19,7 @@ console.log("initialized");
 document.body.querySelector("#end").addEventListener("click", function (e) {
     canPlay = false;
     ennemyTurn();
-
-    highlight(joueur.x, joueur.y, joueur.mp);
+    
     joueur.ap = 1;
     ennemy.ap = 1;
 })
@@ -48,8 +47,27 @@ function ennemyTurn() {
         hpUpdate(joueur, ennemy);
         displayStats();
         console.log("Ennemy can attack you");
-    }
-    setTimeout(function () {
+        setTimeout(function () {
+            let randomx = randomisator();
+            let randomy = randomisator();
+            if (randomx === joueur.x && randomy === joueur.y) {
+                return ennemyTurn();
+            }
+            move(ennemy, randomx, randomy); //TEST
+            displayStats();
+            ennemy.x = randomx;
+            ennemy.y = randomy;
+            joueur.mp = 2;
+            ennemy.mp = 2;
+            previousEnnemyCase = [randomx, randomy];
+            setTimeout(function () {
+                canPlay = true;
+                console.log(canPlay);
+                highlight(joueur.x, joueur.y, joueur.mp);
+            }, 2400);
+        }, 3000);
+    } else {
+
         let randomx = randomisator();
         let randomy = randomisator();
         if (randomx === joueur.x && randomy === joueur.y) {
@@ -59,14 +77,23 @@ function ennemyTurn() {
         displayStats();
         ennemy.x = randomx;
         ennemy.y = randomy;
+        if (canattack(ennemy, joueur) === true) {
+            attack(ennemy, joueur);
+            hpUpdate(joueur, ennemy);
+            displayStats();
+        } else {
+
+        }
         joueur.mp = 2;
         ennemy.mp = 2;
         previousEnnemyCase = [randomx, randomy];
         setTimeout(function () {
             canPlay = true;
             console.log(canPlay);
-        }, 2400);
-    }, 2400);
+            highlight(joueur.x, joueur.y, joueur.mp);
+        }, 2400)
+    }
+    
 }
 
 function randomisator() {
