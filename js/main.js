@@ -60,11 +60,9 @@ function ennemyTurn() {
             joueur.mp = 2;
             ennemy.mp = 2;
             previousEnnemyCase = [randomx, randomy];
-            setTimeout(function () {
                 canPlay = true;
                 console.log(canPlay);
                 highlight(joueur.x, joueur.y, joueur.mp);
-            }, 2400);
         }, 3000);
     } else {
 
@@ -566,7 +564,6 @@ function attackupright(select) {
         document.body.querySelector("." + select).className = select + " endupright";
         setTimeout(function () {
             document.body.querySelector("." + select).style.transition = "2.4s";
-
         }, 100);
     }, 2000);
 
